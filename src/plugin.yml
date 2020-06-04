@@ -1,5 +1,5 @@
 name: Spleef
-version: 1.7.0
+version: 1.0
 authors: [Naruse, 12emin34]
 main: fr.naruse.spleef.main.SpleefPlugin
 softdepend: [Vault, PlaceholderAPI, HolographicDisplays]
