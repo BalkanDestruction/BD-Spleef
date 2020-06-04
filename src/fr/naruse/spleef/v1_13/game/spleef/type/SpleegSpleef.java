@@ -143,49 +143,7 @@ public class SpleegSpleef extends Spleef implements Listener {
         }
     }
 
-    @Override
-    public void start() {
-        sendMessage(getNAME()+" §a"+ Message.GAME_START.getMessage());
-        getGame().WAIT = false;
-        getGame().GAME = true;
-        for(Player p : getPlayerInGame()){
-            p.teleport(getSpleefLoc());
-            p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20*5, 1, false, false));
-            if(new Random().nextBoolean()){
-                if(new Random().nextBoolean()){
-                    p.setVelocity(new Vector(-0.5F, 0.5F, 0.5F));
-                }else{
-                    p.setVelocity(new Vector(-0.5F, 0.5F, -0.5F));
-                }
-            }else{
-                if(new Random().nextBoolean()){
-                    p.setVelocity(new Vector(-0.5F, 0.5F, -0.5F));
-                }else{
-                    p.setVelocity(new Vector(0.5F, 0.5F, -0.5F));
-                }
-            }
-        }
-        getScoreboardSign().getObjective().setDisplayName(getNAME());
-        Bukkit.getScheduler().scheduleSyncDelayedTask(getMain().getSpleefPlugin(), new Runnable() {
-            @Override
-            public void run() {
-                for(Player p : getPlayerInGame()){
-                    ItemStack item;
-                    ItemMeta meta;
-                    if(!allowGoldShovel()){
-                        Material material = Material.DIAMOND_SPADE;
-                        item = new ItemStack(material);
-                        meta = item.getItemMeta();
-                        meta.setUnbreakable(true);
-                        item.setItemMeta(meta);
-                        p.getInventory().addItem(item);
-                    }
-                    p.getInventory().addItem(new ItemStack(Material.EGG, 16*8));
-                }
-            }
-        },20*5);
-        setTimeInSecond(0);
-    }
+    private final HashMap<Block, Material> materialHashMap = new HashMap<>();
 
     @Override
     public void restart(boolean notOnDisable) {
@@ -234,27 +192,70 @@ public class SpleegSpleef extends Spleef implements Listener {
                     }
                 }
             }
-        }else{
+        } else {
             Block b = e.getHitBlock();
-            if(materialHashMap.containsKey(b)){
+            if (materialHashMap.containsKey(b)) {
                 b.setType(materialHashMap.get(b));
-                b.setData(dataHashMap.get(b));
             }
         }
     }
 
-    private HashMap<Block, Material> materialHashMap = new HashMap<>();
-    private HashMap<Block, Byte> dataHashMap = new HashMap<>();
+    private final HashMap<Block, Byte> dataHashMap = new HashMap<>();
+
+    @Override
+    public void start() {
+        sendMessage(getNAME() + " §a" + Message.GAME_START.getMessage());
+        getGame().WAIT = false;
+        getGame().GAME = true;
+        for (Player p : getPlayerInGame()) {
+            p.teleport(getSpleefLoc());
+            p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20 * 5, 1, false, false));
+            if (new Random().nextBoolean()) {
+                if (new Random().nextBoolean()) {
+                    p.setVelocity(new Vector(-0.5F, 0.5F, 0.5F));
+                } else {
+                    p.setVelocity(new Vector(-0.5F, 0.5F, -0.5F));
+                }
+            } else {
+                if (new Random().nextBoolean()) {
+                    p.setVelocity(new Vector(-0.5F, 0.5F, -0.5F));
+                } else {
+                    p.setVelocity(new Vector(0.5F, 0.5F, -0.5F));
+                }
+            }
+        }
+        getScoreboardSign().getObjective().setDisplayName(getNAME());
+        Bukkit.getScheduler().scheduleSyncDelayedTask(getMain().getSpleefPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                for (Player p : getPlayerInGame()) {
+                    ItemStack item;
+                    ItemMeta meta;
+                    if (!allowGoldShovel()) {
+                        Material material = Material.DIAMOND_SHOVEL;
+                        item = new ItemStack(material);
+                        meta = item.getItemMeta();
+                        meta.setUnbreakable(true);
+                        item.setItemMeta(meta);
+                        p.getInventory().addItem(item);
+                    }
+                    p.getInventory().addItem(new ItemStack(Material.EGG, 16 * 8));
+                }
+            }
+        }, 20 * 5);
+        setTimeInSecond(0);
+    }
+
     @EventHandler
-    public void blockChange(ProjectileLaunchEvent e){
-        if(!(e.getEntity().getShooter() instanceof Player)){
+    public void blockChange(ProjectileLaunchEvent e) {
+        if (!(e.getEntity().getShooter() instanceof Player)) {
             return;
         }
-        if(!getPlayerInGame().contains(e.getEntity().getShooter())){
+        if (!getPlayerInGame().contains(e.getEntity().getShooter())) {
             return;
         }
         Projectile projectile = e.getEntity();
-        if(!(projectile instanceof Egg)){
+        if (!(projectile instanceof Egg)) {
             return;
         }
         BlockIterator iterator = new BlockIterator(e.getEntity().getWorld(), e.getEntity().getLocation().toVector(), e.getEntity().getVelocity().normalize(), 0.0D, 100);

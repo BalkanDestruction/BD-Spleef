@@ -2,7 +2,6 @@ package fr.naruse.spleef.main;
 
 import fr.naruse.spleef.common.Utils;
 import fr.naruse.spleef.manager.AbstractSpleefPlugin;
-import fr.naruse.spleef.manager.SpleefPluginV1_12;
 import fr.naruse.spleef.manager.SpleefPluginV1_13;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -12,13 +11,11 @@ public class SpleefPlugin extends JavaPlugin {
     @Override
     public void onEnable(){
         super.onEnable();
-        this.INSTANCE = this;
+        INSTANCE = this;
         if(spleefPlugin == null){
             double version = Utils.getBukkitVersion();
             if(version >= 1.13) {
                 this.spleefPlugin = new SpleefPluginV1_13(this);
-            }else {
-                this.spleefPlugin = new SpleefPluginV1_12(this);
             }
         }
         this.spleefPlugin.onEnable();
@@ -29,8 +26,6 @@ public class SpleefPlugin extends JavaPlugin {
         double version = Utils.getBukkitVersion();
         if(version >= 1.13) {
             this.spleefPlugin = new SpleefPluginV1_13(this);
-        }else {
-            this.spleefPlugin = new SpleefPluginV1_12(this);
         }
         this.spleefPlugin.onLoad();
     }

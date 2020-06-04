@@ -1,8 +1,10 @@
 name: Spleef
-version: 1.6.8
-author: Naruse
+version: 1.7.0
+authors: [Naruse, 12emin34]
 main: fr.naruse.spleef.main.SpleefPlugin
-softdepend: [Vault]
+softdepend: [Vault, PlaceholderAPI, HolographicDisplays]
 commands:
   spleef:
     description: All commands for Spleef
+description: A Spleef plugin for Bukkit, optimized for BalkanDestruction.
+api-version: 1.15

@@ -19,16 +19,17 @@ import java.util.List;
 import java.util.Random;
 
 public class Wager implements Listener {
-    private SpleefPluginV1_13 pl;
-    private Player player1;
-    private Player player2;
+    private final SpleefPluginV1_13 pl;
+    private final Player player1;
+    private final Player player2;
     private Player lost = null;
-    private Inventory inventory1 = Bukkit.createInventory(null, 9*3, "§2§l"+ Message.WAGER.getMessage());
-    private Inventory inventory2 = Bukkit.createInventory(null, 9*3, "§2§l"+ Message.WAGER.getMessage());
+    private Inventory inventory1 = Bukkit.createInventory(null, 9 * 3, "§2§l" + Message.WAGER.getMessage());
+    private Inventory inventory2 = Bukkit.createInventory(null, 9 * 3, "§2§l" + Message.WAGER.getMessage());
     private Inventory inventoryFinal = null;
     private boolean wagerAccepted = false, player1Ready = false, player2Ready = false, player1FinalReady = false, player2FinalReady = false;
     private boolean wagerActive = false, rewardsGot = false;
     public boolean stop = false;
+
     public Wager(SpleefPluginV1_13 pl, Player p, Player p2) {
         this.pl = pl;
         this.player1 = p;
@@ -126,22 +127,22 @@ public class Wager implements Listener {
             return;
         }
         ItemStack item = e.getCurrentItem();
-        if(item.getType() == Material.STAINED_GLASS_PANE){
+        if (item.getType() == Material.LEGACY_STAINED_GLASS_PANE) {
             e.setCancelled(true);
             return;
         }
-        if(e.getSlot() > 9*2 && e.getClickedInventory() != p.getInventory()){
-            if(item.getType() == Material.WOOL){
-                if(inventoryFinal == null){
+        if (e.getSlot() > 9 * 2 && e.getClickedInventory() != p.getInventory()) {
+            if (item.getType() == Material.LEGACY_WOOL) {
+                if (inventoryFinal == null) {
                     e.setCancelled(true);
-                    if(item.getData().getData() == 14){
+                    if (item.getData().getData() == 14) {
                         player1.closeInventory();
                         player2.closeInventory();
-                        player1.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_DECLINED.getMessage());
-                        player2.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_DECLINED.getMessage());
+                        player1.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.WAGER_DECLINED.getMessage());
+                        player2.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.WAGER_DECLINED.getMessage());
                         decline();
-                    }else if(item.getData().getData() == 5){
-                        if(p == player1){
+                    } else if (item.getData().getData() == 5) {
+                        if (p == player1) {
                             player1Ready = true;
                             p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.AWAITING_VALIDATION.getMessage());
                             if(player2Ready){
@@ -237,38 +238,38 @@ public class Wager implements Listener {
     private void generateInv() {
         inventory1 = Bukkit.createInventory(null, 9*3, "§2§l"+ Message.WAGER.getMessage()+" §8§l("+player1.getName()+" - "+player2.getName()+")");
         for(int i = 0; i < 10; i++){
-            inventory1.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
+            inventory1.setItem(i, new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
         }
         for(int i = 17; i < 9*3; i += 9){
-            inventory1.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
+            inventory1.setItem(i, new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
         }
         for(int i = 9; i < 9*3; i += 9){
-            inventory1.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
+            inventory1.setItem(i, new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
         }
         for(int i = 9*2+1; i < 9*3; i++){
-            inventory1.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
+            inventory1.setItem(i, new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
         }
         //
         inventory2 = Bukkit.createInventory(null, 9*3, "§2§l"+ Message.WAGER.getMessage()+" §8§l("+player1.getName()+" - "+player2.getName()+")");
         for(int i = 0; i < 10; i++){
-            inventory2.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
+            inventory2.setItem(i, new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
         }
         for(int i = 17; i < 9*3; i += 9){
-            inventory2.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
+            inventory2.setItem(i, new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
         }
         for(int i = 9; i < 9*3; i += 9){
-            inventory2.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
+            inventory2.setItem(i, new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
         }
         for(int i = 9*2+1; i < 9*3; i++){
-            inventory2.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
+            inventory2.setItem(i, new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
         }
-        ItemStack item = new ItemStack(Material.WOOL, 1, (byte) 5);
+        ItemStack item = new ItemStack(Material.LEGACY_WOOL, 1, (byte) 5);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("§2Ok");
         item.setItemMeta(meta);
         inventory2.setItem(9*2+3, item);
-        inventory1.setItem(9*2+3, item);
-        item = new ItemStack(Material.WOOL, 1, (byte) 14);
+        inventory1.setItem(9 * 2 + 3, item);
+        item = new ItemStack(Material.LEGACY_WOOL, 1, (byte) 14);
         meta = item.getItemMeta();
         meta.setDisplayName("§4Stop");
         item.setItemMeta(meta);
@@ -279,29 +280,29 @@ public class Wager implements Listener {
     private void generateFinalInv() {
         inventoryFinal = Bukkit.createInventory(null, 9*6, "§2§l"+ Message.WAGER.getMessage()+" §8§l("+player1.getName()+" - "+player2.getName()+")");
         for(int i = 0; i < 10; i++){
-            inventoryFinal.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 12));
+            inventoryFinal.setItem(i, new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (byte) 12));
         }
         for(int i = 17; i < 9*6; i += 9){
-            inventoryFinal.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 12));
+            inventoryFinal.setItem(i, new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (byte) 12));
         }
         for(int i = 9; i < 9*6; i += 9){
-            inventoryFinal.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 12));
+            inventoryFinal.setItem(i, new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (byte) 12));
         }
         for(int i = 9*2+1; i < 9*3; i++){
-            inventoryFinal.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 12));
+            inventoryFinal.setItem(i, new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (byte) 12));
         }
         for(int i = 9*3+1; i < 9*4; i++){
-            inventoryFinal.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 12));
+            inventoryFinal.setItem(i, new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (byte) 12));
         }
         for(int i = 9*5+1; i < 9*6; i++){
-            inventoryFinal.setItem(i, new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 12));
+            inventoryFinal.setItem(i, new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (byte) 12));
         }
-        ItemStack item = new ItemStack(Material.WOOL, 1, (byte) 5);
+        ItemStack item = new ItemStack(Material.LEGACY_WOOL, 1, (byte) 5);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("§2Ok");
         item.setItemMeta(meta);
-        inventoryFinal.setItem(9*5+3, item);
-        item = new ItemStack(Material.WOOL, 1, (byte) 14);
+        inventoryFinal.setItem(9 * 5 + 3, item);
+        item = new ItemStack(Material.LEGACY_WOOL, 1, (byte) 14);
         meta = item.getItemMeta();
         meta.setDisplayName("§4Stop");
         item.setItemMeta(meta);

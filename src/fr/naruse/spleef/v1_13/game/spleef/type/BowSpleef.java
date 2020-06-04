@@ -12,7 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -124,25 +123,79 @@ public class BowSpleef extends Spleef implements Listener {
                 }
                 sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_OTHER.getColorTag()+" "+getGameMode().getName()+" Mode");
                 sign.update();
-            }else if(getGame().GAME){
-                sign.setLine(0, "§c§l[§5"+getName()+"§c§l]");
-                sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_2.getColorTag()+getPlayerInGame().size()+"/"+getMax());
-                sign.setLine(2, Message.SignColorTag.OPEN_GAME_LINE4_NORMAL.getColorTag()+ Message.IN_GAME.getMessage());
-                sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_OTHER.getColorTag()+" "+getGameMode().getName()+" Mode");
+            } else if (getGame().GAME) {
+                sign.setLine(0, "§c§l[§5" + getName() + "§c§l]");
+                sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_2.getColorTag() + getPlayerInGame().size() + "/" + getMax());
+                sign.setLine(2, Message.SignColorTag.OPEN_GAME_LINE4_NORMAL.getColorTag() + Message.IN_GAME.getMessage());
+                sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_OTHER.getColorTag() + " " + getGameMode().getName() + " Mode");
                 sign.update();
             }
         }
     }
 
+    private final HashMap<Block, Material> materialHashMap = new HashMap<>();
+
+    @Override
+    public void restart(boolean notOnDisable) {
+        this.runNormalRestart(notOnDisable);
+    }
+
+    @Override
+    public void updateScoreboards() {
+        this.runNormalUpdateScoreboards();
+    }
+
+    @Override
+    public boolean postShowTime(int timeInSecond) {
+        return true;
+    }
+
+    @EventHandler
+    public void hitEvent(ProjectileHitEvent e) {
+        if (!(e.getEntity().getShooter() instanceof Player)) {
+            return;
+        }
+        if (!getPlayerInGame().contains(e.getEntity().getShooter())) {
+            return;
+        }
+        Projectile projectile = e.getEntity();
+        if (!(projectile instanceof Arrow)) {
+            e.getHitEntity().setVelocity(genVector(((Player) e.getEntity().getShooter()).getLocation(), e.getHitEntity().getLocation()).multiply(0.5));
+            return;
+        }
+        if (e.getHitBlock() == null) {
+            return;
+        }
+        if (getAuthorizedMaterial().contains(e.getHitBlock().getType()) && getGame().GAME) {
+            getBlocks().add(e.getHitBlock());
+            getBlocksOfRegionVerif().remove(e.getHitBlock());
+            getTypeOfLocationHashMap().put(e.getHitBlock().getLocation(), e.getHitBlock().getType());
+            for (Block b : Utils.getCircle(e.getHitBlock().getLocation(), 2)) {
+                if (materialHashMap.containsKey(b)) {
+                    b.setType(materialHashMap.get(b));
+                }
+            }
+            projectile.remove();
+        } else {
+            for (Block b : Utils.getCircle(e.getHitBlock().getLocation(), 2)) {
+                if (materialHashMap.containsKey(b)) {
+                    b.setType(materialHashMap.get(b));
+                }
+            }
+        }
+    }
+
+    private final HashMap<Block, Byte> dataHashMap = new HashMap<>();
+
     @Override
     public void start() {
-        sendMessage(getNAME()+" §a"+ Message.GAME_START.getMessage());
+        sendMessage(getNAME() + " §a" + Message.GAME_START.getMessage());
         getGame().WAIT = false;
         getGame().GAME = true;
-        for(Player p : getPlayerInGame()){
+        for (Player p : getPlayerInGame()) {
             p.teleport(getSpleefLoc());
-            p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20*5, 1, false, false));
-            if(new Random().nextBoolean()){
+            p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20 * 5, 1, false, false));
+            if (new Random().nextBoolean()) {
                 if(new Random().nextBoolean()){
                     p.setVelocity(new Vector(-0.5F, 0.5F, 0.5F));
                 }else{
@@ -164,7 +217,7 @@ public class BowSpleef extends Spleef implements Listener {
                     ItemStack item;
                     ItemMeta meta;
                     if(!allowGoldShovel()){
-                        Material material = Material.DIAMOND_SPADE;
+                        Material material = Material.DIAMOND_SHOVEL;
                         item = new ItemStack(material);
                         meta = item.getItemMeta();
                         meta.setUnbreakable(true);
@@ -177,7 +230,7 @@ public class BowSpleef extends Spleef implements Listener {
                     item.setItemMeta(meta);
                     p.getInventory().addItem(item);
                     if(allowSnowballs()){
-                        p.getInventory().addItem(new ItemStack(Material.SNOW_BALL, 64*4));
+                        p.getInventory().addItem(new ItemStack(Material.SNOWBALL, 64 * 4));
                     }
                     p.getInventory().addItem(new ItemStack(Material.ARROW, 64*8));
                 }
@@ -185,60 +238,6 @@ public class BowSpleef extends Spleef implements Listener {
         },20*5);
     }
 
-    @Override
-    public void restart(boolean notOnDisable) {
-        this.runNormalRestart(notOnDisable);
-    }
-
-    @Override
-    public void updateScoreboards() {
-        this.runNormalUpdateScoreboards();
-    }
-
-    @Override
-    public boolean postShowTime(int timeInSecond) {
-        return true;
-    }
-
-    @EventHandler
-    public void hitEvent(ProjectileHitEvent e){
-        if(!(e.getEntity().getShooter() instanceof Player)){
-            return;
-        }
-        if(!getPlayerInGame().contains(e.getEntity().getShooter())){
-            return;
-        }
-        Projectile projectile = e.getEntity();
-        if(!(projectile instanceof Arrow)){
-            e.getHitEntity().setVelocity(genVector(((Player) e.getEntity().getShooter()).getLocation(), e.getHitEntity().getLocation()).multiply(0.5));
-            return;
-        }
-        if(e.getHitBlock() == null) {
-            return;
-        }
-        if(getAuthorizedMaterial().contains(e.getHitBlock().getType()) && getGame().GAME){
-            getBlocks().add(e.getHitBlock());
-            getBlocksOfRegionVerif().remove(e.getHitBlock());
-            getTypeOfLocationHashMap().put(e.getHitBlock().getLocation(), e.getHitBlock().getType());
-            for(Block b : Utils.getCircle(e.getHitBlock().getLocation(), 2)){
-                if(materialHashMap.containsKey(b)){
-                    b.setType(materialHashMap.get(b));
-                    b.setData(dataHashMap.get(b));
-                }
-            }
-            projectile.remove();
-        }else{
-            for(Block b : Utils.getCircle(e.getHitBlock().getLocation(), 2)){
-                if(materialHashMap.containsKey(b)){
-                    b.setType(materialHashMap.get(b));
-                    b.setData(dataHashMap.get(b));
-                }
-            }
-        }
-    }
-
-    private HashMap<Block, Material> materialHashMap = new HashMap<>();
-    private HashMap<Block, Byte> dataHashMap = new HashMap<>();
     @EventHandler
     public void blockChange(ProjectileLaunchEvent e){
         if(!(e.getEntity().getShooter() instanceof Player)){
@@ -255,7 +254,7 @@ public class BowSpleef extends Spleef implements Listener {
         Block hitBlock = null;
         while (iterator.hasNext()) {
             hitBlock = iterator.next();
-            if (hitBlock.getTypeId() != 0) {
+            if (hitBlock.getType() != Material.AIR) {
                 break;
             }
         }

@@ -20,9 +20,10 @@ import org.bukkit.util.Vector;
 import java.util.List;
 
 public class TwoTeamSpleef extends Spleef implements TeamModeSpleef {
-    private List<List<Player>> teams = Lists.newArrayList();
-    private List<Player> redTeam = Lists.newArrayList();
-    private List<Player> blueTeam = Lists.newArrayList();
+    private final List<List<Player>> teams = Lists.newArrayList();
+    private final List<Player> redTeam = Lists.newArrayList();
+    private final List<Player> blueTeam = Lists.newArrayList();
+
     public TwoTeamSpleef(SpleefPluginV1_13 pl, String name, Location spleefLoc, Location spleefSpawn, Location spleefLobby, int min, int max, boolean isOpen) {
         super(pl, SpleefGameMode.TWO_TEAM, name, spleefLoc, spleefSpawn, spleefLobby, min, max, isOpen);
     }
@@ -81,11 +82,11 @@ public class TwoTeamSpleef extends Spleef implements TeamModeSpleef {
                 if (p == null) {
                     break;
                 }
-                if (p.getLocation().getBlock().getType() == Material.LAVA || p.getLocation().getBlock().getType() == Material.STATIONARY_LAVA ||
-                        p.getLocation().getBlock().getType() == Material.WATER || p.getLocation().getBlock().getType() == Material.STATIONARY_WATER) {
-                    if(redTeam.contains(p)){
+                if (p.getLocation().getBlock().getType() == Material.LAVA || p.getLocation().getBlock().getType() == Material.LEGACY_STATIONARY_LAVA ||
+                        p.getLocation().getBlock().getType() == Material.WATER || p.getLocation().getBlock().getType() == Material.LEGACY_STATIONARY_WATER) {
+                    if (redTeam.contains(p)) {
                         sendMessage(getNAME() + " §4" + p.getName() + " §c" + Message.FELL_INTO_THE_LAVA.getMessage());
-                    }else if(blueTeam.contains(p)){
+                    } else if (blueTeam.contains(p)) {
                         sendMessage(getNAME() + " §3" + p.getName() + " §c" + Message.FELL_INTO_THE_LAVA.getMessage());
                     }
                     getMain().spleefs.removePlayer(p);

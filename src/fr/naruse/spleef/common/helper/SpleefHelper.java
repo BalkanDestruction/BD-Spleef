@@ -3,10 +3,9 @@ package fr.naruse.spleef.common.helper;
 import com.google.common.collect.Lists;
 import fr.naruse.spleef.main.SpleefPlugin;
 import fr.naruse.spleef.manager.SpleefPluginV1_13;
-import fr.naruse.spleef.v1_12.util.SpleefPlayerStatistics;
+import fr.naruse.spleef.v1_13.util.SpleefPlayerStatistics;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,35 +14,34 @@ import java.util.List;
 public class SpleefHelper {
 
 
-    private static void addPlayerPoints(OfflinePlayer p, long points){
-        if(playerPoints.containsKey(p)){
-            playerPoints.remove(p);
-        }
-        playerPoints.put(p, points);
-    }
+    private static final HashMap<OfflinePlayer, SpleefPlayerStatistics> spleefPlayerHashMap = new HashMap<>();
 
-    private static void addPlayers(){
-        for(OfflinePlayer p : Bukkit.getOfflinePlayers()){
-            if(getSpleefPlayer(p).getWins() != 0){
+    private static void addPlayers() {
+        for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
+            if (getSpleefPlayer(p).getWins() != 0) {
                 addPlayerPoints(p, getSpleefPlayer(p).getWins());
             }
         }
     }
 
-    private static HashMap<OfflinePlayer, SpleefPlayerStatistics> spleefPlayerHashMap = new HashMap<>();
+    private static final List<Long> intList = Lists.newArrayList();
+    private static final List<String> nameUsed = Lists.newArrayList();
+    private static final HashMap<OfflinePlayer, Long> playerPoints = new HashMap<>();
+
+    private static void addPlayerPoints(OfflinePlayer p, long points) {
+        playerPoints.remove(p);
+        playerPoints.put(p, points);
+    }
+
     private static SpleefPlayerStatistics getSpleefPlayer(OfflinePlayer p) {
-        if(spleefPlayerHashMap.containsKey(p)){
+        if (spleefPlayerHashMap.containsKey(p)) {
             spleefPlayerHashMap.get(p).refreshStatisticFromConfig();
             return spleefPlayerHashMap.get(p);
         }
-        SpleefPlayerStatistics spleefPlayerStatistics = new SpleefPlayerStatistics(SpleefPlugin.INSTANCE.getSpleefPlugin(), p.getName());
+        SpleefPlayerStatistics spleefPlayerStatistics = new SpleefPlayerStatistics((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin(), p.getName());
         spleefPlayerHashMap.put(p, spleefPlayerStatistics);
         return spleefPlayerStatistics;
     }
-
-    private static List<Long> intList = Lists.newArrayList();
-    private static List<String> nameUsed = Lists.newArrayList();
-    private static HashMap<OfflinePlayer, Long> playerPoints = new HashMap<>();
     public static List<OfflinePlayer> getPlayerRank(int place){
         addPlayers();
         HashMap<Long, List<OfflinePlayer>> pAndP = new HashMap<>();
