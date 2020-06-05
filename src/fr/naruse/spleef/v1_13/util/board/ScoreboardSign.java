@@ -10,15 +10,17 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 public class ScoreboardSign {
-    private Scoreboard sb;
-    private Objective obj;
-    private Team blueTeam, redTeam;
-    public ScoreboardSign(){
+    private final Scoreboard sb;
+    private final Objective obj;
+    private final Team blueTeam;
+    private final Team redTeam;
+
+    public ScoreboardSign() {
         this.sb = Bukkit.getScoreboardManager().getNewScoreboard();
-        this.obj = sb.registerNewObjective("dac", "dummy");
+        this.obj = sb.registerNewObjective("dac", "dummy", "BD-Spleef");
         this.obj.setDisplaySlot(DisplaySlot.SIDEBAR);
         redTeam = sb.registerNewTeam("red");
-        if(!Bukkit.getVersion().contains("1.8")) {
+        if (!Bukkit.getVersion().contains("1.8")) {
             redTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
         }
         redTeam.setPrefix("§c");

@@ -82,8 +82,8 @@ public class TwoTeamSpleef extends Spleef implements TeamModeSpleef {
                 if (p == null) {
                     break;
                 }
-                if (p.getLocation().getBlock().getType() == Material.LAVA || p.getLocation().getBlock().getType() == Material.LEGACY_STATIONARY_LAVA ||
-                        p.getLocation().getBlock().getType() == Material.WATER || p.getLocation().getBlock().getType() == Material.LEGACY_STATIONARY_WATER) {
+                if (p.getLocation().getBlock().getType() == Material.LAVA || p.getLocation().getBlock().getType() == Material.LAVA ||
+                        p.getLocation().getBlock().getType() == Material.WATER || p.getLocation().getBlock().getType() == Material.WATER) {
                     if (redTeam.contains(p)) {
                         sendMessage(getNAME() + " §4" + p.getName() + " §c" + Message.FELL_INTO_THE_LAVA.getMessage());
                     } else if (blueTeam.contains(p)) {

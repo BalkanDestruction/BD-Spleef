@@ -28,7 +28,7 @@ public class SpleefPluginV1_13 extends AbstractSpleefPlugin {
     public Holograms holograms;
     public SpleefAPI spleefAPI;
     public static SpleefPluginV1_13 INSTANCE;
-    private SpleefPlaceholder spleefPlaceholder;
+
     public SpleefPluginV1_13(SpleefPlugin spleefPlugin) {
         super(spleefPlugin);
     }
@@ -36,15 +36,15 @@ public class SpleefPluginV1_13 extends AbstractSpleefPlugin {
     @Override
     public void onEnable() {
         INSTANCE = this;
-        if((WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit") == null){
+        if (Bukkit.getPluginManager().getPlugin("WorldEdit") == null) {
             this.worldEditPlugin = null;
-        }else{
+        } else {
             this.worldEditPlugin = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
         }
         this.otherPluginSupport = new OtherPluginSupport();
         this.saveConfig();
         this.configurations = new Configurations(this);
-        this.spleefPlaceholder = new SpleefPlaceholder(getSpleefPlugin());
+        SpleefPlaceholder spleefPlaceholder = new SpleefPlaceholder(getSpleefPlugin());
         Bukkit.getScheduler().scheduleSyncDelayedTask(this.getSpleefPlugin(), new Runnable() {
             @Override
             public void run() {

@@ -8,10 +8,8 @@ import org.bukkit.event.Listener;
 import java.util.List;
 
 public class SpleefAPI {
-    private SpleefPluginV1_13 pl;
-    private List<Listener> spleefListeners = Lists.newArrayList();
+    private final List<Listener> spleefListeners = Lists.newArrayList();
     public SpleefAPI(SpleefPluginV1_13 pl) {
-        this.pl = pl;
     }
 
     protected void sendMessage(String msg){

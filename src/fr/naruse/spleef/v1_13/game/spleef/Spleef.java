@@ -169,8 +169,8 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
                 if (p == null) {
                     break;
                 }
-                if (p.getLocation().getBlock().getType() == Material.LAVA || p.getLocation().getBlock().getType() == Material.LEGACY_STATIONARY_LAVA ||
-                        p.getLocation().getBlock().getType() == Material.WATER || p.getLocation().getBlock().getType() == Material.LEGACY_STATIONARY_WATER) {
+                if (p.getLocation().getBlock().getType() == Material.LAVA || p.getLocation().getBlock().getType() == Material.LAVA ||
+                        p.getLocation().getBlock().getType() == Material.WATER || p.getLocation().getBlock().getType() == Material.WATER) {
                     sendMessage(getNAME() + " §6" + p.getName() + " §c" + Message.FELL_INTO_THE_LAVA.getMessage());
                     getMain().spleefs.removePlayer(p);
                     if (getMain().otherPluginSupport.getVaultPlugin().getEconomy() != null) {
@@ -551,7 +551,7 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
                     e.setCancelled(true);
                     return;
                 }
-                if (p.getLocation().getBlock().getType() == Material.LAVA || p.getLocation().getBlock().getType() == Material.LEGACY_STATIONARY_LAVA) {
+                if (p.getLocation().getBlock().getType() == Material.LAVA || p.getLocation().getBlock().getType() == Material.LAVA) {
                     e.setCancelled(true);
                 }
             }

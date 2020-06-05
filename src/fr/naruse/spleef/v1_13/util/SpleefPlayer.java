@@ -8,13 +8,11 @@ import org.bukkit.inventory.Inventory;
 
 public class SpleefPlayer {
     private Inventory inv;
-    private Player p;
-    private SpleefPluginV1_13 pl;
+    private final Player p;
     private GameMode gameMode;
     private boolean isFlying = false;
-    private SpleefPlayerStatistics spleefPlayerStatistics;
+    private final SpleefPlayerStatistics spleefPlayerStatistics;
     public SpleefPlayer(SpleefPluginV1_13 pl, Player p){
-        this.pl = pl;
         this.p = p;
         this.spleefPlayerStatistics = new SpleefPlayerStatistics(pl, p.getName());
     }

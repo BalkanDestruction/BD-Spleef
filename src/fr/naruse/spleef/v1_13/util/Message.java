@@ -68,28 +68,28 @@ public enum Message {
     SETTING_SAVED("Paramètre enregistré.", "Setting saved.",  ((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("settingSaved"), "settingSaved"),
     RED_TEAM("L'équipe §cRouge", "The §cRed team",  ((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("redTeam"), "redTeam"),
     BLUE_TEAM("L'équipe §3Bleue", "The §3Blue team",  ((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("blueTeam"), "blueTeam"),
-    GREEN_TEAM("L'équipe §2Verte", "The §2Green team",  ((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("greenTeam"), "greenTeam"),
-    YELLOW_TEAM("L'équipe §eJaune", "The §eYellow team",  ((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("yellowTeam"), "yellowTeam"),
-    SPLEEF_PLAYER_RANKING("Classement des joueurs Spleef", "Spleef player ranking",  ((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("spleefRanking"), "spleefRanking"),
-    THE_MELTING_BEGINS("La fonte commence!", "The melting begings!",  ((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("meltingBegings"), "meltingBegings"),
-    DONT_STAY_ON_A_BLOCK("Ne restez pas sur le même bloc!", "Don't stay on the same block!",  ((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("dontStayOnBlock"), "dontStayOnBlock"),
-    COMMAND_PROHIBITED("Cette commande a été désactivée par un administrateur.", "This command has been prohibited by an administrator.",  ((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("commandProhibited"), "commandProhibited"),
-    NOT_FOUND("Introuvable.", "Not found",  ((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("notFound"), "notFound"),
+    GREEN_TEAM("L'équipe §2Verte", "The §2Green team", ((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("greenTeam"), "greenTeam"),
+    YELLOW_TEAM("L'équipe §eJaune", "The §eYellow team", ((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("yellowTeam"), "yellowTeam"),
+    SPLEEF_PLAYER_RANKING("Classement des joueurs Spleef", "Spleef player ranking", ((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("spleefRanking"), "spleefRanking"),
+    THE_MELTING_BEGINS("La fonte commence!", "The melting begings!", ((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("meltingBegings"), "meltingBegings"),
+    DONT_STAY_ON_A_BLOCK("Ne restez pas sur le même bloc!", "Don't stay on the same block!", ((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("dontStayOnBlock"), "dontStayOnBlock"),
+    COMMAND_PROHIBITED("Cette commande a été désactivée par un administrateur.", "This command has been prohibited by an administrator.", ((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("commandProhibited"), "commandProhibited"),
+    NOT_FOUND("Introuvable.", "Not found", ((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("notFound"), "notFound"),
     ;
 
 
-    private String msg;
-    private String msg1;
-    private String msg2;
-    private String path;
+    private final String msg1;
+    private final String msg2;
+    private final String path;
+
     Message(String s, String s1, String s2, String path) {
-        this.msg = s.replace("&", "§");
+        String msg = s.replace("&", "§");
         this.msg1 = s1.replace("&", "§");
-        this.msg2 = s2.replace("&", "§")+"";
+        this.msg2 = s2.replace("&", "§") + "";
         this.path = path;
     }
 
-    public String getMessage(){
+    public String getMessage() {
         return msg2;
     }
 
@@ -116,8 +116,9 @@ public enum Message {
         OPEN_GAME_LINE4_OTHER(((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("signColorTag.open.game.line4.gameMode.other"), "signColorTag.open.game.line4.gameMode.other"),
         CLOSE_LINE2(((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin()).configurations.getMessages().getConfig().getString("signColorTag.close.line2"), "signColorTag.close.line2");
 
-        private String colorTag;
-        private String path;
+        private final String colorTag;
+        private final String path;
+
         SignColorTag(String string, String path) {
             this.colorTag = string.replace("&", "§");
             this.path = path;
