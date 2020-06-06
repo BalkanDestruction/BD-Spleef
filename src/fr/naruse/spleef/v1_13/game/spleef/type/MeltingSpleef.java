@@ -24,18 +24,19 @@ public class MeltingSpleef extends Spleef {
         this.timeBetweenMelt = pl.getConfig().getInt("gameMode.decaying.betweenMelt");
     }
 
-    private int timeBeforeMelt = 0;
-    private int timeBetweenMelt = 1;
+    private final int timeBetweenMelt;
+    private int timeBeforeMelt;
     private boolean melt = false;
+
     @Override
     public void runScheduler() {
         this.runNormalScheduler();
-        if(getGame().WAIT){
-            getScoreboardSign().getObjective().setDisplayName(getNAME() + " §6" + getStartTimer()+ " - "+timeBeforeMelt);
+        if (getGame().WAIT) {
+            getScoreboardSign().getObjective().setDisplayName(getNAME() + " §6" + getStartTimer() + " - " + timeBeforeMelt);
             timeBeforeMelt = getMain().getConfig().getInt("gameMode.decaying.beforeMelt");
             melt = false;
         }
-        if(getGame().WAIT){
+        if (getGame().WAIT) {
             return;
         }
         if(melt){

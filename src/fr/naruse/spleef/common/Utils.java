@@ -10,6 +10,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Objects;
 
 public class Utils {
 
@@ -87,7 +88,7 @@ public class Utils {
 
     public static long folderSize(File directory) {
         long length = 0;
-        for (File file : directory.listFiles()) {
+        for (File file : Objects.requireNonNull(directory.listFiles())) {
             if (file.isFile())
                 length += file.length();
             else
@@ -136,7 +137,7 @@ public class Utils {
             } finally {
                 if(is != null){
                     is.close();
-                    os.close();
+                    Objects.requireNonNull(os).close();
                 }
             }
             return dest;

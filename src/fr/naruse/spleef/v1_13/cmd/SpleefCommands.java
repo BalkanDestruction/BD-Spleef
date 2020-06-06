@@ -212,9 +212,6 @@ public class SpleefCommands implements CommandExecutor, TabExecutor {
                 }
                 if(args.length > 2){
                     gameMode = SpleefGameMode.valueOf(args[2].toUpperCase());
-                    if(gameMode == null){
-                        return sendMessage(sender,"§c"+Message.SPLEEF_GAME_MODE_NOT_FOUND.getEnglishMessage());
-                    }
                 }
                 pl.getConfig().set("spleef."+place+".name", args[1]);
                 pl.getConfig().set("spleef."+place+".isOpen", true);
@@ -444,9 +441,6 @@ public class SpleefCommands implements CommandExecutor, TabExecutor {
                 if(args[1].equalsIgnoreCase("gameMode")){
                     String name = args[3].toUpperCase();
                     SpleefGameMode gameMode = SpleefGameMode.valueOf(name);
-                    if(gameMode == null){
-                        return sendMessage(sender, "§c"+Message.SPLEEF_GAME_MODE_NOT_FOUND.getMessage());
-                    }
                     pl.getConfig().set("spleef."+place+".gameMode", gameMode.name());
                     pl.saveConfig();
                     return sendMessage(sender, Message.SPLEEF.getMessage()+"§a "+Message.SETTING_SAVED.getMessage());

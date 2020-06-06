@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class Wager implements Listener {
@@ -132,7 +133,7 @@ public class Wager implements Listener {
             if (item.getType() == Material.WHITE_WOOL) {
                 if (inventoryFinal == null) {
                     e.setCancelled(true);
-                    if (item.getData().getData() == 14) {
+                    if (Objects.requireNonNull(item.getData()).getData() == 14) {
                         player1.closeInventory();
                         player2.closeInventory();
                         player1.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.WAGER_DECLINED.getMessage());
@@ -141,8 +142,8 @@ public class Wager implements Listener {
                     } else if (item.getData().getData() == 5) {
                         if (p == player1) {
                             player1Ready = true;
-                            p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.AWAITING_VALIDATION.getMessage());
-                            if(player2Ready){
+                            p.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.AWAITING_VALIDATION.getMessage());
+                            if (player2Ready) {
                                 p.closeInventory();
                                 player2.closeInventory();
                                 generateFinalInv();
@@ -163,25 +164,25 @@ public class Wager implements Listener {
                     }
                 }else if(e.getSlot() > 9*5){
                     e.setCancelled(true);
-                    if(item.getData().getData() == 14){
+                    if (Objects.requireNonNull(item.getData()).getData() == 14) {
                         player1.closeInventory();
                         player2.closeInventory();
-                        player1.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_DECLINED.getMessage());
-                        player2.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_DECLINED.getMessage());
+                        player1.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.WAGER_DECLINED.getMessage());
+                        player2.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.WAGER_DECLINED.getMessage());
                         decline();
-                    }else if(item.getData().getData() == 5){
-                        if(p == player1){
+                    } else if (item.getData().getData() == 5) {
+                        if (p == player1) {
                             player1FinalReady = true;
-                            p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.AWAITING_VALIDATION.getMessage());
+                            p.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.AWAITING_VALIDATION.getMessage());
                             p.closeInventory();
-                            if(player2FinalReady){
+                            if(player2FinalReady) {
                                 p.closeInventory();
                                 player2.closeInventory();
-                                inventoryFinal.remove(inventoryFinal.getItem(9*6-3));
-                                inventoryFinal.remove(inventoryFinal.getItem(9*6-5));
+                                inventoryFinal.remove(Objects.requireNonNull(inventoryFinal.getItem(9 * 6 - 3)));
+                                inventoryFinal.remove(Objects.requireNonNull(inventoryFinal.getItem(9 * 6 - 5)));
                                 wagerActive = true;
-                                player1.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_ACTIVATED.getMessage());
-                                player2.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_ACTIVATED.getMessage());
+                                player1.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.WAGER_ACTIVATED.getMessage());
+                                player2.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.WAGER_ACTIVATED.getMessage());
                             }
                         }else{
                             player2FinalReady = true;

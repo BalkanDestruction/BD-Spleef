@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class Spleefs {
     private final SpleefPluginV1_13 pl;
@@ -37,34 +38,34 @@ public class Spleefs {
 
                                 if(!new SpleefAPIEventInvoker(new SpleefLoadingArenasEvent.Pre(pl, name)).isCancelled()){
 
-                                    try{
-                                        World wLoc = Bukkit.getWorld(pl.getConfig().getString("spleef."+i+".spleef.world"));
-                                        World wSpawn = Bukkit.getWorld(pl.getConfig().getString("spleef."+i+".spawn.world"));
-                                        if(wLoc == null || wSpawn == null){
-                                            Bukkit.getConsoleSender().sendMessage(Message.SPLEEF.getMessage()+" §cA world is not found.");
+                                    try {
+                                        World wLoc = Bukkit.getWorld(Objects.requireNonNull(pl.getConfig().getString("spleef." + i + ".spleef.world")));
+                                        World wSpawn = Bukkit.getWorld(Objects.requireNonNull(pl.getConfig().getString("spleef." + i + ".spawn.world")));
+                                        if (wLoc == null || wSpawn == null) {
+                                            Bukkit.getConsoleSender().sendMessage(Message.SPLEEF.getMessage() + " §cA world is not found.");
                                             return;
-                                        }else{
-                                            Location spleefLoc = new Location(wLoc, pl.getConfig().getDouble("spleef."+i+".spleef.x"),
-                                                    pl.getConfig().getDouble("spleef."+i+".spleef.y"), pl.getConfig().getDouble("spleef."+i+".spleef.z"),
-                                                    pl.getConfig().getInt("spleef."+i+".spleef.yaw"), pl.getConfig().getInt("spleef."+i+".spleef.pitch"));
-                                            Location spleefSpawn = new Location(wSpawn, pl.getConfig().getDouble("spleef."+i+".spawn.x"),
-                                                    pl.getConfig().getDouble("spleef."+i+".spawn.y"), pl.getConfig().getDouble("spleef."+i+".spawn.z"),
-                                                    pl.getConfig().getInt("spleef."+i+".spawn.yaw"), pl.getConfig().getInt("spleef."+i+".spawn.pitch"));
+                                        } else {
+                                            Location spleefLoc = new Location(wLoc, pl.getConfig().getDouble("spleef." + i + ".spleef.x"),
+                                                    pl.getConfig().getDouble("spleef." + i + ".spleef.y"), pl.getConfig().getDouble("spleef." + i + ".spleef.z"),
+                                                    pl.getConfig().getInt("spleef." + i + ".spleef.yaw"), pl.getConfig().getInt("spleef." + i + ".spleef.pitch"));
+                                            Location spleefSpawn = new Location(wSpawn, pl.getConfig().getDouble("spleef." + i + ".spawn.x"),
+                                                    pl.getConfig().getDouble("spleef." + i + ".spawn.y"), pl.getConfig().getDouble("spleef." + i + ".spawn.z"),
+                                                    pl.getConfig().getInt("spleef." + i + ".spawn.yaw"), pl.getConfig().getInt("spleef." + i + ".spawn.pitch"));
                                             Location spleefLobby = null;
                                             if(pl.getConfig().getString("spleef."+i+".lobby") != null){
-                                                World wLob = Bukkit.getWorld(pl.getConfig().getString("spleef."+i+".lobby.world"));
+                                                World wLob = Bukkit.getWorld(Objects.requireNonNull(pl.getConfig().getString("spleef." + i + ".lobby.world")));
                                                 spleefLobby = new Location(wLob, pl.getConfig().getDouble("spleef."+i+".lobby.x"),
                                                         pl.getConfig().getDouble("spleef."+i+".lobby.y"), pl.getConfig().getDouble("spleef."+i+".lobby.z"),
                                                         pl.getConfig().getInt("spleef."+i+".lobby.yaw"), pl.getConfig().getInt("spleef."+i+".lobby.pitch"));
                                             }
                                             Location a = null, b = null;
                                             if(pl.getConfig().getString("spleef."+i+".region.a.x") != null && pl.getConfig().getString("spleef."+i+".region.b.x") != null){
-                                                a = new Location(Bukkit.getWorld(pl.getConfig().getString("spleef."+i+".region.a.world")),
-                                                        pl.getConfig().getDouble("spleef."+i+".region.a.x"), pl.getConfig().getDouble("spleef."+i+".region.a.y"),
-                                                        pl.getConfig().getDouble("spleef."+i+".region.a.z"));
-                                                b = new Location(Bukkit.getWorld(pl.getConfig().getString("spleef."+i+".region.b.world")),
-                                                        pl.getConfig().getDouble("spleef."+i+".region.b.x"), pl.getConfig().getDouble("spleef."+i+".region.b.y"),
-                                                        pl.getConfig().getDouble("spleef."+i+".region.b.z"));
+                                                a = new Location(Bukkit.getWorld(Objects.requireNonNull(pl.getConfig().getString("spleef." + i + ".region.a.world"))),
+                                                        pl.getConfig().getDouble("spleef." + i + ".region.a.x"), pl.getConfig().getDouble("spleef." + i + ".region.a.y"),
+                                                        pl.getConfig().getDouble("spleef." + i + ".region.a.z"));
+                                                b = new Location(Bukkit.getWorld(Objects.requireNonNull(pl.getConfig().getString("spleef." + i + ".region.b.world"))),
+                                                        pl.getConfig().getDouble("spleef." + i + ".region.b.x"), pl.getConfig().getDouble("spleef." + i + ".region.b.y"),
+                                                        pl.getConfig().getDouble("spleef." + i + ".region.b.z"));
                                             }
                                             int max = pl.getConfig().getInt("spleef."+i+".max");
                                             int min = pl.getConfig().getInt("spleef."+i+".min");
@@ -74,9 +75,6 @@ public class Spleefs {
                                                 pl.saveConfig();
                                             }
                                             SpleefGameMode gameMode = SpleefGameMode.valueOf(pl.getConfig().getString("spleef."+i+".gameMode"));
-                                            if(gameMode == null){
-                                                gameMode = SpleefGameMode.NORMAL;
-                                            }
                                             Spleef spleef = null;
                                             switch (gameMode){
                                                 case NORMAL:{
@@ -100,8 +98,8 @@ public class Spleefs {
                                                     break;
                                                 }
                                                 case MELTING:{
-                                                    if(a == null || b == null){
-                                                        Bukkit.getConsoleSender().sendMessage(Message.SPLEEF.getMessage()+" §cMelting spleef need a region. §7(Spleef name: "+name+")");
+                                                    if (a == null) {
+                                                        Bukkit.getConsoleSender().sendMessage(Message.SPLEEF.getMessage() + " §cMelting spleef need a region. §7(Spleef name: " + name + ")");
                                                         return;
                                                     }
                                                     spleef = new MeltingSpleef(pl, name, spleefLoc, spleefSpawn, spleefLobby, min, max, isOpen).buildRegion(a, b);

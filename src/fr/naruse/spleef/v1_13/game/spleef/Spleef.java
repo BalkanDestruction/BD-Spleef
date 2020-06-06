@@ -33,6 +33,7 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public abstract class Spleef extends BukkitRunnable implements Listener {
@@ -209,13 +210,13 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         } else if (getGame().GAME) {
             if (getPlayerInGame().size() == 1) {
                 Player winner = getPlayerInGame().get(0);
-                if(pl.getConfig().getBoolean("allow.broadcast")){
+                if (pl.getConfig().getBoolean("allow.broadcast")) {
                     Bukkit.broadcastMessage(getNAME() + " §6" + winner.getName() + " §7" + Message.WINS_THE_GAME.getMessage());
                 }
-                if(!pl.getConfig().getString("rewards.command").equalsIgnoreCase("null")) {
+                if (!Objects.requireNonNull(pl.getConfig().getString("rewards.command")).equalsIgnoreCase("null")) {
                     Bukkit.getScheduler().scheduleSyncDelayedTask(pl.getSpleefPlugin(), () -> {
                         if (winner != null && winner.isOnline())
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), pl.getConfig().getString("rewards.command").replace("{player}", winner.getName()));
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Objects.requireNonNull(pl.getConfig().getString("rewards.command")).replace("{player}", winner.getName()));
                     }, 20);
                 }
                 if (getMain().otherPluginSupport.getVaultPlugin().getEconomy() != null) {
@@ -250,22 +251,22 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         restingTime.put(p, 0);
     }
 
-    public void runNormalStart(){
-        if(new SpleefAPIEventInvoker(new SpleefStartsEvent.Pre(pl, this)).isCancelled()){
+    public void runNormalStart() {
+        if (new SpleefAPIEventInvoker(new SpleefStartsEvent.Pre(pl, this)).isCancelled()) {
             return;
         }
-        if(!pl.getConfig().getString("commands.start").equalsIgnoreCase("null")){
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), pl.getConfig().getString("commands.start").substring(1));
+        if (!Objects.requireNonNull(pl.getConfig().getString("commands.start")).equalsIgnoreCase("null")) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Objects.requireNonNull(pl.getConfig().getString("commands.start")).substring(1));
         }
         timeInSecond = 0;
-        sendMessage(NAME+" §a"+ Message.GAME_START.getMessage());
+        sendMessage(NAME + " §a" + Message.GAME_START.getMessage());
         game.WAIT = false;
         game.GAME = true;
-        for(Player p : playerInGame){
+        for (Player p : playerInGame) {
             p.teleport(spleefLoc);
-            p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20*5, 1, false, false));
-            if(new Random().nextBoolean()){
-                if(new Random().nextBoolean()){
+            p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20 * 5, 1, false, false));
+            if (new Random().nextBoolean()) {
+                if (new Random().nextBoolean()) {
                     p.setVelocity(new Vector(-0.5F, 0.5F, 0.5F));
                 }else{
                     p.setVelocity(new Vector(-0.5F, 0.5F, -0.5F));
@@ -313,14 +314,14 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
 
     private boolean sentFirstCommand = false;
     public void runNormalRestart(boolean notOnDisable){
-        if(new SpleefAPIEventInvoker(new SpleefRestartsEvent.Pre(pl, this)).isCancelled()){
+        if (new SpleefAPIEventInvoker(new SpleefRestartsEvent.Pre(pl, this)).isCancelled()) {
             return;
         }
-        if(!pl.getConfig().getString("commands.end").equalsIgnoreCase("null")){
-            if(!sentFirstCommand){
+        if (!Objects.requireNonNull(pl.getConfig().getString("commands.end")).equalsIgnoreCase("null")) {
+            if (!sentFirstCommand) {
                 sentFirstCommand = true;
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), pl.getConfig().getString("commands.end").substring(1));
-            }else{
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Objects.requireNonNull(pl.getConfig().getString("commands.end")).substring(1));
+            } else {
                 sentFirstCommand = false;
             }
         }
@@ -548,9 +549,6 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
     @EventHandler
     public void breakBlock(BlockBreakEvent e){
         Player p = e.getPlayer();
-        if(e.getBlock() == null){
-            return;
-        }
         if(getPlayerInGame().contains(p) && gameMode == SpleefGameMode.SPLEGG){
             e.setCancelled(true);
             return;
