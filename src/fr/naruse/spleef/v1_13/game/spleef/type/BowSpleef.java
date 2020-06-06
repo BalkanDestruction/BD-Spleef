@@ -106,17 +106,17 @@ public class BowSpleef extends Spleef implements Listener {
 
     @Override
     public void updateSigns(Sign sign) {
-        if(!isOpen()){
-            sign.setLine(0, "§c§l[§5"+getName()+"§c§l]");
+        if (isOpen()) {
+            sign.setLine(0, "§c§l[§5" + getName() + "§c§l]");
             sign.setLine(1, "");
-            sign.setLine(2, Message.SignColorTag.CLOSE_LINE2.getColorTag()+ Message.SPLEEF_CLOSED.getMessage());
+            sign.setLine(2, Message.SignColorTag.CLOSE_LINE2.getColorTag() + Message.SPLEEF_CLOSED.getMessage());
             sign.setLine(3, "");
             sign.update();
-        }else{
-            if(getGame().WAIT){
-                sign.setLine(0, "§c§l[§5"+getName()+"§c§l]");
-                sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_2.getColorTag()+getPlayerInGame().size()+"/"+getMax());
-                if(getPlayerInGame().size() >= getMin()){
+        } else {
+            if (getGame().WAIT) {
+                sign.setLine(0, "§c§l[§5" + getName() + "§c§l]");
+                sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_2.getColorTag() + getPlayerInGame().size() + "/" + getMax());
+                if (getPlayerInGame().size() >= getMin()) {
                     sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_0.getColorTag()+ Message.READY.getMessage());
                 }else{
                     sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_1.getColorTag()+(getMin()-getPlayerInGame().size())+" "+ Message.MISSING.getMessage());

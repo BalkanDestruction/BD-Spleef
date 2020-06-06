@@ -491,7 +491,7 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
     }
 
     public boolean isOpen() {
-        return isOpen;
+        return !isOpen;
     }
 
     public void runNormalUpdateScoreboards() {
@@ -714,8 +714,7 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         double x = Math.sin(pitch) * Math.cos(yaw);
         double y = Math.sin(pitch) * Math.sin(yaw);
         double z = Math.cos(pitch);
-        Vector vector = new Vector(x, z, y);
-        return vector;
+        return new Vector(x, z, y);
     }
 
     public void setSpectator(Player p){

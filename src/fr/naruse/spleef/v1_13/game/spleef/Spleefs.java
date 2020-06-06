@@ -144,14 +144,14 @@ public class Spleefs {
     }
 
     public void addPlayer(Player p, Spleef spleef){
-        if(!spleef.isOpen()){
-            p.sendMessage("§c§l[§5"+spleef.getName()+"§c§l] §c"+ Message.SPLEEF_CLOSED.getMessage());
+        if (spleef.isOpen()) {
+            p.sendMessage("§c§l[§5" + spleef.getName() + "§c§l] §c" + Message.SPLEEF_CLOSED.getMessage());
             return;
         }
-        if(!spleefOfPlayer.containsKey(p)){
-            if(pl.wagers.getWagerOfPlayer().containsKey(p)){
-                if(!pl.wagers.getWagerOfPlayer().get(p).isWagerActive()){
-                    p.sendMessage("§c"+ Message.CANT_JOIN_WAGER_NOT_ACTIVE.getMessage());
+        if (!spleefOfPlayer.containsKey(p)) {
+            if (pl.wagers.getWagerOfPlayer().containsKey(p)) {
+                if (!pl.wagers.getWagerOfPlayer().get(p).isWagerActive()) {
+                    p.sendMessage("§c" + Message.CANT_JOIN_WAGER_NOT_ACTIVE.getMessage());
                     return;
                 }
             }

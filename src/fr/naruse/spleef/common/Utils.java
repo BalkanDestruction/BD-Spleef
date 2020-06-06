@@ -74,8 +74,7 @@ public class Utils {
         try {
             URL url = new URL(host);
             URLConnection connection = url.openConnection();
-            int fileLength = connection.getContentLength();
-            return fileLength;
+            return connection.getContentLength();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
