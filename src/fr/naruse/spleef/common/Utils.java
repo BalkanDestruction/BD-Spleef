@@ -6,7 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.DecimalFormat;
@@ -75,8 +74,6 @@ public class Utils {
             URL url = new URL(host);
             URLConnection connection = url.openConnection();
             return connection.getContentLength();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
