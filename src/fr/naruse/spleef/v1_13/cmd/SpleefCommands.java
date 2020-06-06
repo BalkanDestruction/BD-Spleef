@@ -455,21 +455,21 @@ public class SpleefCommands implements CommandExecutor, TabExecutor {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    if(selection == null) {
+                    if (selection == null) {
                         return sendMessage(sender, "§cNo selection found.");
                     }
-                    Object min = selection.getMinimumPoint();
-                    Object max = selection.getMaximumPoint();
-                    Block block = p.getWorld().getBlockAt(((BlockVector3) min).getBlockX(), ((BlockVector3) min).getBlockY(), ((BlockVector3) min).getBlockZ());
-                    pl.getConfig().set("spleef."+place+".region.a.x", block.getX());
-                    pl.getConfig().set("spleef."+place+".region.a.y", block.getY());
-                    pl.getConfig().set("spleef."+place+".region.a.z", block.getZ());
-                    pl.getConfig().set("spleef."+place+".region.a.world", block.getWorld().getName());
-                    block = p.getWorld().getBlockAt(((BlockVector3) max).getBlockX(), ((BlockVector3) max).getBlockY(), ((BlockVector3) max).getBlockZ());
-                    pl.getConfig().set("spleef."+place+".region.b.x", block.getX());
-                    pl.getConfig().set("spleef."+place+".region.b.y", block.getY());
-                    pl.getConfig().set("spleef."+place+".region.b.z", block.getZ());
-                    pl.getConfig().set("spleef."+place+".region.b.world", block.getWorld().getName());
+                    BlockVector3 min = selection.getMinimumPoint();
+                    BlockVector3 max = selection.getMaximumPoint();
+                    Block block = p.getWorld().getBlockAt(min.getBlockX(), min.getBlockY(), min.getBlockZ());
+                    pl.getConfig().set("spleef." + place + ".region.a.x", block.getX());
+                    pl.getConfig().set("spleef." + place + ".region.a.y", block.getY());
+                    pl.getConfig().set("spleef." + place + ".region.a.z", block.getZ());
+                    pl.getConfig().set("spleef." + place + ".region.a.world", block.getWorld().getName());
+                    block = p.getWorld().getBlockAt(max.getBlockX(), max.getBlockY(), max.getBlockZ());
+                    pl.getConfig().set("spleef." + place + ".region.b.x", block.getX());
+                    pl.getConfig().set("spleef." + place + ".region.b.y", block.getY());
+                    pl.getConfig().set("spleef." + place + ".region.b.z", block.getZ());
+                    pl.getConfig().set("spleef." + place + ".region.b.world", block.getWorld().getName());
                     pl.saveConfig();
                     return sendMessage(sender, fr.naruse.spleef.v1_13.util.Message.SPLEEF.getMessage()+"§a "+ fr.naruse.spleef.v1_13.util.Message.REGION_SAVED.getMessage());
                 }

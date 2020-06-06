@@ -168,7 +168,6 @@ public class Spleefs {
                 if(spleef.addPlayer(p)){
                     spleefOfPlayer.put(p, spleef);
                     new SpleefAPIEventInvoker(new SpleefPlayerJoinArenaEvent.Post(pl, spleef, p));
-                    return;
                 }
             }
         }else{
