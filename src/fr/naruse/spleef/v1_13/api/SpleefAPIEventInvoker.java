@@ -17,13 +17,13 @@ public class SpleefAPIEventInvoker {
                 Annotation annotation = method.getAnnotation(SpleefEventHandler.class);
                 if(method.getGenericParameterTypes().length != 0){
                     java.lang.reflect.Type eventType = method.getGenericParameterTypes()[0];
-                    if (annotation instanceof SpleefEventHandler) {
+                    if (annotation != null) {
                         try {
-                            if(spleefEvent.getClass().getName().equals(eventType.getTypeName())){
+                            if (spleefEvent.getClass().getName().equals(eventType.getTypeName())) {
                                 method.invoke(spleefListener, spleefEvent);
                                 Annotation cancellable = spleefEvent.getClass().getAnnotation(SpleefCancellable.class);
-                                if(cancellable instanceof SpleefCancellable){
-                                    if(!isCancelled){
+                                if (cancellable != null) {
+                                    if (!isCancelled) {
                                         setCancelled((boolean) spleefEvent.getClass().getMethod("isCancelled").invoke(spleefEvent));
                                     }
                                 }

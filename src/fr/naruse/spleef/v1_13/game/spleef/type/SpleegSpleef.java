@@ -25,6 +25,7 @@ import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Random;
 
 public class SpleegSpleef extends Spleef implements Listener {
@@ -173,7 +174,7 @@ public class SpleegSpleef extends Spleef implements Listener {
            return;
         }
         if(e.getHitEntity() != null){
-            e.getHitEntity().setVelocity(genVector(((Player) e.getEntity().getShooter()).getLocation(), e.getHitEntity().getLocation()).multiply(0.5));
+            e.getHitEntity().setVelocity(genVector(((Player) Objects.requireNonNull(e.getEntity().getShooter())).getLocation(), e.getHitEntity().getLocation()).multiply(0.5));
         }
         if(e.getHitBlock() == null) {
             return;
@@ -185,8 +186,8 @@ public class SpleegSpleef extends Spleef implements Listener {
             e.getHitBlock().setType(Material.AIR);
             for(Entity entity : e.getEntity().getNearbyEntities(2, 2, 2)){
                 if(entity instanceof Chicken){
-                    if(entity.getLocation().getWorld().getName() == getSpleefSpawn().getWorld().getName()){
-                        if(getSpleefSpawn().distance(e.getEntity().getLocation()) <= 100 && getGame().GAME){
+                    if (entity.getLocation().getWorld().getName().equals(getSpleefSpawn().getWorld().getName())) {
+                        if (getSpleefSpawn().distance(e.getEntity().getLocation()) <= 100 && getGame().GAME) {
                             entity.remove();
                         }
                     }
@@ -263,7 +264,7 @@ public class SpleegSpleef extends Spleef implements Listener {
                 break;
             }
         }
-        if(getAuthorizedMaterial().contains(hitBlock.getType())){
+        if (getAuthorizedMaterial().contains(Objects.requireNonNull(hitBlock).getType())) {
             return;
         }
         materialHashMap.put(hitBlock, hitBlock.getType());
@@ -274,8 +275,8 @@ public class SpleegSpleef extends Spleef implements Listener {
     @EventHandler
     public void entitySpawnEvent(EntitySpawnEvent e){
         if(e.getEntity() instanceof Chicken){
-            if(e.getEntity().getLocation().getWorld().getName() == getSpleefSpawn().getWorld().getName()){
-                if(getSpleefSpawn().distance(e.getEntity().getLocation()) <= 100 && getGame().GAME){
+            if (e.getEntity().getLocation().getWorld().getName().equals(getSpleefSpawn().getWorld().getName())) {
+                if (getSpleefSpawn().distance(e.getEntity().getLocation()) <= 100 && getGame().GAME) {
                     e.setCancelled(true);
                     e.getEntity().remove();
                 }

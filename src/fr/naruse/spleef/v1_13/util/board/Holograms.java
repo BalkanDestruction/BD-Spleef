@@ -16,6 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class Holograms extends BukkitRunnable {
     private final SpleefPluginV1_13 pl;
@@ -91,11 +92,8 @@ public class Holograms extends BukkitRunnable {
         if (!pl.getConfig().getBoolean("holograms.enable")) {
             return;
         }
-        Location location = new Location(Bukkit.getWorld(pl.getConfig().getString("holograms.location.world")), pl.getConfig().getDouble("holograms.location.x"),
+        Location location = new Location(Bukkit.getWorld(Objects.requireNonNull(pl.getConfig().getString("holograms.location.world"))), pl.getConfig().getDouble("holograms.location.x"),
                 pl.getConfig().getDouble("holograms.location.y"), pl.getConfig().getDouble("holograms.location.z"));
-        if (location == null) {
-            return;
-        }
         if (!pl.otherPluginSupport.getHolographicDisplaysPlugin().isPresent()) {
             Bukkit.getConsoleSender().sendMessage(Message.SPLEEF.getMessage() + " §cWhere is HolographicDisplays ?");
             return;

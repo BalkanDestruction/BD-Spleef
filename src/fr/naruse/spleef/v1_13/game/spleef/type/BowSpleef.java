@@ -27,6 +27,7 @@ import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Random;
 
 public class BowSpleef extends Spleef implements Listener {
@@ -160,7 +161,7 @@ public class BowSpleef extends Spleef implements Listener {
         }
         Projectile projectile = e.getEntity();
         if (!(projectile instanceof Arrow)) {
-            e.getHitEntity().setVelocity(genVector(((Player) e.getEntity().getShooter()).getLocation(), e.getHitEntity().getLocation()).multiply(0.5));
+            Objects.requireNonNull(e.getHitEntity()).setVelocity(genVector(((Player) Objects.requireNonNull(e.getEntity().getShooter())).getLocation(), e.getHitEntity().getLocation()).multiply(0.5));
             return;
         }
         if (e.getHitBlock() == null) {
@@ -255,7 +256,7 @@ public class BowSpleef extends Spleef implements Listener {
                 break;
             }
         }
-        if(hitBlock.getType() == Material.SNOW_BLOCK){
+        if (Objects.requireNonNull(hitBlock).getType() == Material.SNOW_BLOCK) {
             return;
         }
         materialHashMap.put(hitBlock, hitBlock.getType());

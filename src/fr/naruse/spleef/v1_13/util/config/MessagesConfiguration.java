@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 public class MessagesConfiguration {
     private final SpleefPluginV1_13 pl;
@@ -56,16 +57,16 @@ public class MessagesConfiguration {
     }
 
     private String langFileName(){
-        if(pl.getConfig().getString("lang").equalsIgnoreCase("spanish")){
+        if (Objects.requireNonNull(pl.getConfig().getString("lang")).equalsIgnoreCase("spanish")) {
             return "languages/spanish.yml";
         }
-        if(pl.getConfig().getString("lang").equalsIgnoreCase("dutch")){
+        if (Objects.requireNonNull(pl.getConfig().getString("lang")).equalsIgnoreCase("dutch")) {
             return "languages/dutch.yml";
         }
-        if(pl.getConfig().getString("lang").equalsIgnoreCase("french")){
+        if (Objects.requireNonNull(pl.getConfig().getString("lang")).equalsIgnoreCase("french")) {
             return "languages/french.yml";
         }
-        if(pl.getConfig().getString("lang").equalsIgnoreCase("polish")){
+        if (Objects.requireNonNull(pl.getConfig().getString("lang")).equalsIgnoreCase("polish")) {
             return "languages/polish.yml";
         }
         return "languages/english.yml";
