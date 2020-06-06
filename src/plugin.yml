@@ -1,9 +1,9 @@
 name: BD-Spleef
-version: 1.0.2
+version: 1.0.3
 api-version: 1.15
 authors: [Naruse, 12emin34]
 main: fr.naruse.spleef.main.SpleefPlugin
-softdepend: [Vault, PlaceholderAPI, HolographicDisplays]
+softdepend: [Vault, PlaceholderAPI, HolographicDisplays, WorldEdit]
 commands:
   spleef:
     description: All commands for Spleef

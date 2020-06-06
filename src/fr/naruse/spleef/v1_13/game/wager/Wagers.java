@@ -38,39 +38,36 @@ public class Wagers {
         return true;
     }
 
-    public boolean deleteWager(Wager wager){
-        if(!wagers.contains(wager)){
-            return false;
+    public void deleteWager(Wager wager) {
+        if (!wagers.contains(wager)) {
+            return;
         }
-        if(new SpleefAPIEventInvoker(new SpleefWagerDeleteEvent.Pre(pl, wager)).isCancelled()){
-            return false;
+        if (new SpleefAPIEventInvoker(new SpleefWagerDeleteEvent.Pre(pl, wager)).isCancelled()) {
+            return;
         }
         wager.stop();
         wagers.remove(wager);
         new SpleefAPIEventInvoker(new SpleefWagerDeleteEvent.Post(pl, wager));
-        return true;
     }
 
-    public boolean loseWager(Player p){
-        if(!wagerOfPlayer.containsKey(p)){
-            return false;
+    public void loseWager(Player p) {
+        if (!wagerOfPlayer.containsKey(p)) {
+            return;
         }
         Wager wager = wagerOfPlayer.get(p);
-        if(new SpleefAPIEventInvoker(new SpleefWagerLoseEvent.Pre(pl, p, wager)).isCancelled()){
-            return false;
+        if (new SpleefAPIEventInvoker(new SpleefWagerLoseEvent.Pre(pl, p, wager)).isCancelled()) {
+            return;
         }
-        if(wager.getLost() == null){
+        if (wager.getLost() == null) {
             wager.setLost(p);
-        }else{
+        } else {
             wager.win(p);
         }
         new SpleefAPIEventInvoker(new SpleefWagerLoseEvent.Pre(pl, p, wager));
-        return true;
     }
 
     public void disable(){
-        for(int i = 0; i < wagers.size(); i++){
-            Wager wager = wagers.get(i);
+        for (Wager wager : wagers) {
             wager.decline();
         }
     }

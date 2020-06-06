@@ -6,7 +6,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 
 public class MessagesConfiguration {
@@ -31,9 +34,6 @@ public class MessagesConfiguration {
                 YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
                 messages.setDefaults(defConfig);
             }
-        } catch (UnsupportedEncodingException e) {
-            Bukkit.getConsoleSender().sendMessage("§3[Spleef] §cThere is an error with the configuration Messages.yml. You should perform a reload.");
-            e.printStackTrace();
         } catch (IOException e) {
             Bukkit.getConsoleSender().sendMessage("§3[Spleef] §cThere is an error with the configuration Messages.yml. You should perform a reload.");
             e.printStackTrace();
@@ -44,12 +44,7 @@ public class MessagesConfiguration {
             e.printStackTrace();
         }
         saveConfig();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(pl.getSpleefPlugin(), new Runnable() {
-            @Override
-            public void run() {
-                setDefault();
-            }
-        },20);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(pl.getSpleefPlugin(), () -> setDefault(), 20);
     }
 
     public void saveConfig(){

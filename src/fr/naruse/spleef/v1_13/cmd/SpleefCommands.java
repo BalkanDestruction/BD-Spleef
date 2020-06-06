@@ -184,7 +184,7 @@ public class SpleefCommands implements CommandExecutor, TabExecutor {
                 int page = 1;
                 if(args.length > 1){
                     try{
-                        page = Integer.valueOf(args[1]);
+                        page = Integer.parseInt(args[1]);
                     }catch (Exception e){
                         return sendMessage(sender, "§c"+Message.NEED_A_NUMBER.getMessage());
                     }
@@ -330,7 +330,7 @@ public class SpleefCommands implements CommandExecutor, TabExecutor {
                     }
                     double d;
                     try{
-                        d = Double.valueOf(args[3]);
+                        d = Double.parseDouble(args[3]);
                     }catch (Exception e){
                         return sendMessage(sender, "§c"+Message.NEED_A_NUMBER.getMessage());
                     }
@@ -400,7 +400,7 @@ public class SpleefCommands implements CommandExecutor, TabExecutor {
                     }
                     int time;
                     try{
-                        time = Integer.valueOf(args[3]);
+                        time = Integer.parseInt(args[3]);
                     }catch (Exception e){
                         return sendMessage(sender, "§c"+Message.NEED_A_NUMBER.getMessage());
                     }
@@ -485,7 +485,7 @@ public class SpleefCommands implements CommandExecutor, TabExecutor {
                     }
                     int min;
                     try{
-                        min = Integer.valueOf(args[3]);
+                        min = Integer.parseInt(args[3]);
                         if(min <= 1){
                             return sendMessage(sender, "§c"+Message.GREATER_THAN_1.getMessage());
                         }
@@ -502,7 +502,7 @@ public class SpleefCommands implements CommandExecutor, TabExecutor {
                     }
                     int max;
                     try{
-                        max = Integer.valueOf(args[3]);
+                        max = Integer.parseInt(args[3]);
                         if(max <= 1){
                             return sendMessage(sender, "§c"+Message.GREATER_THAN_1.getMessage());
                         }

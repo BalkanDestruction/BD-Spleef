@@ -11,30 +11,30 @@ import java.lang.reflect.Method;
 public class Reflections {
 
     public static void setNoGravity(Entity e, boolean isNoGravity) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
-        Class<?> craftEntityClass = getCBClass("entity.CraftEntity");
+        Class<?> craftEntityClass = getCBClass();
         Method getHandle = craftEntityClass.getMethod("getHandle");
         Object craftEntity = getHandle.invoke(e);
-        Method getNavigation = getNMSClass("EntityArmorStand").getMethod("setNoGravity", boolean.class);
+        Method getNavigation = getNMSClass().getMethod("setNoGravity", boolean.class);
         getNavigation.invoke(craftEntity, isNoGravity);
     }
 
     public static void setInvisible(Entity e, boolean isInvislbe) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException {
-        Class<?> craftEntityClass = getCBClass("entity.CraftEntity");
+        Class<?> craftEntityClass = getCBClass();
         Method getHandle = craftEntityClass.getMethod("getHandle");
         Object craftEntity = getHandle.invoke(e);
-        Method getNavigation = getNMSClass("EntityArmorStand").getMethod("setInvisible", boolean.class);
+        Method getNavigation = getNMSClass().getMethod("setInvisible", boolean.class);
         getNavigation.invoke(craftEntity, isInvislbe);
     }
 
-    private static Class<?> getNMSClass(String nmsClassString) throws ClassNotFoundException {
+    private static Class<?> getNMSClass() throws ClassNotFoundException {
         String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
-        String name = "net.minecraft.server." + version + nmsClassString;
+        String name = "net.minecraft.server." + version + "EntityArmorStand";
         return Class.forName(name);
     }
 
-    private static Class<?> getCBClass(String cbClassString) throws ClassNotFoundException {
+    private static Class<?> getCBClass() throws ClassNotFoundException {
         String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
-        String name = "org.bukkit.craftbukkit." + version +cbClassString;
+        String name = "org.bukkit.craftbukkit." + version + "entity.CraftEntity";
         return Class.forName(name);
     }
 
