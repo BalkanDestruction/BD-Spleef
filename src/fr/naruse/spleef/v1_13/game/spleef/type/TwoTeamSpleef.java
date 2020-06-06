@@ -95,12 +95,9 @@ public class TwoTeamSpleef extends Spleef implements TeamModeSpleef {
                             getMain().otherPluginSupport.getVaultPlugin().getEconomy().depositPlayer(getPlayerInGame().get(0), getMain().getConfig().getDouble("rewards.lose"));
                         }
                     }
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(getMain().getSpleefPlugin(), new Runnable() {
-                        @Override
-                        public void run() {
-                            p.setHealth(20);
-                            p.setFoodLevel(20);
-                        }
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(getMain().getSpleefPlugin(), () -> {
+                        p.setHealth(20);
+                        p.setFoodLevel(20);
                     }, 40);
                 }
             }

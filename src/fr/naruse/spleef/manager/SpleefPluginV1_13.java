@@ -45,23 +45,20 @@ public class SpleefPluginV1_13 extends AbstractSpleefPlugin {
         this.saveConfig();
         this.configurations = new Configurations(this);
         SpleefPlaceholder spleefPlaceholder = new SpleefPlaceholder();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(this.getSpleefPlugin(), new Runnable() {
-            @Override
-            public void run() {
-                Logs logs = new Logs();
-                if(new SpleefAPIEventInvoker(new SpleefEnablingEvent.Pre(INSTANCE)).isCancelled()){
-                    return;
-                }
-                holograms = new Holograms(INSTANCE);
-                spleefs = new Spleefs(INSTANCE);
-                wagers = new Wagers(INSTANCE);
-                duels = new Duels(INSTANCE);
-                getCommand("spleef").setExecutor(new SpleefCommands(INSTANCE));
-                Bukkit.getPluginManager().registerEvents(new Listeners(INSTANCE), INSTANCE.getSpleefPlugin());
-                Bukkit.getPluginManager().registerEvents(duels, INSTANCE.getSpleefPlugin());
-                new SpleefAPIEventInvoker(new SpleefEnablingEvent.Post(INSTANCE));
-                logs.stop();
+        Bukkit.getScheduler().scheduleSyncDelayedTask(this.getSpleefPlugin(), () -> {
+            Logs logs = new Logs();
+            if (new SpleefAPIEventInvoker(new SpleefEnablingEvent.Pre(INSTANCE)).isCancelled()) {
+                return;
             }
+            holograms = new Holograms(INSTANCE);
+            spleefs = new Spleefs(INSTANCE);
+            wagers = new Wagers(INSTANCE);
+            duels = new Duels(INSTANCE);
+            getCommand("spleef").setExecutor(new SpleefCommands(INSTANCE));
+            Bukkit.getPluginManager().registerEvents(new Listeners(INSTANCE), INSTANCE.getSpleefPlugin());
+            Bukkit.getPluginManager().registerEvents(duels, INSTANCE.getSpleefPlugin());
+            new SpleefAPIEventInvoker(new SpleefEnablingEvent.Post(INSTANCE));
+            logs.stop();
         });
     }
 

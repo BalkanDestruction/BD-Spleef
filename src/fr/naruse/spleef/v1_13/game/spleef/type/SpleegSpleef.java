@@ -225,22 +225,19 @@ public class SpleegSpleef extends Spleef implements Listener {
             }
         }
         getScoreboardSign().getObjective().setDisplayName(getNAME());
-        Bukkit.getScheduler().scheduleSyncDelayedTask(getMain().getSpleefPlugin(), new Runnable() {
-            @Override
-            public void run() {
-                for (Player p : getPlayerInGame()) {
-                    ItemStack item;
-                    ItemMeta meta;
-                    if (!allowGoldShovel()) {
-                        Material material = Material.DIAMOND_SHOVEL;
-                        item = new ItemStack(material);
-                        meta = item.getItemMeta();
-                        meta.setUnbreakable(true);
-                        item.setItemMeta(meta);
-                        p.getInventory().addItem(item);
-                    }
-                    p.getInventory().addItem(new ItemStack(Material.EGG, 16 * 8));
+        Bukkit.getScheduler().scheduleSyncDelayedTask(getMain().getSpleefPlugin(), () -> {
+            for (Player p : getPlayerInGame()) {
+                ItemStack item;
+                ItemMeta meta;
+                if (!allowGoldShovel()) {
+                    Material material = Material.DIAMOND_SHOVEL;
+                    item = new ItemStack(material);
+                    meta = item.getItemMeta();
+                    meta.setUnbreakable(true);
+                    item.setItemMeta(meta);
+                    p.getInventory().addItem(item);
                 }
+                p.getInventory().addItem(new ItemStack(Material.EGG, 16 * 8));
             }
         }, 20 * 5);
         setTimeInSecond(0);

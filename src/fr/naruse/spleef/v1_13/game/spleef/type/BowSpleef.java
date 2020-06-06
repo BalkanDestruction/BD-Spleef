@@ -201,41 +201,38 @@ public class BowSpleef extends Spleef implements Listener {
                 }else{
                     p.setVelocity(new Vector(-0.5F, 0.5F, -0.5F));
                 }
-            }else{
-                if(new Random().nextBoolean()){
+            } else {
+                if (new Random().nextBoolean()) {
                     p.setVelocity(new Vector(-0.5F, 0.5F, -0.5F));
-                }else{
+                } else {
                     p.setVelocity(new Vector(0.5F, 0.5F, -0.5F));
                 }
             }
         }
         getScoreboardSign().getObjective().setDisplayName(getNAME());
-        Bukkit.getScheduler().scheduleSyncDelayedTask(getMain().getSpleefPlugin(), new Runnable() {
-            @Override
-            public void run() {
-                for(Player p : getPlayerInGame()){
-                    ItemStack item;
-                    ItemMeta meta;
-                    if(!allowGoldShovel()){
-                        Material material = Material.DIAMOND_SHOVEL;
-                        item = new ItemStack(material);
-                        meta = item.getItemMeta();
-                        meta.setUnbreakable(true);
-                        item.setItemMeta(meta);
-                        p.getInventory().addItem(item);
-                    }
-                    item = new ItemStack(Material.BOW);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(getMain().getSpleefPlugin(), () -> {
+            for (Player p : getPlayerInGame()) {
+                ItemStack item;
+                ItemMeta meta;
+                if (!allowGoldShovel()) {
+                    Material material = Material.DIAMOND_SHOVEL;
+                    item = new ItemStack(material);
                     meta = item.getItemMeta();
                     meta.setUnbreakable(true);
                     item.setItemMeta(meta);
                     p.getInventory().addItem(item);
-                    if(allowSnowballs()){
-                        p.getInventory().addItem(new ItemStack(Material.SNOWBALL, 64 * 4));
-                    }
-                    p.getInventory().addItem(new ItemStack(Material.ARROW, 64*8));
                 }
+                item = new ItemStack(Material.BOW);
+                meta = item.getItemMeta();
+                meta.setUnbreakable(true);
+                item.setItemMeta(meta);
+                p.getInventory().addItem(item);
+                if (allowSnowballs()) {
+                    p.getInventory().addItem(new ItemStack(Material.SNOWBALL, 64 * 4));
+                }
+                p.getInventory().addItem(new ItemStack(Material.ARROW, 64 * 8));
             }
-        },20*5);
+        }, 20 * 5);
     }
 
     @EventHandler

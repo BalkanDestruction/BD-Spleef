@@ -48,32 +48,29 @@ public class Wager implements Listener {
 
     private boolean isWinning = false;
     public void win(Player p){
-        if(isWinning){
+        if (isWinning) {
             return;
-        }else{
+        } else {
             isWinning = true;
         }
-        Bukkit.getScheduler().scheduleSyncDelayedTask(pl.getSpleefPlugin(), new Runnable() {
-            @Override
-            public void run() {
-                List<ItemStack> list = Lists.newArrayList();
-                for(int i = 10; i < 17; i++){
-                    if(inventory1.getItem(i) != null){
-                        list.add(inventory1.getItem(i));
-                    }
-                    if(inventory2.getItem(i) != null){
-                        list.add(inventory2.getItem(i));
-                    }
+        Bukkit.getScheduler().scheduleSyncDelayedTask(pl.getSpleefPlugin(), () -> {
+            List<ItemStack> list = Lists.newArrayList();
+            for (int i = 10; i < 17; i++) {
+                if (inventory1.getItem(i) != null) {
+                    list.add(inventory1.getItem(i));
                 }
-                for(ItemStack item : list){
-                    p.getInventory().addItem(item);
+                if (inventory2.getItem(i) != null) {
+                    list.add(inventory2.getItem(i));
                 }
-                player1.sendMessage(Message.SPLEEF.getMessage()+" §6"+p.getName()+" §a"+ Message.WON_THE_WAGER.getMessage());
-                player2.sendMessage(Message.SPLEEF.getMessage()+" §6"+p.getName()+" §a"+ Message.WON_THE_WAGER.getMessage());
-                rewardsGot = true;
-                decline();
             }
-        },20);
+            for (ItemStack item : list) {
+                p.getInventory().addItem(item);
+            }
+            player1.sendMessage(Message.SPLEEF.getMessage() + " §6" + p.getName() + " §a" + Message.WON_THE_WAGER.getMessage());
+            player2.sendMessage(Message.SPLEEF.getMessage() + " §6" + p.getName() + " §a" + Message.WON_THE_WAGER.getMessage());
+            rewardsGot = true;
+            decline();
+        }, 20);
     }
 
     public void decline(){

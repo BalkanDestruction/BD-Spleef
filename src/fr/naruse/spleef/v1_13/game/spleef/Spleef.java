@@ -178,13 +178,10 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
                             getMain().otherPluginSupport.getVaultPlugin().getEconomy().depositPlayer(getPlayerInGame().get(0), getMain().getConfig().getDouble("rewards.lose"));
                         }
                     }
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(getMain().getSpleefPlugin(), new Runnable() {
-                        @Override
-                        public void run() {
-                            p.setHealth(20);
-                            p.setFoodLevel(20);
-                            p.setFireTicks(0);
-                        }
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(getMain().getSpleefPlugin(), () -> {
+                        p.setHealth(20);
+                        p.setFoodLevel(20);
+                        p.setFireTicks(0);
                     }, 40);
                 }
             }
@@ -215,13 +212,10 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
                 if(pl.getConfig().getBoolean("allow.broadcast")){
                     Bukkit.broadcastMessage(getNAME() + " §6" + winner.getName() + " §7" + Message.WINS_THE_GAME.getMessage());
                 }
-                if(!pl.getConfig().getString("rewards.command").equalsIgnoreCase("null")){
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(pl.getSpleefPlugin(), new Runnable() {
-                        @Override
-                        public void run() {
-                            if(winner != null && winner.isOnline())
-                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), pl.getConfig().getString("rewards.command").replace("{player}", winner.getName()));
-                        }
+                if(!pl.getConfig().getString("rewards.command").equalsIgnoreCase("null")) {
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(pl.getSpleefPlugin(), () -> {
+                        if (winner != null && winner.isOnline())
+                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), pl.getConfig().getString("rewards.command").replace("{player}", winner.getName()));
                     }, 20);
                 }
                 if (getMain().otherPluginSupport.getVaultPlugin().getEconomy() != null) {
@@ -284,8 +278,8 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
                 }
             }
         }
-        for(Player p : spectators){
-            if(pl.spleefs.getSpleefPlayerMap().containsKey(p)){
+        for (Player p : spectators) {
+            if (pl.spleefs.getSpleefPlayerMap().containsKey(p)) {
                 p.teleport(spleefLoc);
                 SpleefPlayer spleefPlayer = pl.spleefs.getSpleefPlayerMap().get(p);
                 spleefPlayer.setPlayerInventory();
@@ -294,28 +288,25 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
             }
         }
         scoreboardSign.getObjective().setDisplayName(NAME);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(pl.getSpleefPlugin(), new Runnable() {
-            @Override
-            public void run() {
-                if(new SpleefAPIEventInvoker(new SpleefGivingStuffEvent(pl, spleef, playerInGame)).isCancelled()){
-                    return;
-                }
-                for(Player p : playerInGame){
-                    Material material;
-                    if(allowGoldShovel()){
-                        material = Material.GOLDEN_SHOVEL;
-                    }else{
-                        material = Material.DIAMOND_SHOVEL;
-                    }
-                    ItemStack item = new ItemStack(material);
-                    ItemMeta meta = item.getItemMeta();
-                    meta.setUnbreakable(true);
-                    item.setItemMeta(meta);
-                    p.getInventory().addItem(item);
-                }
+        Bukkit.getScheduler().scheduleSyncDelayedTask(pl.getSpleefPlugin(), () -> {
+            if (new SpleefAPIEventInvoker(new SpleefGivingStuffEvent(pl, spleef, playerInGame)).isCancelled()) {
+                return;
             }
-        },20*5);
-        if(new SpleefAPIEventInvoker(new SpleefStartsEvent.Post(pl, this)).isCancelled()){
+            for (Player p : playerInGame) {
+                Material material;
+                if (allowGoldShovel()) {
+                    material = Material.GOLDEN_SHOVEL;
+                } else {
+                    material = Material.DIAMOND_SHOVEL;
+                }
+                ItemStack item = new ItemStack(material);
+                ItemMeta meta = item.getItemMeta();
+                meta.setUnbreakable(true);
+                item.setItemMeta(meta);
+                p.getInventory().addItem(item);
+            }
+        }, 20 * 5);
+        if (new SpleefAPIEventInvoker(new SpleefStartsEvent.Post(pl, this)).isCancelled()) {
             return;
         }
     }
@@ -340,31 +331,25 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         }
         for(Player p : list){
             pl.spleefs.removePlayer(p);
-            if(!notOnDisable){
-                Bukkit.getScheduler().scheduleSyncDelayedTask(pl.getSpleefPlugin(), new Runnable() {
-                    @Override
-                    public void run() {
-                        p.setHealth(20);
-                        p.setFoodLevel(20);
-                    }
-                },40);
-                Bukkit.getScheduler().scheduleSyncDelayedTask(getMain().getSpleefPlugin(), new Runnable() {
-                    @Override
-                    public void run() {
-                        if(getGame().GAME){
-                            getMain().wagers.loseWager(p);
-                        }else{
-                            if(getMain().wagers.hasWager(p)){
-                                Player player = getMain().wagers.getWagerOfPlayer().get(p).getOtherPlayer(p);
-                                if(!getPlayerInGame().contains(player)){
-                                    return;
-                                }
-                                sendMessage(getNAME()+" §6"+player.getName()+"§c "+ Message.LEAVED_THE_GAME.getMessage());
-                                getMain().spleefs.removePlayer(player);
+            if(!notOnDisable) {
+                Bukkit.getScheduler().scheduleSyncDelayedTask(pl.getSpleefPlugin(), () -> {
+                    p.setHealth(20);
+                    p.setFoodLevel(20);
+                }, 40);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(getMain().getSpleefPlugin(), () -> {
+                    if (getGame().GAME) {
+                        getMain().wagers.loseWager(p);
+                    } else {
+                        if (getMain().wagers.hasWager(p)) {
+                            Player player = getMain().wagers.getWagerOfPlayer().get(p).getOtherPlayer(p);
+                            if (!getPlayerInGame().contains(player)) {
+                                return;
                             }
+                            sendMessage(getNAME() + " §6" + player.getName() + "§c " + Message.LEAVED_THE_GAME.getMessage());
+                            getMain().spleefs.removePlayer(player);
                         }
                     }
-                },20);
+                }, 20);
             }
         }
         blocksOfRegionVerif.clear();
@@ -372,11 +357,7 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
             blocksOfRegionVerif.add(block);
         }
         for(Block b : blocks){
-            if(typeOfLocationHashMap.containsKey(b.getLocation())){
-                b.setType(typeOfLocationHashMap.get(b.getLocation()));
-            }else{
-                b.setType(Material.SNOW_BLOCK);
-            }
+            b.setType(typeOfLocationHashMap.getOrDefault(b.getLocation(), Material.SNOW_BLOCK));
         }
         game.WAIT = true;
         game.GAME = false;
