@@ -44,7 +44,7 @@ public class SpleefPluginV1_13 extends AbstractSpleefPlugin {
         this.otherPluginSupport = new OtherPluginSupport();
         this.saveConfig();
         this.configurations = new Configurations(this);
-        SpleefPlaceholder spleefPlaceholder = new SpleefPlaceholder(getSpleefPlugin());
+        SpleefPlaceholder spleefPlaceholder = new SpleefPlaceholder();
         Bukkit.getScheduler().scheduleSyncDelayedTask(this.getSpleefPlugin(), new Runnable() {
             @Override
             public void run() {
@@ -82,6 +82,6 @@ public class SpleefPluginV1_13 extends AbstractSpleefPlugin {
 
     @Override
     public void onLoad() {
-        this.spleefAPI = new SpleefAPI(this);
+        this.spleefAPI = new SpleefAPI();
     }
 }
