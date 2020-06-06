@@ -12,15 +12,14 @@ public class VaultPlugin {
         this.setupEconomy();
     }
 
-    private boolean setupEconomy() {
-        if(Bukkit.getPluginManager().getPlugin("Vault") == null){
-            return false;
+    private void setupEconomy() {
+        if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
+            return;
         }
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(Economy.class);
         if (economyProvider != null) {
             economy = economyProvider.getProvider();
         }
-        return (economy != null);
     }
 
     public Economy getEconomy() {
