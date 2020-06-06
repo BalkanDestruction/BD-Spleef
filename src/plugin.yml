@@ -1,5 +1,5 @@
-name: Spleef
-version: 1.0.1
+name: BD-Spleef
+version: 1.0.2
 api-version: 1.15
 authors: [Naruse, 12emin34]
 main: fr.naruse.spleef.main.SpleefPlugin

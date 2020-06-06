@@ -4,7 +4,7 @@ import com.gmail.filoghost.holographicdisplays.HolographicDisplays;
 import org.bukkit.Bukkit;
 
 public class HolographicDisplaysPlugin {
-    private HolographicDisplays holographicDisplays;
+    private final HolographicDisplays holographicDisplays;
     private boolean isPresent = false;
     public HolographicDisplaysPlugin(){
         this.holographicDisplays = (HolographicDisplays) Bukkit.getPluginManager().getPlugin("HolographicDisplays");

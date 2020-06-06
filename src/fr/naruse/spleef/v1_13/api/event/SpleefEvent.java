@@ -2,8 +2,9 @@ package fr.naruse.spleef.v1_13.api.event;
 import fr.naruse.spleef.manager.SpleefPluginV1_13;
 
 public class SpleefEvent {
-    private SpleefPluginV1_13 pl;
-    private String eventName;
+    private final SpleefPluginV1_13 pl;
+    private final String eventName;
+
     public SpleefEvent(SpleefPluginV1_13 pl, String eventName) {
         this.pl = pl;
         this.eventName = eventName;

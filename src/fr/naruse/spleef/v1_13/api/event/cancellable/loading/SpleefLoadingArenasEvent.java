@@ -15,7 +15,7 @@ public class SpleefLoadingArenasEvent extends SpleefCancellableEvent {
 
     @SpleefCancellable
     public static class Pre extends SpleefLoadingArenasEvent {
-        private String name;
+        private final String name;
         public Pre(SpleefPluginV1_13 pl, String name) {
             super(pl, "SpleefLoadingArenasEvent.Pre");
             this.name = name;
@@ -27,12 +27,18 @@ public class SpleefLoadingArenasEvent extends SpleefCancellableEvent {
     }
 
     public static class Post extends SpleefLoadingArenasEvent {
-        private String name;
-        private Location spleefLoc, spleefSpawn, spleefLobby, regionPos1, regionPos2;
-        private int min, max;
-        private boolean isOpen;
-        private SpleefGameMode gameMode;
-        private Spleef spleef;
+        private final String name;
+        private final Location spleefLoc;
+        private final Location spleefSpawn;
+        private final Location spleefLobby;
+        private final Location regionPos1;
+        private final Location regionPos2;
+        private final int min;
+        private final int max;
+        private final boolean isOpen;
+        private final SpleefGameMode gameMode;
+        private final Spleef spleef;
+
         public Post(SpleefPluginV1_13 pl, String name, Spleef spleef, Location spleefLoc, Location spleefSpawn, Location spleefLobby, int min, int max, boolean isOpen, SpleefGameMode gameMode, Location regionPos1, Location regionPos2) {
             super(pl, "SpleefLoadingArenasEvent.Post");
             this.name = name;

@@ -7,9 +7,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class MessagesConfiguration {
-    private SpleefPluginV1_13 pl;
+    private final SpleefPluginV1_13 pl;
     private File messagesFile;
     private FileConfiguration messages;
     public MessagesConfiguration(SpleefPluginV1_13 spleefPlugin) {
@@ -26,7 +27,7 @@ public class MessagesConfiguration {
             }
             if(!empty){
                 Reader defConfigStream;
-                defConfigStream = new InputStreamReader(pl.getResource(langFileName()), "UTF8");
+                defConfigStream = new InputStreamReader(pl.getResource(langFileName()), StandardCharsets.UTF_8);
                 YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
                 messages.setDefaults(defConfig);
             }

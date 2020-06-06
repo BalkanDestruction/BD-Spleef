@@ -19,20 +19,21 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Spleefs {
-    private SpleefPluginV1_13 pl;
-    private List<Spleef> spleefs = Lists.newArrayList();
-    private HashMap<Player, Spleef> spleefOfPlayer = new HashMap<>();
-    private HashMap<Player, SpleefPlayer> spleefPlayerOfPlayer = new HashMap<>();
+    private final SpleefPluginV1_13 pl;
+    private final List<Spleef> spleefs = Lists.newArrayList();
+    private final HashMap<Player, Spleef> spleefOfPlayer = new HashMap<>();
+    private final HashMap<Player, SpleefPlayer> spleefPlayerOfPlayer = new HashMap<>();
+
     public Spleefs(SpleefPluginV1_13 pl) {
         this.pl = pl;
         int count = 0;
-        for(int i = 0; i != 999; i++){
-            if(pl.getConfig().getString("spleef."+i+".name") != null){
-                String name = pl.getConfig().getString("spleef."+i+".name");
-                if(pl.getConfig().getString("spleef."+i+".spleef.x") != null){
-                    if(pl.getConfig().getString("spleef."+i+".spawn.x") != null){
-                        if(pl.getConfig().getString("spleef."+i+".min") != null){
-                            if(pl.getConfig().getString("spleef."+i+".max") != null){
+        for (int i = 0; i != 999; i++) {
+            if (pl.getConfig().getString("spleef." + i + ".name") != null) {
+                String name = pl.getConfig().getString("spleef." + i + ".name");
+                if (pl.getConfig().getString("spleef." + i + ".spleef.x") != null) {
+                    if (pl.getConfig().getString("spleef." + i + ".spawn.x") != null) {
+                        if (pl.getConfig().getString("spleef." + i + ".min") != null) {
+                            if (pl.getConfig().getString("spleef." + i + ".max") != null) {
 
                                 if(!new SpleefAPIEventInvoker(new SpleefLoadingArenasEvent.Pre(pl, name)).isCancelled()){
 

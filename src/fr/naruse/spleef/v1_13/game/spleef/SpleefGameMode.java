@@ -9,7 +9,7 @@ public enum SpleefGameMode {
     BOW("Bow"),
     MELTING("Melting"),
     ;
-    private String name;
+    private final String name;
     SpleefGameMode(String team) {
         this.name = team;
     }

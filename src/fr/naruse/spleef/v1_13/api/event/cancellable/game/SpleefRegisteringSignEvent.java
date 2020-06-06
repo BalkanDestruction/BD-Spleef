@@ -8,8 +8,9 @@ import org.bukkit.block.Sign;
 
 @SpleefCancellable
 public class SpleefRegisteringSignEvent extends SpleefCancellableEvent {
-    private Spleef spleef;
-    private Sign sign;
+    private final Spleef spleef;
+    private final Sign sign;
+
     public SpleefRegisteringSignEvent(SpleefPluginV1_13 pl, Spleef spleef, Sign sign) {
         super(pl, "SpleefRegisteringSignEvent");
         this.spleef = spleef;

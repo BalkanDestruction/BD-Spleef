@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class CommandsConfiguration {
-    private SpleefPluginV1_13 pl;
+    private final SpleefPluginV1_13 pl;
     private File commandsFile;
     private FileConfiguration commands;
     public CommandsConfiguration(SpleefPluginV1_13 spleefPlugin) {

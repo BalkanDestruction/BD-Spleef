@@ -14,8 +14,9 @@ public class SpleefPlayerJoinArenaEvent extends SpleefCancellableEvent {
 
     @SpleefCancellable
     public static class Pre extends SpleefPlayerJoinArenaEvent {
-        private Spleef spleef;
-        private Player player;
+        private final Spleef spleef;
+        private final Player player;
+
         public Pre(SpleefPluginV1_13 pl, Spleef spleef, Player player) {
             super(pl, "SpleefPlayerJoinArenaEvent.Pre");
             this.spleef = spleef;
@@ -32,8 +33,9 @@ public class SpleefPlayerJoinArenaEvent extends SpleefCancellableEvent {
     }
 
     public static class Post extends SpleefPlayerJoinArenaEvent {
-        private Spleef spleef;
-        private Player player;
+        private final Spleef spleef;
+        private final Player player;
+
         public Post(SpleefPluginV1_13 pl, Spleef spleef, Player player) {
             super(pl, "SpleefPlayerJoinArenaEvent.Post");
             this.spleef = spleef;

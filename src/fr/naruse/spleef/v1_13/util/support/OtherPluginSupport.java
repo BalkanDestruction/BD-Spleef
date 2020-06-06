@@ -1,9 +1,10 @@
 package fr.naruse.spleef.v1_13.util.support;
 
 public class OtherPluginSupport {
-    private VaultPlugin vaultPlugin;
-    private HolographicDisplaysPlugin holographicDisplaysPlugin;
-    public OtherPluginSupport(){
+    private final VaultPlugin vaultPlugin;
+    private final HolographicDisplaysPlugin holographicDisplaysPlugin;
+
+    public OtherPluginSupport() {
         this.vaultPlugin = new VaultPlugin();
         this.holographicDisplaysPlugin = new HolographicDisplaysPlugin();
     }

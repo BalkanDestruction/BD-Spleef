@@ -4,21 +4,22 @@ import fr.naruse.spleef.manager.SpleefPluginV1_13;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class SpleefPlayerStatistics {
-    private SpleefPluginV1_13 pl;
+    private final SpleefPluginV1_13 pl;
     private long wins;
     private long loses;
     private long games;
-    private FileConfiguration statistic;
-    private String name;
-    public SpleefPlayerStatistics(SpleefPluginV1_13 pl, String name){
+    private final FileConfiguration statistic;
+    private final String name;
+
+    public SpleefPlayerStatistics(SpleefPluginV1_13 pl, String name) {
         this.pl = pl;
         this.statistic = pl.configurations.getStatistics().getConfig();
         this.name = name;
         refreshStatisticFromConfig();
     }
 
-    public void refreshStatisticFromConfig(){
-        if(statistic.getString(name+".wins") == null){
+    public void refreshStatisticFromConfig() {
+        if (statistic.getString(name + ".wins") == null) {
             createStatistics();
         }
         this.wins = statistic.getLong(name+".wins");
