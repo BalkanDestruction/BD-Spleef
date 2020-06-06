@@ -326,9 +326,7 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         }
         timeInSecond = 0;
         List<Player> list = Lists.newArrayList();
-        for(Player p : playerInGame){
-            list.add(p);
-        }
+        list.addAll(playerInGame);
         for(Player p : list){
             pl.spleefs.removePlayer(p);
             if(!notOnDisable) {
@@ -353,9 +351,7 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
             }
         }
         blocksOfRegionVerif.clear();
-        for(Block block : blocksOfRegion){
-            blocksOfRegionVerif.add(block);
-        }
+        blocksOfRegionVerif.addAll(blocksOfRegion);
         for(Block b : blocks){
             b.setType(typeOfLocationHashMap.getOrDefault(b.getLocation(), Material.SNOW_BLOCK));
         }

@@ -262,18 +262,18 @@ public class SpleefCommands implements CommandExecutor, TabExecutor {
                     if(args.length < 4){
                         return help(sender, 3);
                     }
-                    String result = " ";
+                    StringBuilder result = new StringBuilder(" ");
                     for(int i = 3; i != args.length; i++){
-                        result += " "+args[i];
+                        result.append(" ").append(args[i]);
                     }
-                    result = result.replace("  ", "");
+                    result = new StringBuilder(result.toString().replace("  ", ""));
                     if(args[2].equalsIgnoreCase("start")){
-                        pl.getConfig().set("commands.start", result);
+                        pl.getConfig().set("commands.start", result.toString());
                         pl.saveConfig();
                         return sendMessage(sender, Message.SPLEEF.getMessage()+" §a"+Message.SETTING_SAVED.getMessage()+" §7(Command.Start: "+result+")");
                     }
                     if(args[2].equalsIgnoreCase("end")){
-                        pl.getConfig().set("commands.end", result);
+                        pl.getConfig().set("commands.end", result.toString());
                         pl.saveConfig();
                         return sendMessage(sender, Message.SPLEEF.getMessage()+" §a"+Message.SETTING_SAVED.getMessage()+" §7(Command.End: "+result+")");
                     }
@@ -320,11 +320,11 @@ public class SpleefCommands implements CommandExecutor, TabExecutor {
                             pl.saveConfig();
                             return sendMessage(sender, Message.SPLEEF.getMessage()+" §a"+Message.SETTING_SAVED.getMessage()+" §7(Rewards.command deleted)");
                         }
-                        String result = "";
+                        StringBuilder result = new StringBuilder();
                         for(int i = 3; i != args.length; i++){
-                            result += " "+args[i];
+                            result.append(" ").append(args[i]);
                         }
-                        pl.getConfig().set("rewards.command", result.replace("  ", ""));
+                        pl.getConfig().set("rewards.command", result.toString().replace("  ", ""));
                         pl.saveConfig();
                         return sendMessage(sender, Message.SPLEEF.getMessage()+" §a"+Message.SETTING_SAVED.getMessage()+" §7(Rewards.command:"+result+")");
                     }
@@ -602,33 +602,34 @@ public class SpleefCommands implements CommandExecutor, TabExecutor {
                 }
                 return sendMessage(sender, "§c"+Message.SPLEEF_NOT_FOUND.getMessage());
             }
-            if(args[0].equalsIgnoreCase("list")){
-                if(!hasPermission(p,"spleef.list")){
-                    return sendMessage(sender, "§4"+Message.YOU_DONT_HAVE_THIS_PERMISSION.getMessage());
+            if(args[0].equalsIgnoreCase("list")) {
+                if (!hasPermission(p, "spleef.list")) {
+                    return sendMessage(sender, "§4" + Message.YOU_DONT_HAVE_THIS_PERMISSION.getMessage());
                 }
-                String activeSpleef = ",,", breakdownSpleef = ",,";
+                StringBuilder activeSpleef = new StringBuilder(",,");
+                StringBuilder breakdownSpleef = new StringBuilder(",,");
                 List<String> list = Lists.newArrayList();
-                for(Spleef spleef : pl.spleefs.getSpleefs()){
-                    activeSpleef += ", "+spleef.getName();
+                for (Spleef spleef : pl.spleefs.getSpleefs()) {
+                    activeSpleef.append(", ").append(spleef.getName());
                     list.add(spleef.getName());
                 }
-                activeSpleef = activeSpleef.replace(",,, ", "");
-                for(int i = 0; i != 999; i++){
-                    if(pl.getConfig().getString("spleef."+i+".name") != null){
-                        if(!list.contains(pl.getConfig().getString("spleef."+i+".name"))){
-                            breakdownSpleef += ", "+pl.getConfig().getString("spleef."+i+".name");
+                activeSpleef = new StringBuilder(activeSpleef.toString().replace(",,, ", ""));
+                for (int i = 0; i != 999; i++) {
+                    if (pl.getConfig().getString("spleef." + i + ".name") != null) {
+                        if (!list.contains(pl.getConfig().getString("spleef." + i + ".name"))) {
+                            breakdownSpleef.append(", ").append(pl.getConfig().getString("spleef." + i + ".name"));
                         }
                     }
                 }
-                breakdownSpleef = breakdownSpleef.replace(",,, ", "");
-                if(breakdownSpleef.contains(",,")){
-                    breakdownSpleef = "";
+                breakdownSpleef = new StringBuilder(breakdownSpleef.toString().replace(",,, ", ""));
+                if (breakdownSpleef.toString().contains(",,")) {
+                    breakdownSpleef = new StringBuilder();
                 }
-                if(activeSpleef.contains(",,")){
-                    activeSpleef = "";
+                if (activeSpleef.toString().contains(",,")) {
+                    activeSpleef = new StringBuilder();
                 }
-                sendMessage(sender, Message.SPLEEF.getMessage()+" §a"+Message.SPLEEF_IN_OPERATION.getMessage()+" §2"+activeSpleef);
-                return sendMessage(sender, Message.SPLEEF.getMessage()+" §a"+Message.SPLEEF_IN_FAILURE.getMessage()+" §c"+breakdownSpleef);
+                sendMessage(sender, Message.SPLEEF.getMessage() + " §a" + Message.SPLEEF_IN_OPERATION.getMessage() + " §2" + activeSpleef);
+                return sendMessage(sender, Message.SPLEEF.getMessage() + " §a" + Message.SPLEEF_IN_FAILURE.getMessage() + " §c" + breakdownSpleef);
             }
             if(args[0].equalsIgnoreCase("force")){
                 if(!hasPermission(p,"spleef.force")){

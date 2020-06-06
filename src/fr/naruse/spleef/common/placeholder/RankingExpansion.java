@@ -50,55 +50,55 @@ public class RankingExpansion extends PlaceholderExpansion {
             if(players == null){
                 return super.onRequest(p, identifier);
             }
-            String name = ",";
+            StringBuilder name = new StringBuilder(",");
             for(OfflinePlayer player : players){
-                name += ", "+player.getName();
+                name.append(", ").append(player.getName());
             }
-            return name.replace(",, ", "");
+            return name.toString().replace(",, ", "");
         }
         if(identifier.equals("second")){
             List<OfflinePlayer> players = SpleefHelper.getPlayerRank(2);
             if(players == null){
                 return super.onRequest(p, identifier);
             }
-            String name = ",";
+            StringBuilder name = new StringBuilder(",");
             for(OfflinePlayer player : players){
-                name += ", "+player.getName();
+                name.append(", ").append(player.getName());
             }
-            return name.replace(",, ", "");
+            return name.toString().replace(",, ", "");
         }
         if(identifier.equals("third")){
             List<OfflinePlayer> players = SpleefHelper.getPlayerRank(3);
             if(players == null){
                 return super.onRequest(p, identifier);
             }
-            String name = ",";
+            StringBuilder name = new StringBuilder(",");
             for(OfflinePlayer player : players){
-                name += ", "+player.getName();
+                name.append(", ").append(player.getName());
             }
-            return name.replace(",, ", "");
+            return name.toString().replace(",, ", "");
         }
         if(identifier.equals("fourth")){
             List<OfflinePlayer> players = SpleefHelper.getPlayerRank(4);
             if(players == null){
                 return super.onRequest(p, identifier);
             }
-            String name = ",";
+            StringBuilder name = new StringBuilder(",");
             for(OfflinePlayer player : players){
-                name += ", "+player.getName();
+                name.append(", ").append(player.getName());
             }
-            return name.replace(",, ", "");
+            return name.toString().replace(",, ", "");
         }
         if(identifier.equals("fifth")){
             List<OfflinePlayer> players = SpleefHelper.getPlayerRank(5);
             if(players == null){
                 return super.onRequest(p, identifier);
             }
-            String name = ",";
+            StringBuilder name = new StringBuilder(",");
             for(OfflinePlayer player : players){
-                name += ", "+player.getName();
+                name.append(", ").append(player.getName());
             }
-            return name.replace(",, ", "");
+            return name.toString().replace(",, ", "");
         }
         //WINS
         if(identifier.equals("wins")){
