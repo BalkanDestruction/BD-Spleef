@@ -837,7 +837,7 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         return spectators;
     }
 
-    public class Game{
+    public static class Game {
         public boolean WAIT = true;
         public boolean GAME = false;
     }
