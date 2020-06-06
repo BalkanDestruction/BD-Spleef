@@ -222,17 +222,16 @@ public class TwoTeamSpleef extends Spleef implements TeamModeSpleef {
         this.runNormalStart();
         boolean reverse = false;
         for(Player p : getPlayerInGame()){
-            if(reverse){
+            if (reverse) {
                 getScoreboardSign().getBlueTeam().addPlayer(p);
                 p.setVelocity(new Vector(1.5F, 0.5F, 1.5F));
                 blueTeam.add(p);
-                p.setGlowing(getMain().getConfig().getBoolean("gameMode.team.glowing"));
-            }else{
+            } else {
                 getScoreboardSign().getRedTeam().addPlayer(p);
                 p.setVelocity(new Vector(-1.5F, 0.5F, -1.5F));
                 redTeam.add(p);
-                p.setGlowing(getMain().getConfig().getBoolean("gameMode.team.glowing"));
             }
+            p.setGlowing(getMain().getConfig().getBoolean("gameMode.team.glowing"));
             p.removePotionEffect(PotionEffectType.INVISIBILITY);
             reverse = !reverse;
         }
