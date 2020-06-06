@@ -8,10 +8,11 @@ import org.bukkit.entity.Player;
 
 @SpleefCancellable
 public class SpleefCommandPerformedEvent extends SpleefCancellableWithReasonEvent {
-    private Player player;
-    private Command command;
-    private String msg;
-    private String[] args;
+    private final Player player;
+    private final Command command;
+    private final String msg;
+    private final String[] args;
+
     public SpleefCommandPerformedEvent(SpleefPluginV1_13 pl, Player player, Command command, String msg, String[] args) {
         super(pl, "SpleefCommandPerformedEvent");
         this.player = player;

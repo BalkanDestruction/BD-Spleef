@@ -3,7 +3,7 @@ package fr.naruse.spleef.v1_13.util;
 import org.bukkit.Bukkit;
 
 public class Logs {
-    private long millis;
+    private final long millis;
     public Logs() {
         this.millis = System.currentTimeMillis();
         Bukkit.getConsoleSender().sendMessage("§c§l[§3Spleef§c§l] §c§l[§3Logs§c§l] §aEnabling...");

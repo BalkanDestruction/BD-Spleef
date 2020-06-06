@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class StatisticsConfiguration {
-    private SpleefPluginV1_13 pl;
+    private final SpleefPluginV1_13 pl;
     private File statisticsFile;
     private FileConfiguration statistics;
     public StatisticsConfiguration(SpleefPluginV1_13 spleefPlugin) {

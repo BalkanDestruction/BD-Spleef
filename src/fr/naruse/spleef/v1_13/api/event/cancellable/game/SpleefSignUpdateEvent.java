@@ -10,9 +10,10 @@ import java.util.List;
 
 @SpleefCancellable
 public class SpleefSignUpdateEvent extends SpleefCancellableEvent {
-    private Spleef spleef;
-    private Sign sign;
-    private List<Sign> signs;
+    private final Spleef spleef;
+    private final Sign sign;
+    private final List<Sign> signs;
+
     public SpleefSignUpdateEvent(SpleefPluginV1_13 pl, Spleef spleef, Sign sign, List<Sign> signs) {
         super(pl, "SpleefSignUpdateEvent");
         this.spleef = spleef;

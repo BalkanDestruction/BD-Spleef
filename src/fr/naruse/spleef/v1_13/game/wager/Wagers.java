@@ -13,19 +13,20 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Wagers {
-    private SpleefPluginV1_13 pl;
-    private List<Wager> wagers = Lists.newArrayList();
-    private HashMap<Player, Wager> wagerOfPlayer = new HashMap<>();
-    public Wagers(SpleefPluginV1_13 pl){
+    private final SpleefPluginV1_13 pl;
+    private final List<Wager> wagers = Lists.newArrayList();
+    private final HashMap<Player, Wager> wagerOfPlayer = new HashMap<>();
+
+    public Wagers(SpleefPluginV1_13 pl) {
         this.pl = pl;
     }
 
-    public boolean createWager(Player p, Player p2){
-        if(wagerOfPlayer.containsKey(p) || wagerOfPlayer.containsKey(p2)){
+    public boolean createWager(Player p, Player p2) {
+        if (wagerOfPlayer.containsKey(p) || wagerOfPlayer.containsKey(p2)) {
             return false;
         }
         Wager wager = new Wager(pl, p, p2);
-        if(new SpleefAPIEventInvoker(new SpleefWagerInviteEvent.Pre(pl, p, p2, wager)).isCancelled()){
+        if (new SpleefAPIEventInvoker(new SpleefWagerInviteEvent.Pre(pl, p, p2, wager)).isCancelled()) {
             return false;
         }
         wagers.add(wager);

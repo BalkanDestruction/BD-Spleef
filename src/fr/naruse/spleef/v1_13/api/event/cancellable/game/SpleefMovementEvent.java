@@ -13,8 +13,9 @@ public class SpleefMovementEvent extends SpleefCancellableEvent {
 
     @SpleefCancellable
     public static class Pre extends SpleefMovementEvent {
-        private Spleef spleef;
-        private SpleefMovementType movementType;
+        private final Spleef spleef;
+        private final SpleefMovementType movementType;
+
         public Pre(SpleefPluginV1_13 pl, Spleef spleef, SpleefMovementType movementType) {
             super(pl, "SpleefMovementEvent.Pre");
             this.spleef = spleef;
@@ -31,8 +32,9 @@ public class SpleefMovementEvent extends SpleefCancellableEvent {
     }
 
     public static class Post extends SpleefMovementEvent {
-        private Spleef spleef;
-        private SpleefMovementType movementType;
+        private final Spleef spleef;
+        private final SpleefMovementType movementType;
+
         public Post(SpleefPluginV1_13 pl, Spleef spleef, SpleefMovementType movementType) {
             super(pl, "SpleefMovementEvent.Post");
             this.spleef = spleef;

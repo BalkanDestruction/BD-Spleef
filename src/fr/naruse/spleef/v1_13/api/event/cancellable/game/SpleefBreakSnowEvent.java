@@ -9,9 +9,10 @@ import org.bukkit.entity.Player;
 
 @SpleefCancellable
 public class SpleefBreakSnowEvent extends SpleefCancellableEvent {
-    private Spleef spleef;
-    private Player player;
-    private Block block;
+    private final Spleef spleef;
+    private final Player player;
+    private final Block block;
+
     public SpleefBreakSnowEvent(SpleefPluginV1_13 pl, Spleef spleef, Player p, Block block) {
         super(pl, "SpleefBreakSnowEvent");
         this.spleef = spleef;

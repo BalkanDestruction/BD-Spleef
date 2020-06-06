@@ -9,7 +9,7 @@ import fr.naruse.spleef.v1_13.util.board.ScoreboardSign;
 public class SpleefScoreboardUpdateEvent extends SpleefCancellableEvent {
     private String line;
     private int score;
-    private ScoreboardSign scoreboardSign;
+    private final ScoreboardSign scoreboardSign;
     public SpleefScoreboardUpdateEvent(SpleefPluginV1_13 pl, String line, int score, ScoreboardSign scoreboardSign) {
         super(pl, "SpleefScoreboardUpdateEvent");
         this.line = line;

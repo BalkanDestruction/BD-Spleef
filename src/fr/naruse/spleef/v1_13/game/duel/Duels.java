@@ -17,17 +17,18 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Duels implements Listener {
-    private SpleefPluginV1_13 pl;
-    private HashMap<Player, Player> inviteOfPlayer = new HashMap<>();
-    private HashMap<Player, Player> receiveOfPlayer = new HashMap<>();
-    private List<Player> playerInDuel = Lists.newArrayList();
+    private final SpleefPluginV1_13 pl;
+    private final HashMap<Player, Player> inviteOfPlayer = new HashMap<>();
+    private final HashMap<Player, Player> receiveOfPlayer = new HashMap<>();
+    private final List<Player> playerInDuel = Lists.newArrayList();
+
     public Duels(SpleefPluginV1_13 spleefPlugin) {
         this.pl = spleefPlugin;
     }
 
-    public boolean invite(Player p, Player target){
-        if(pl.spleefs.hasSpleef(p) || pl.spleefs.hasSpleef(target)){
-            p.sendMessage("§c"+ Message.ONE_PLAYER_HAS_A_GAME.getMessage());
+    public boolean invite(Player p, Player target) {
+        if (pl.spleefs.hasSpleef(p) || pl.spleefs.hasSpleef(target)) {
+            p.sendMessage("§c" + Message.ONE_PLAYER_HAS_A_GAME.getMessage());
             return false;
         }
 
@@ -113,10 +114,7 @@ public class Duels implements Listener {
     }
 
     public boolean playerHasDuel(Player p){
-        if(inviteOfPlayer.containsKey(p) || receiveOfPlayer.containsKey(p)){
-            return true;
-        }
-        return false;
+        return inviteOfPlayer.containsKey(p) || receiveOfPlayer.containsKey(p);
     }
 
     public Player getOtherPlayer(Player p){

@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.InputStream;
 
 public abstract class AbstractSpleefPlugin {
-    private SpleefPlugin spleefPlugin;
+    private final SpleefPlugin spleefPlugin;
     public AbstractSpleefPlugin(SpleefPlugin spleefPlugin){
         this.spleefPlugin = spleefPlugin;
         Bukkit.getConsoleSender().sendMessage("§c§l[§3Spleef§c§l] §6AbstractVersion : Using Spigot "+Bukkit.getBukkitVersion()+".");

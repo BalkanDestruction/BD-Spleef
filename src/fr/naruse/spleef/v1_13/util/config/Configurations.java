@@ -3,10 +3,11 @@ package fr.naruse.spleef.v1_13.util.config;
 import fr.naruse.spleef.manager.SpleefPluginV1_13;
 
 public class Configurations {
-    private MessagesConfiguration messages;
-    private CommandsConfiguration commands;
-    private StatisticsConfiguration statistics;
-    public Configurations(SpleefPluginV1_13 pl){
+    private final MessagesConfiguration messages;
+    private final CommandsConfiguration commands;
+    private final StatisticsConfiguration statistics;
+
+    public Configurations(SpleefPluginV1_13 pl) {
         this.messages = new MessagesConfiguration(pl);
         this.commands = new CommandsConfiguration(pl);
         this.statistics = new StatisticsConfiguration(pl);
@@ -14,7 +15,7 @@ public class Configurations {
     }
 
     private void setDefault(SpleefPluginV1_13 pl) {
-        if(pl.getConfig().getString("lang") == null){
+        if (pl.getConfig().getString("lang") == null) {
             pl.getConfig().set("lang", "english");
         }else{
             pl.getConfig().set("lang", pl.getConfig().getString("lang"));

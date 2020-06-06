@@ -14,8 +14,9 @@ public class SpleefPlayerQuitArenaEvent extends SpleefCancellableEvent {
 
     @SpleefCancellable
     public static class Pre extends SpleefPlayerQuitArenaEvent {
-        private Spleef spleef;
-        private Player player;
+        private final Spleef spleef;
+        private final Player player;
+
         public Pre(SpleefPluginV1_13 pl, Spleef spleef, Player player) {
             super(pl, "SpleefPlayerQuitArenaEvent.Pre");
             this.spleef = spleef;
@@ -32,7 +33,7 @@ public class SpleefPlayerQuitArenaEvent extends SpleefCancellableEvent {
     }
 
     public static class Post extends SpleefPlayerQuitArenaEvent {
-        private Player player;
+        private final Player player;
         public Post(SpleefPluginV1_13 pl, Player player) {
             super(pl, "SpleefPlayerQuitArenaEvent.Post");
             this.player = player;

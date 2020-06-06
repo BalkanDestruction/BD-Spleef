@@ -10,8 +10,9 @@ import java.util.List;
 
 @SpleefCancellable
 public class SpleefGivingStuffEvent extends SpleefCancellableEvent {
-    private Spleef spleef;
-    private List<Player> players;
+    private final Spleef spleef;
+    private final List<Player> players;
+
     public SpleefGivingStuffEvent(SpleefPluginV1_13 pl, Spleef spleef, List<Player> playerList) {
         super(pl, "SpleefGivingStuffEvent");
         this.spleef = spleef;
