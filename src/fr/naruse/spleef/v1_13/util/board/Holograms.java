@@ -30,21 +30,20 @@ public class Holograms extends BukkitRunnable {
         HashMap<Long, List<OfflinePlayer>> placeAndPlayer = getLeaderBoard();
         int count = 1, count2 = 5;
         for(int o = placeAndPlayer.size()-1; o >= 0; o--){
-            String name = "§d-§6"+count+":,";
+            StringBuilder name = new StringBuilder("§d-§6" + count + ":,");
             long i = intList.get(o);
-            if(placeAndPlayer.containsKey(i)){
-                for(OfflinePlayer p : placeAndPlayer.get(i)){
-                    if(p != null){
-                        name += ", §a"+p.getName()+" §e(§6Wins: "+getSpleefPlayer(p).getWins()+"§e, §6Loses: "
-                                +getSpleefPlayer(p).getLoses()+"§e)";
+            if(placeAndPlayer.containsKey(i)) {
+                for (OfflinePlayer p : placeAndPlayer.get(i)) {
+                    if (p != null) {
+                        name.append(", §a").append(p.getName()).append(" §e(§6Wins: ").append(getSpleefPlayer(p).getWins()).append("§e, §6Loses: ").append(getSpleefPlayer(p).getLoses()).append("§e)");
                     }
                 }
-                name = name.replace(",,", "");
-                SpleefHologramsUpdateEvent shue = new SpleefHologramsUpdateEvent(pl, name, this);
-                if(!new SpleefAPIEventInvoker(shue).isCancelled()){
-                    name = shue.getLine();
+                name = new StringBuilder(name.toString().replace(",,", ""));
+                SpleefHologramsUpdateEvent shue = new SpleefHologramsUpdateEvent(pl, name.toString(), this);
+                if (!new SpleefAPIEventInvoker(shue).isCancelled()) {
+                    name = new StringBuilder(shue.getLine());
                     hologram.removeLine(count);
-                    hologram.insertTextLine(count, name);
+                    hologram.insertTextLine(count, name.toString());
                 }
                 if (count == 5 || count2 == 1) {
                     break;

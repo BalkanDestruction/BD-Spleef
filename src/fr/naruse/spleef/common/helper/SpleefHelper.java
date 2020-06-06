@@ -79,15 +79,15 @@ public class SpleefHelper {
         if(list == null){
             return "";
         }
-        if(list.size() == 0){
+        if (list.size() == 0) {
             return "";
         }
-        String s = ",";
-        for(OfflinePlayer player : list){
+        StringBuilder s = new StringBuilder(",");
+        for (OfflinePlayer player : list) {
             SpleefPlayerStatistics statistics = getSpleefPlayer(player);
-            s += ", "+player.getName()+" §7(Wins: "+statistics.getWins()+", Loses: "+statistics.getLoses()+")";
+            s.append(", ").append(player.getName()).append(" §7(Wins: ").append(statistics.getWins()).append(", Loses: ").append(statistics.getLoses()).append(")");
         }
-        s = s.replace(",, ", "");
-        return s;
+        s = new StringBuilder(s.toString().replace(",, ", ""));
+        return s.toString();
     }
 }

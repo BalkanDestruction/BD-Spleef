@@ -44,7 +44,7 @@ public class MessagesConfiguration {
             e.printStackTrace();
         }
         saveConfig();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(pl.getSpleefPlugin(), () -> setDefault(), 20);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(pl.getSpleefPlugin(), this::setDefault, 20);
     }
 
     public void saveConfig(){
