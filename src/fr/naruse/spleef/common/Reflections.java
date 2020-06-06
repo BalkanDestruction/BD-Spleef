@@ -29,23 +29,20 @@ public class Reflections {
     private static Class<?> getNMSClass(String nmsClassString) throws ClassNotFoundException {
         String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
         String name = "net.minecraft.server." + version + nmsClassString;
-        Class<?> nmsClass = Class.forName(name);
-        return nmsClass;
+        return Class.forName(name);
     }
 
     private static Class<?> getCBClass(String cbClassString) throws ClassNotFoundException {
         String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
         String name = "org.bukkit.craftbukkit." + version +cbClassString;
-        Class<?> nmsClass = Class.forName(name);
-        return nmsClass;
+        return Class.forName(name);
     }
 
     private static Object getConnection(Player player) throws SecurityException, NoSuchMethodException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
         Method getHandle = player.getClass().getMethod("getHandle");
         Object nmsPlayer = getHandle.invoke(player);
         Field conField = nmsPlayer.getClass().getField("playerConnection");
-        Object con = conField.get(nmsPlayer);
-        return con;
+        return conField.get(nmsPlayer);
     }
 
 }
