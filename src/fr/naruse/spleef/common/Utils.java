@@ -39,10 +39,7 @@ public class Utils {
         if(a.getYaw() != b.getYaw()){
             return false;
         }
-        if(a.getPitch() != b.getPitch()){
-            return false;
-        }
-        return true;
+        return a.getPitch() == b.getPitch();
     }
 
     public static double getBukkitVersion(){
