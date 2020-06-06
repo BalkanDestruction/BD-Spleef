@@ -67,8 +67,7 @@ public class Wagers {
     }
 
     public void disable(){
-        for(int i = 0; i < wagers.size(); i++){
-            Wager wager = wagers.get(i);
+        for (Wager wager : wagers) {
             wager.decline();
         }
     }

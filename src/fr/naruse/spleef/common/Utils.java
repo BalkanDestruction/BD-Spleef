@@ -85,7 +85,7 @@ public class Utils {
 
     public static long byteToMB(long bytes){
         DecimalFormat df = new DecimalFormat("0.######");
-        return Long.valueOf(df.format(bytes*0.000001));
+        return Long.parseLong(df.format(bytes * 0.000001));
     }
 
     public static long folderSize(File directory) {
