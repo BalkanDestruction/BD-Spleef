@@ -307,8 +307,6 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
                 p.getInventory().addItem(item);
             }
         }, 20 * 5);
-        if (new SpleefAPIEventInvoker(new SpleefStartsEvent.Post(pl, this)).isCancelled()) {
-        }
     }
 
     private boolean sentFirstCommand = false;
