@@ -307,9 +307,6 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
                 p.getInventory().addItem(item);
             }
         }, 20 * 5);
-        if (new SpleefAPIEventInvoker(new SpleefStartsEvent.Post(pl, this)).isCancelled()) {
-            return;
-        }
     }
 
     private boolean sentFirstCommand = false;
@@ -502,15 +499,15 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
 
     private List<Block> blocksFromTwoPoints(Location loc1, Location loc2) {
         List<Block> blocks = Lists.newArrayList();
-        int topBlockX = (loc1.getBlockX() < loc2.getBlockX() ? loc2.getBlockX() : loc1.getBlockX());
-        int bottomBlockX = (loc1.getBlockX() > loc2.getBlockX() ? loc2.getBlockX() : loc1.getBlockX());
-        int topBlockY = (loc1.getBlockY() < loc2.getBlockY() ? loc2.getBlockY() : loc1.getBlockY());
-        int bottomBlockY = (loc1.getBlockY() > loc2.getBlockY() ? loc2.getBlockY() : loc1.getBlockY());
-        int topBlockZ = (loc1.getBlockZ() < loc2.getBlockZ() ? loc2.getBlockZ() : loc1.getBlockZ());
-        int bottomBlockZ = (loc1.getBlockZ() > loc2.getBlockZ() ? loc2.getBlockZ() : loc1.getBlockZ());
-        for(int x = bottomBlockX; x <= topBlockX; x++) {
-            for(int z = bottomBlockZ; z <= topBlockZ; z++) {
-                for(int y = bottomBlockY; y <= topBlockY; y++) {
+        int topBlockX = (Math.max(loc1.getBlockX(), loc2.getBlockX()));
+        int bottomBlockX = (Math.min(loc1.getBlockX(), loc2.getBlockX()));
+        int topBlockY = (Math.max(loc1.getBlockY(), loc2.getBlockY()));
+        int bottomBlockY = (Math.min(loc1.getBlockY(), loc2.getBlockY()));
+        int topBlockZ = (Math.max(loc1.getBlockZ(), loc2.getBlockZ()));
+        int bottomBlockZ = (Math.min(loc1.getBlockZ(), loc2.getBlockZ()));
+        for (int x = bottomBlockX; x <= topBlockX; x++) {
+            for (int z = bottomBlockZ; z <= topBlockZ; z++) {
+                for (int y = bottomBlockY; y <= topBlockY; y++) {
                     Block block = loc1.getWorld().getBlockAt(x, y, z);
                     blocks.add(block);
                 }
