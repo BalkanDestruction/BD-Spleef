@@ -11,11 +11,13 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Chicken;
+import org.bukkit.entity.Egg;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntitySpawnEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -162,45 +164,47 @@ public class SpleegSpleef extends Spleef implements Listener {
         return true;
     }
 
-    @EventHandler
-    public void hitEvent(ProjectileHitEvent e) {
-        if (!(e.getEntity().getShooter() instanceof Player)) {
-            return;
-        }
-        if (!getPlayerInGame().contains(e.getEntity().getShooter())) {
-            return;
-        }
-        Projectile projectile = e.getEntity();
-        if (!(projectile instanceof Egg)) {
-            return;
-        }
-        if (e.getHitEntity() != null) {
-            e.getHitEntity().setVelocity(genVector(((Player) Objects.requireNonNull(e.getEntity().getShooter())).getLocation(), e.getHitEntity().getLocation()).multiply(0.5));
-        }
-        if (e.getHitBlock() == null) {
-            return;
-        }
-        if (getAuthorizedMaterial().contains(e.getHitBlock().getType()) && getGame().GAME) {
-            getBlocks().add(e.getHitBlock());
-            getBlocksOfRegionVerif().remove(e.getHitBlock());
-            getTypeOfLocationHashMap().put(e.getHitBlock().getLocation(), e.getHitBlock().getType());
-            e.getHitBlock().setType(Material.AIR);
-            for (Entity entity : e.getEntity().getNearbyEntities(2, 2, 2)) {
-                if (entity instanceof Chicken) {
-                    if (entity.getLocation().getWorld().getName().equals(getSpleefSpawn().getWorld().getName())) {
-                        if (getSpleefSpawn().distance(e.getEntity().getLocation()) <= 100 && getGame().GAME) {
-                            entity.remove();
-                        }
-                    }
-                }
-            }
-        } else {
-            Block b = e.getHitBlock();
-            if (materialHashMap.containsKey(b)) {
-                b.setType(materialHashMap.get(b));
-            }
-        }
-    }
+// --Commented out by Inspection START (19. 7. 2020. 15:19):
+//    @EventHandler
+//    public void hitEvent(ProjectileHitEvent e) {
+//        if (!(e.getEntity().getShooter() instanceof Player)) {
+//            return;
+//        }
+//        if (!getPlayerInGame().contains(e.getEntity().getShooter())) {
+//            return;
+//        }
+//        Projectile projectile = e.getEntity();
+//        if (!(projectile instanceof Egg)) {
+//            return;
+//        }
+//        if (e.getHitEntity() != null) {
+//            e.getHitEntity().setVelocity(genVector(((Player) Objects.requireNonNull(e.getEntity().getShooter())).getLocation(), e.getHitEntity().getLocation()).multiply(0.5));
+//        }
+//        if (e.getHitBlock() == null) {
+//            return;
+//        }
+//        if (getAuthorizedMaterial().contains(e.getHitBlock().getType()) && getGame().GAME) {
+//            getBlocks().add(e.getHitBlock());
+//            getBlocksOfRegionVerif().remove(e.getHitBlock());
+//            getTypeOfLocationHashMap().put(e.getHitBlock().getLocation(), e.getHitBlock().getType());
+//            e.getHitBlock().setType(Material.AIR);
+//            for (Entity entity : e.getEntity().getNearbyEntities(2, 2, 2)) {
+//                if (entity instanceof Chicken) {
+//                    if (entity.getLocation().getWorld().getName().equals(getSpleefSpawn().getWorld().getName())) {
+//                        if (getSpleefSpawn().distance(e.getEntity().getLocation()) <= 100 && getGame().GAME) {
+//                            entity.remove();
+//                        }
+//                    }
+//                }
+//            }
+//        } else {
+//            Block b = e.getHitBlock();
+//            if (materialHashMap.containsKey(b)) {
+//                b.setType(materialHashMap.get(b));
+//            }
+//        }
+//    }
+// --Commented out by Inspection STOP (19. 7. 2020. 15:19)
 
     @Override
     public void start() {

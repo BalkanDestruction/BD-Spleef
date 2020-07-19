@@ -1,6 +1,5 @@
 package fr.naruse.spleef.v1_13.game.spleef.type;
 
-import fr.naruse.spleef.common.Utils;
 import fr.naruse.spleef.manager.SpleefPluginV1_13;
 import fr.naruse.spleef.v1_13.game.spleef.Spleef;
 import fr.naruse.spleef.v1_13.game.spleef.SpleefGameMode;
@@ -17,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -152,40 +150,42 @@ public class BowSpleef extends Spleef implements Listener {
         return true;
     }
 
-    @EventHandler
-    public void hitEvent(ProjectileHitEvent e) {
-        if (!(e.getEntity().getShooter() instanceof Player)) {
-            return;
-        }
-        if (!getPlayerInGame().contains(e.getEntity().getShooter())) {
-            return;
-        }
-        Projectile projectile = e.getEntity();
-        if (!(projectile instanceof Arrow)) {
-            Objects.requireNonNull(e.getHitEntity()).setVelocity(genVector(((Player) Objects.requireNonNull(e.getEntity().getShooter())).getLocation(), e.getHitEntity().getLocation()).multiply(0.5));
-            return;
-        }
-        if (e.getHitBlock() == null) {
-            return;
-        }
-        if (getAuthorizedMaterial().contains(e.getHitBlock().getType()) && getGame().GAME) {
-            getBlocks().add(e.getHitBlock());
-            getBlocksOfRegionVerif().remove(e.getHitBlock());
-            getTypeOfLocationHashMap().put(e.getHitBlock().getLocation(), e.getHitBlock().getType());
-            for (Block b : Utils.getCircle(e.getHitBlock().getLocation(), 2)) {
-                if (materialHashMap.containsKey(b)) {
-                    b.setType(materialHashMap.get(b));
-                }
-            }
-            projectile.remove();
-        } else {
-            for (Block b : Utils.getCircle(e.getHitBlock().getLocation(), 2)) {
-                if (materialHashMap.containsKey(b)) {
-                    b.setType(materialHashMap.get(b));
-                }
-            }
-        }
-    }
+// --Commented out by Inspection START (19. 7. 2020. 15:19):
+//    @EventHandler
+//    public void hitEvent(ProjectileHitEvent e) {
+//        if (!(e.getEntity().getShooter() instanceof Player)) {
+//            return;
+//        }
+//        if (!getPlayerInGame().contains(e.getEntity().getShooter())) {
+//            return;
+//        }
+//        Projectile projectile = e.getEntity();
+//        if (!(projectile instanceof Arrow)) {
+//            Objects.requireNonNull(e.getHitEntity()).setVelocity(genVector(((Player) Objects.requireNonNull(e.getEntity().getShooter())).getLocation(), e.getHitEntity().getLocation()).multiply(0.5));
+//            return;
+//        }
+//        if (e.getHitBlock() == null) {
+//            return;
+//        }
+//        if (getAuthorizedMaterial().contains(e.getHitBlock().getType()) && getGame().GAME) {
+//            getBlocks().add(e.getHitBlock());
+//            getBlocksOfRegionVerif().remove(e.getHitBlock());
+//            getTypeOfLocationHashMap().put(e.getHitBlock().getLocation(), e.getHitBlock().getType());
+//            for (Block b : Utils.getCircle(e.getHitBlock().getLocation(), 2)) {
+//                if (materialHashMap.containsKey(b)) {
+//                    b.setType(materialHashMap.get(b));
+//                }
+//            }
+//            projectile.remove();
+//        } else {
+//            for (Block b : Utils.getCircle(e.getHitBlock().getLocation(), 2)) {
+//                if (materialHashMap.containsKey(b)) {
+//                    b.setType(materialHashMap.get(b));
+//                }
+//            }
+//        }
+//    }
+// --Commented out by Inspection STOP (19. 7. 2020. 15:19)
 
     @Override
     public void start() {
