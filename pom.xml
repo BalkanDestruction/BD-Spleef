@@ -6,7 +6,7 @@
 
     <groupId>BD-Spleef</groupId>
     <artifactId>BD-Spleef</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <repositories>
         <repository>
             <id>enginehub-maven</id>
@@ -50,7 +50,7 @@
         <dependency>
             <groupId>com.tuinity</groupId>
             <artifactId>tuinity-api</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <version>1.16.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

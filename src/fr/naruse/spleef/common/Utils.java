@@ -43,19 +43,22 @@ public class Utils {
     }
 
     public static double getBukkitVersion(){
-        if(Bukkit.getVersion().contains("1.15")){
+        if (Bukkit.getVersion().contains("1.16")) {
+            return 1.16;
+        }
+        if (Bukkit.getVersion().contains("1.15")) {
             return 1.15;
         }
-        if(Bukkit.getVersion().contains("1.14")){
+        if (Bukkit.getVersion().contains("1.14")) {
             return 1.14;
         }
-        if(Bukkit.getVersion().contains("1.13")){
+        if (Bukkit.getVersion().contains("1.13")) {
             return 1.13;
         }
-        if(Bukkit.getVersion().contains("1.12")){
+        if (Bukkit.getVersion().contains("1.12")) {
             return 1.12;
         }
-        if(Bukkit.getVersion().contains("1.11")){
+        if (Bukkit.getVersion().contains("1.11")) {
             return 1.11;
         }
         if(Bukkit.getVersion().contains("1.10")){
