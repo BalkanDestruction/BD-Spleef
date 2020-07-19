@@ -117,8 +117,8 @@ public class TwoTeamSpleef extends Spleef implements TeamModeSpleef {
             p.getInventory().clear();
             updateSigns();
             updateScoreboards();
-            getScoreboardSign().getBlueTeam().removePlayer(p);
-            getScoreboardSign().getRedTeam().removePlayer(p);
+            getScoreboardSign().getBlueTeam().removeEntry(String.valueOf(p));
+            getScoreboardSign().getRedTeam().removeEntry(String.valueOf(p));
             if (getMain().getConfig().getBoolean("scoreboard.enable")) {
                 p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
             }
@@ -220,11 +220,11 @@ public class TwoTeamSpleef extends Spleef implements TeamModeSpleef {
         boolean reverse = false;
         for (Player p : getPlayerInGame()) {
             if (reverse) {
-                getScoreboardSign().getBlueTeam().addPlayer(p);
+                getScoreboardSign().getBlueTeam().addEntry(String.valueOf(p));
                 p.setVelocity(new Vector(1.5F, 0.5F, 1.5F));
                 blueTeam.add(p);
             } else {
-                getScoreboardSign().getRedTeam().addPlayer(p);
+                getScoreboardSign().getRedTeam().addEntry(String.valueOf(p));
                 p.setVelocity(new Vector(-1.5F, 0.5F, -1.5F));
                 redTeam.add(p);
             }
