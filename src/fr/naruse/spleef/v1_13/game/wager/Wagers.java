@@ -33,7 +33,6 @@ public class Wagers {
         wagerOfPlayer.put(p, wager);
         wagerOfPlayer.put(p2, wager);
         Bukkit.getPluginManager().registerEvents(wager, pl.getSpleefPlugin());
-        wager.init();
         new SpleefAPIEventInvoker(new SpleefWagerInviteEvent.Post(pl, p, p2, wager));
         return true;
     }
