@@ -74,10 +74,10 @@ public class Wager implements Listener {
         if (!rewardsGot) {
             for (int i = 10; i < 17; i++) {
                 if (inventory1.getItem(i) != null) {
-                    player1.getInventory().addItem(inventory1.getItem(i));
+                    player1.getInventory().addItem(Objects.requireNonNull(inventory1.getItem(i)));
                 }
                 if (inventory2.getItem(i) != null) {
-                    player2.getInventory().addItem(inventory2.getItem(i));
+                    player2.getInventory().addItem(Objects.requireNonNull(inventory2.getItem(i)));
                 }
             }
         }

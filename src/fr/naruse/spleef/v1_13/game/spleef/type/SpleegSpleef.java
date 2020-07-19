@@ -26,13 +26,10 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 
 public class SpleegSpleef extends Spleef implements Listener {
-    private final HashMap<Block, Material> materialHashMap = new HashMap<>();
-    private final HashMap<Block, Byte> dataHashMap = new HashMap<>();
 
     public SpleegSpleef(SpleefPluginV1_13 pl, String name, Location spleefLoc, Location spleefSpawn, Location spleefLobby, int min, int max, boolean isOpen) {
         super(pl, SpleefGameMode.SPLEGG, name, spleefLoc, spleefSpawn, spleefLobby, min, max, isOpen);
@@ -270,8 +267,6 @@ public class SpleegSpleef extends Spleef implements Listener {
         if (getAuthorizedMaterial().contains(Objects.requireNonNull(hitBlock).getType())) {
             return;
         }
-        materialHashMap.put(hitBlock, hitBlock.getType());
-        dataHashMap.put(hitBlock, hitBlock.getData());
         getTypeOfLocationHashMap().put(hitBlock.getLocation(), hitBlock.getType());
     }
 
