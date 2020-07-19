@@ -253,7 +253,6 @@ public class BowSpleef extends Spleef implements Listener {
             }
         }
         if (Objects.requireNonNull(hitBlock).getType() == Material.SNOW_BLOCK) {
-            return;
         }
     }
 }
