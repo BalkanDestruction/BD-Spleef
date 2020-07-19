@@ -19,6 +19,7 @@ import fr.naruse.spleef.v1_13.util.support.OtherPluginSupport;
 import org.bukkit.Bukkit;
 
 public class SpleefPluginV1_13 extends AbstractSpleefPlugin {
+    public static SpleefPluginV1_13 INSTANCE;
     public Spleefs spleefs;
     public Configurations configurations;
     public WorldEditPlugin worldEditPlugin;
@@ -27,7 +28,6 @@ public class SpleefPluginV1_13 extends AbstractSpleefPlugin {
     public Duels duels;
     public Holograms holograms;
     public SpleefAPI spleefAPI;
-    public static SpleefPluginV1_13 INSTANCE;
 
     public SpleefPluginV1_13(SpleefPlugin spleefPlugin) {
         super(spleefPlugin);
@@ -64,13 +64,13 @@ public class SpleefPluginV1_13 extends AbstractSpleefPlugin {
 
     @Override
     public void onDisable() {
-        if(new SpleefAPIEventInvoker(new SpleefDisablingEvent.Pre(this)).isCancelled()){
+        if (new SpleefAPIEventInvoker(new SpleefDisablingEvent.Pre(this)).isCancelled()) {
             return;
         }
-        if(spleefs != null){
+        if (spleefs != null) {
             spleefs.onDisable();
         }
-        if(wagers != null){
+        if (wagers != null) {
             wagers.disable();
         }
         holograms.removeLeaderBoard();

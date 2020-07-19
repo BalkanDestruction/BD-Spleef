@@ -31,24 +31,24 @@ public class NormalSpleef extends Spleef {
 
     @Override
     public void removePlayer(Player p) {
-        if(getPlayerInGame().contains(p)){
+        if (getPlayerInGame().contains(p)) {
             getPlayerInGame().remove(p);
             p.teleport(getSpleefSpawn());
             p.getInventory().clear();
             updateSigns();
             updateScoreboards();
-            if(getMain().getConfig().getBoolean("scoreboard.enable")){
+            if (getMain().getConfig().getBoolean("scoreboard.enable")) {
                 p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
             }
-            if(getGame().GAME){
+            if (getGame().GAME) {
                 getMain().wagers.loseWager(p);
-            }else{
-                if(getMain().wagers.hasWager(p)){
+            } else {
+                if (getMain().wagers.hasWager(p)) {
                     Player player = getMain().wagers.getWagerOfPlayer().get(p).getOtherPlayer(p);
-                    if(!getPlayerInGame().contains(player)){
+                    if (!getPlayerInGame().contains(player)) {
                         return;
                     }
-                    sendMessage(getNAME()+" §6"+player.getName()+"§c "+ Message.LEAVED_THE_GAME.getMessage());
+                    sendMessage(getNAME() + " §6" + player.getName() + "§c " + Message.LEAVED_THE_GAME.getMessage());
                     getMain().spleefs.removePlayer(player);
                 }
             }
@@ -57,14 +57,14 @@ public class NormalSpleef extends Spleef {
 
     @Override
     public boolean addPlayer(Player p) {
-        if(!getPlayerInGame().contains(p)){
-            if(getGame().GAME){
-                p.sendMessage(getNAME()+"§c "+ Message.IN_GAME.getMessage());
+        if (!getPlayerInGame().contains(p)) {
+            if (getGame().GAME) {
+                p.sendMessage(getNAME() + "§c " + Message.IN_GAME.getMessage());
                 return false;
             }
-            if(!p.isOp()){
-                if(getPlayerInGame().size() >= getMax()){
-                    p.sendMessage(getNAME()+"§c "+ Message.FULL_GAME.getMessage());
+            if (!p.isOp()) {
+                if (getPlayerInGame().size() >= getMax()) {
+                    p.sendMessage(getNAME() + "§c " + Message.FULL_GAME.getMessage());
                     return false;
                 }
             }
@@ -74,24 +74,24 @@ public class NormalSpleef extends Spleef {
             p.getInventory().clear();
             ItemStack item = new ItemStack(Material.MAGMA_CREAM);
             ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName("§c"+ Message.LEAVE_THIS_GAME.getMessage());
+            meta.setDisplayName("§c" + Message.LEAVE_THIS_GAME.getMessage());
             item.setItemMeta(meta);
-            if(allowMagmaCream()){
+            if (allowMagmaCream()) {
                 p.getInventory().setItem(8, item);
             }
-            sendMessage(getNAME()+" §6"+p.getName()+"§a "+ Message.JOINED_THE_GAME.getMessage());
+            sendMessage(getNAME() + " §6" + p.getName() + "§a " + Message.JOINED_THE_GAME.getMessage());
             updateSigns();
             updateScoreboards();
-            if(getMain().getConfig().getBoolean("scoreboard.enable")){
+            if (getMain().getConfig().getBoolean("scoreboard.enable")) {
                 p.setScoreboard(getScoreboardSign().getScoreboard());
             }
             p.getInventory().setHeldItemSlot(1);
-            if(getMain().wagers.getWagerOfPlayer().containsKey(p)){
-                Wager wager =  getMain().wagers.getWagerOfPlayer().get(p);
-                if(!getPlayerInGame().contains(wager.getPlayer1())){
+            if (getMain().wagers.getWagerOfPlayer().containsKey(p)) {
+                Wager wager = getMain().wagers.getWagerOfPlayer().get(p);
+                if (!getPlayerInGame().contains(wager.getPlayer1())) {
                     getMain().spleefs.addPlayer(wager.getPlayer1(), this);
                 }
-                if(!getPlayerInGame().contains(wager.getPlayer2())){
+                if (!getPlayerInGame().contains(wager.getPlayer2())) {
                     getMain().spleefs.addPlayer(wager.getPlayer2(), this);
                 }
             }

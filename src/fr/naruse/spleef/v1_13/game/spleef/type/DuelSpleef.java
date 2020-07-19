@@ -39,7 +39,7 @@ public class DuelSpleef extends Spleef {
             p.getInventory().clear();
             updateSigns();
             updateScoreboards();
-            if(getMain().getConfig().getBoolean("scoreboard.enable")){
+            if (getMain().getConfig().getBoolean("scoreboard.enable")) {
                 p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
             }
             getMain().duels.decline(p, false);
@@ -53,7 +53,7 @@ public class DuelSpleef extends Spleef {
                     }
                     sendMessage(getNAME() + " §6" + player.getName() + "§c " + Message.LEAVED_THE_GAME.getMessage());
                     getMain().spleefs.removePlayer(player);
-                }else if (getMain().duels.duelActive(p)) {
+                } else if (getMain().duels.duelActive(p)) {
                     Player player = getMain().duels.getOtherPlayer(p);
                     if (!getPlayerInGame().contains(player)) {
                         return;
@@ -78,7 +78,7 @@ public class DuelSpleef extends Spleef {
                     return false;
                 }
             }
-            if(getMain().duels.duelActive(p)){
+            if (getMain().duels.duelActive(p)) {
                 restart(false);
             }
             runNormalJoin(p);
@@ -89,13 +89,13 @@ public class DuelSpleef extends Spleef {
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName("§c" + Message.LEAVE_THIS_GAME.getMessage());
             item.setItemMeta(meta);
-            if(allowMagmaCream()){
+            if (allowMagmaCream()) {
                 p.getInventory().setItem(8, item);
             }
             sendMessage(getNAME() + " §6" + p.getName() + "§a " + Message.JOINED_THE_GAME.getMessage());
             updateSigns();
             updateScoreboards();
-            if(getMain().getConfig().getBoolean("scoreboard.enable")){
+            if (getMain().getConfig().getBoolean("scoreboard.enable")) {
                 p.setScoreboard(getScoreboardSign().getScoreboard());
             }
             p.getInventory().setHeldItemSlot(1);
@@ -107,10 +107,10 @@ public class DuelSpleef extends Spleef {
                 if (!getPlayerInGame().contains(wager.getPlayer2())) {
                     getMain().spleefs.addPlayer(wager.getPlayer2(), this);
                 }
-            }else if(getMain().duels.duelActive(p)){
+            } else if (getMain().duels.duelActive(p)) {
                 Player target = getMain().duels.getOtherPlayer(p);
-                if(target != null){
-                    if(!getPlayerInGame().contains(target)){
+                if (target != null) {
+                    if (!getPlayerInGame().contains(target)) {
                         getMain().spleefs.addPlayer(target, this);
                     }
                 }
@@ -133,17 +133,17 @@ public class DuelSpleef extends Spleef {
                 sign.setLine(0, "§c§l[§5" + getName() + "§c§l]");
                 sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_2.getColorTag() + getPlayerInGame().size() + "/" + getMax());
                 if (getPlayerInGame().size() >= getMin()) {
-                    sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_0.getColorTag()+ Message.READY.getMessage());
-                }else{
-                    sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_1.getColorTag()+(getMin()-getPlayerInGame().size())+" "+ Message.MISSING.getMessage());
+                    sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_0.getColorTag() + Message.READY.getMessage());
+                } else {
+                    sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_1.getColorTag() + (getMin() - getPlayerInGame().size()) + " " + Message.MISSING.getMessage());
                 }
-                sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_OTHER.getColorTag()+" "+getGameMode().getName()+" Mode");
+                sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_OTHER.getColorTag() + " " + getGameMode().getName() + " Mode");
                 sign.update();
-            }else if(getGame().GAME){
-                sign.setLine(0, "§c§l[§5"+getName()+"§c§l]");
-                sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_2.getColorTag()+getPlayerInGame().size()+"/"+getMax());
-                sign.setLine(2, Message.SignColorTag.OPEN_GAME_LINE4_NORMAL.getColorTag()+ Message.IN_GAME.getMessage());
-                sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_OTHER.getColorTag()+" "+getGameMode().getName()+" Mode");
+            } else if (getGame().GAME) {
+                sign.setLine(0, "§c§l[§5" + getName() + "§c§l]");
+                sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_2.getColorTag() + getPlayerInGame().size() + "/" + getMax());
+                sign.setLine(2, Message.SignColorTag.OPEN_GAME_LINE4_NORMAL.getColorTag() + Message.IN_GAME.getMessage());
+                sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_OTHER.getColorTag() + " " + getGameMode().getName() + " Mode");
                 sign.update();
             }
         }

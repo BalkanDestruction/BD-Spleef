@@ -4,6 +4,7 @@ import fr.naruse.spleef.manager.SpleefPluginV1_13;
 
 public class SpleefCancellableWithReasonEvent extends SpleefCancellableEvent {
     private String reason = null;
+
     public SpleefCancellableWithReasonEvent(SpleefPluginV1_13 pl, String eventName) {
         super(pl, eventName);
     }

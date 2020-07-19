@@ -23,13 +23,14 @@ public class Wager implements Listener {
     private final SpleefPluginV1_13 pl;
     private final Player player1;
     private final Player player2;
+    public boolean stop = false;
     private Player lost = null;
     private Inventory inventory1 = Bukkit.createInventory(null, 9 * 3, "§2§l" + Message.WAGER.getMessage());
     private Inventory inventory2 = Bukkit.createInventory(null, 9 * 3, "§2§l" + Message.WAGER.getMessage());
     private Inventory inventoryFinal = null;
     private boolean wagerAccepted = false, player1Ready = false, player2Ready = false, player1FinalReady = false, player2FinalReady = false;
     private boolean wagerActive = false, rewardsGot = false;
-    public boolean stop = false;
+    private boolean isWinning = false;
 
     public Wager(SpleefPluginV1_13 pl, Player p, Player p2) {
         this.pl = pl;
@@ -47,8 +48,7 @@ public class Wager implements Listener {
         stop = true;
     }
 
-    private boolean isWinning = false;
-    public void win(Player p){
+    public void win(Player p) {
         if (isWinning) {
             return;
         } else {
@@ -74,13 +74,13 @@ public class Wager implements Listener {
         }, 20);
     }
 
-    public void decline(){
-        if(!rewardsGot){
-            for(int i = 10; i < 17; i++){
-                if(inventory1.getItem(i) != null){
+    public void decline() {
+        if (!rewardsGot) {
+            for (int i = 10; i < 17; i++) {
+                if (inventory1.getItem(i) != null) {
                     player1.getInventory().addItem(inventory1.getItem(i));
                 }
-                if(inventory2.getItem(i) != null){
+                if (inventory2.getItem(i) != null) {
                     player2.getInventory().addItem(inventory2.getItem(i));
                 }
             }
@@ -88,7 +88,7 @@ public class Wager implements Listener {
         pl.wagers.deleteWager(this);
     }
 
-    public void accept(){
+    public void accept() {
         wagerAccepted = true;
         generateInv();
         player1.openInventory(inventory1);
@@ -96,32 +96,32 @@ public class Wager implements Listener {
     }
 
     @EventHandler
-    public void clickInv(InventoryClickEvent e){
-        if(!(e.getWhoClicked() instanceof Player)){
+    public void clickInv(InventoryClickEvent e) {
+        if (!(e.getWhoClicked() instanceof Player)) {
             return;
         }
         Player p = (Player) e.getWhoClicked();
-        if(p != player1 && p != player2){
+        if (p != player1 && p != player2) {
             return;
         }
-        if(e.getClickedInventory() == p.getInventory()){
+        if (e.getClickedInventory() == p.getInventory()) {
             return;
         }
-        if(stop){
+        if (stop) {
             return;
         }
-        if(!wagerAccepted){
+        if (!wagerAccepted) {
             e.setCancelled(true);
             return;
         }
-        if(inventoryFinal != null){
+        if (inventoryFinal != null) {
             e.setCancelled(true);
         }
-        if(wagerActive){
+        if (wagerActive) {
             e.setCancelled(true);
             return;
         }
-        if(e.getCurrentItem() == null){
+        if (e.getCurrentItem() == null) {
             return;
         }
         ItemStack item = e.getCurrentItem();
@@ -150,10 +150,10 @@ public class Wager implements Listener {
                                 player1.openInventory(inventoryFinal);
                                 player2.openInventory(inventoryFinal);
                             }
-                        }else{
+                        } else {
                             player2Ready = true;
-                            p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.AWAITING_VALIDATION.getMessage());
-                            if(player1Ready){
+                            p.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.AWAITING_VALIDATION.getMessage());
+                            if (player1Ready) {
                                 p.closeInventory();
                                 player1.closeInventory();
                                 generateFinalInv();
@@ -162,7 +162,7 @@ public class Wager implements Listener {
                             }
                         }
                     }
-                }else if(e.getSlot() > 9*5){
+                } else if (e.getSlot() > 9 * 5) {
                     e.setCancelled(true);
                     if (Objects.requireNonNull(item.getData()).getData() == 14) {
                         player1.closeInventory();
@@ -175,7 +175,7 @@ public class Wager implements Listener {
                             player1FinalReady = true;
                             p.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.AWAITING_VALIDATION.getMessage());
                             p.closeInventory();
-                            if(player2FinalReady) {
+                            if (player2FinalReady) {
                                 p.closeInventory();
                                 player2.closeInventory();
                                 inventoryFinal.remove(Objects.requireNonNull(inventoryFinal.getItem(9 * 6 - 3)));
@@ -184,16 +184,16 @@ public class Wager implements Listener {
                                 player1.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.WAGER_ACTIVATED.getMessage());
                                 player2.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.WAGER_ACTIVATED.getMessage());
                             }
-                        }else{
+                        } else {
                             player2FinalReady = true;
-                            p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.AWAITING_VALIDATION.getMessage());
+                            p.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.AWAITING_VALIDATION.getMessage());
                             p.closeInventory();
-                            if(player1FinalReady){
+                            if (player1FinalReady) {
                                 p.closeInventory();
                                 player1.closeInventory();
                                 wagerActive = true;
-                                player1.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_ACTIVATED.getMessage());
-                                player2.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.WAGER_ACTIVATED.getMessage());
+                                player1.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.WAGER_ACTIVATED.getMessage());
+                                player2.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.WAGER_ACTIVATED.getMessage());
                             }
                         }
                     }
@@ -203,11 +203,11 @@ public class Wager implements Listener {
     }
 
     @EventHandler
-    public void closeInv(InventoryCloseEvent e){
+    public void closeInv(InventoryCloseEvent e) {
         Player p = (Player) e.getPlayer();
-        if(p == player1 || p == player2){
-            if(e.getInventory() == inventory1){
-                if(!wagerAccepted){
+        if (p == player1 || p == player2) {
+            if (e.getInventory() == inventory1) {
+                if (!wagerAccepted) {
                     decline();
                 }
             }
@@ -215,84 +215,84 @@ public class Wager implements Listener {
     }
 
     @EventHandler
-    public void quit(PlayerQuitEvent e){
+    public void quit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        if(p == player1 || p == player2){
-            if(!isWagerActive()){
+        if (p == player1 || p == player2) {
+            if (!isWagerActive()) {
                 player1.closeInventory();
                 player2.closeInventory();
                 decline();
                 return;
             }
             pl.wagers.loseWager(p);
-            if(p == player1){
+            if (p == player1) {
                 win(player2);
-            }else{
+            } else {
                 win(player1);
             }
         }
     }
 
     private void generateInv() {
-        inventory1 = Bukkit.createInventory(null, 9*3, "§2§l"+ Message.WAGER.getMessage()+" §8§l("+player1.getName()+" - "+player2.getName()+")");
-        for(int i = 0; i < 10; i++){
+        inventory1 = Bukkit.createInventory(null, 9 * 3, "§2§l" + Message.WAGER.getMessage() + " §8§l(" + player1.getName() + " - " + player2.getName() + ")");
+        for (int i = 0; i < 10; i++) {
             inventory1.setItem(i, new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
         }
-        for(int i = 17; i < 9*3; i += 9){
+        for (int i = 17; i < 9 * 3; i += 9) {
             inventory1.setItem(i, new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
         }
-        for(int i = 9; i < 9*3; i += 9){
+        for (int i = 9; i < 9 * 3; i += 9) {
             inventory1.setItem(i, new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
         }
-        for(int i = 9*2+1; i < 9*3; i++){
+        for (int i = 9 * 2 + 1; i < 9 * 3; i++) {
             inventory1.setItem(i, new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
         }
         //
-        inventory2 = Bukkit.createInventory(null, 9*3, "§2§l"+ Message.WAGER.getMessage()+" §8§l("+player1.getName()+" - "+player2.getName()+")");
-        for(int i = 0; i < 10; i++){
+        inventory2 = Bukkit.createInventory(null, 9 * 3, "§2§l" + Message.WAGER.getMessage() + " §8§l(" + player1.getName() + " - " + player2.getName() + ")");
+        for (int i = 0; i < 10; i++) {
             inventory2.setItem(i, new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
         }
-        for(int i = 17; i < 9*3; i += 9){
+        for (int i = 17; i < 9 * 3; i += 9) {
             inventory2.setItem(i, new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
         }
-        for(int i = 9; i < 9*3; i += 9){
+        for (int i = 9; i < 9 * 3; i += 9) {
             inventory2.setItem(i, new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
         }
-        for(int i = 9*2+1; i < 9*3; i++){
+        for (int i = 9 * 2 + 1; i < 9 * 3; i++) {
             inventory2.setItem(i, new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1, (byte) new Random().nextInt(8)));
         }
         ItemStack item = new ItemStack(Material.WHITE_WOOL, 1, (byte) 5);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("§2Ok");
         item.setItemMeta(meta);
-        inventory2.setItem(9*2+3, item);
+        inventory2.setItem(9 * 2 + 3, item);
         inventory1.setItem(9 * 2 + 3, item);
         item = new ItemStack(Material.WHITE_WOOL, 1, (byte) 14);
         meta = item.getItemMeta();
         meta.setDisplayName("§4Stop");
         item.setItemMeta(meta);
-        inventory2.setItem(9*2+5, item);
-        inventory1.setItem(9*2+5, item);
+        inventory2.setItem(9 * 2 + 5, item);
+        inventory1.setItem(9 * 2 + 5, item);
     }
 
     private void generateFinalInv() {
-        inventoryFinal = Bukkit.createInventory(null, 9*6, "§2§l"+ Message.WAGER.getMessage()+" §8§l("+player1.getName()+" - "+player2.getName()+")");
-        for(int i = 0; i < 10; i++){
+        inventoryFinal = Bukkit.createInventory(null, 9 * 6, "§2§l" + Message.WAGER.getMessage() + " §8§l(" + player1.getName() + " - " + player2.getName() + ")");
+        for (int i = 0; i < 10; i++) {
             inventoryFinal.setItem(i, new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1, (byte) 12));
         }
-        for(int i = 17; i < 9*6; i += 9){
+        for (int i = 17; i < 9 * 6; i += 9) {
             inventoryFinal.setItem(i, new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1, (byte) 12));
         }
-        for(int i = 9; i < 9*6; i += 9){
+        for (int i = 9; i < 9 * 6; i += 9) {
             inventoryFinal.setItem(i, new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1, (byte) 12));
         }
-        for(int i = 9*2+1; i < 9*3; i++){
+        for (int i = 9 * 2 + 1; i < 9 * 3; i++) {
             inventoryFinal.setItem(i, new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1, (byte) 12));
         }
-        for(int i = 9*3+1; i < 9*4; i++){
+        for (int i = 9 * 3 + 1; i < 9 * 4; i++) {
             inventoryFinal.setItem(i, new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1, (byte) 12));
         }
-        for(int i = 9*5+1; i < 9*6; i++){
+        for (int i = 9 * 5 + 1; i < 9 * 6; i++) {
             inventoryFinal.setItem(i, new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1, (byte) 12));
         }
         ItemStack item = new ItemStack(Material.WHITE_WOOL, 1, (byte) 5);
@@ -304,13 +304,13 @@ public class Wager implements Listener {
         meta = item.getItemMeta();
         meta.setDisplayName("§4Stop");
         item.setItemMeta(meta);
-        inventoryFinal.setItem(9*5+5, item);
-        for(int i = 10; i < 17; i++){
-            if(inventory1.getItem(i) != null){
+        inventoryFinal.setItem(9 * 5 + 5, item);
+        for (int i = 10; i < 17; i++) {
+            if (inventory1.getItem(i) != null) {
                 inventoryFinal.setItem(i, inventory1.getItem(i));
             }
-            if(inventory2.getItem(i) != null){
-                inventoryFinal.setItem(i+9*3, inventory2.getItem(i));
+            if (inventory2.getItem(i) != null) {
+                inventoryFinal.setItem(i + 9 * 3, inventory2.getItem(i));
             }
         }
     }
@@ -327,25 +327,25 @@ public class Wager implements Listener {
         return wagerActive;
     }
 
-    public Player getOtherPlayer(Player p){
-        if(p == player1){
+    public Player getOtherPlayer(Player p) {
+        if (p == player1) {
             return player2;
-        }else{
+        } else {
             return player1;
         }
     }
 
-    public void openInventory(Player p){
-        if(p == player1){
-            if(inventoryFinal != null){
+    public void openInventory(Player p) {
+        if (p == player1) {
+            if (inventoryFinal != null) {
                 p.openInventory(inventoryFinal);
-            }else{
+            } else {
                 p.openInventory(inventory1);
             }
-        }else if(p == player2){
-            if(inventoryFinal != null){
+        } else if (p == player2) {
+            if (inventoryFinal != null) {
                 p.openInventory(inventoryFinal);
-            }else{
+            } else {
                 p.openInventory(inventory2);
             }
         }

@@ -8,13 +8,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class SpleefPlugin extends JavaPlugin {
     public static SpleefPlugin INSTANCE;
     private AbstractSpleefPlugin spleefPlugin;
+
     @Override
-    public void onEnable(){
+    public void onEnable() {
         super.onEnable();
         INSTANCE = this;
-        if(spleefPlugin == null){
+        if (spleefPlugin == null) {
             double version = Utils.getBukkitVersion();
-            if(version >= 1.13) {
+            if (version >= 1.13) {
                 this.spleefPlugin = new SpleefPluginV1_13(this);
             }
         }
@@ -22,16 +23,16 @@ public class SpleefPlugin extends JavaPlugin {
     }
 
     @Override
-    public void onLoad(){
+    public void onLoad() {
         double version = Utils.getBukkitVersion();
-        if(version >= 1.13) {
+        if (version >= 1.13) {
             this.spleefPlugin = new SpleefPluginV1_13(this);
         }
         this.spleefPlugin.onLoad();
     }
 
     @Override
-    public void onDisable(){
+    public void onDisable() {
         super.onDisable();
         this.spleefPlugin.onDisable();
     }

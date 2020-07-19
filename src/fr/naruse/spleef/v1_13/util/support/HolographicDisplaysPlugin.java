@@ -6,7 +6,8 @@ import org.bukkit.Bukkit;
 public class HolographicDisplaysPlugin {
     private final HolographicDisplays holographicDisplays;
     private final boolean isPresent;
-    public HolographicDisplaysPlugin(){
+
+    public HolographicDisplaysPlugin() {
         this.holographicDisplays = (HolographicDisplays) Bukkit.getPluginManager().getPlugin("HolographicDisplays");
         this.isPresent = holographicDisplays != null;
     }

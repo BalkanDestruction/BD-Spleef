@@ -34,6 +34,7 @@ public class SpleefPlayerQuitArenaEvent extends SpleefCancellableEvent {
 
     public static class Post extends SpleefPlayerQuitArenaEvent {
         private final Player player;
+
         public Post(SpleefPluginV1_13 pl, Player player) {
             super(pl, "SpleefPlayerQuitArenaEvent.Post");
             this.player = player;

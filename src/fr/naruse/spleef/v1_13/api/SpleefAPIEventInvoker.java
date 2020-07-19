@@ -10,12 +10,13 @@ import java.lang.reflect.Method;
 
 public class SpleefAPIEventInvoker {
     private boolean isCancelled = false;
-    public SpleefAPIEventInvoker(SpleefEvent spleefEvent){
-        for(Listener spleefListener : SpleefPluginV1_13.INSTANCE.spleefAPI.getSpleefListeners()){
+
+    public SpleefAPIEventInvoker(SpleefEvent spleefEvent) {
+        for (Listener spleefListener : SpleefPluginV1_13.INSTANCE.spleefAPI.getSpleefListeners()) {
             Method[] methods = spleefListener.getClass().getMethods();
             for (Method method : methods) {
                 Annotation annotation = method.getAnnotation(SpleefEventHandler.class);
-                if(method.getGenericParameterTypes().length != 0){
+                if (method.getGenericParameterTypes().length != 0) {
                     java.lang.reflect.Type eventType = method.getGenericParameterTypes()[0];
                     if (annotation != null) {
                         try {

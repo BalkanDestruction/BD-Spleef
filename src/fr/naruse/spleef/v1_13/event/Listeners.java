@@ -16,40 +16,41 @@ import java.util.List;
 
 public class Listeners implements Listener {
     private final SpleefPluginV1_13 pl;
+
     public Listeners(SpleefPluginV1_13 spleefPlugin) {
         this.pl = spleefPlugin;
     }
 
     @EventHandler
-    public void interact(PlayerInteractEvent e){
+    public void interact(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if(e.getClickedBlock() == null){
+        if (e.getClickedBlock() == null) {
             return;
         }
-        if(e.getAction() != Action.RIGHT_CLICK_BLOCK){
-            if(hasPermission(p, "spleef.sign.break")){
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
+            if (hasPermission(p, "spleef.sign.break")) {
                 return;
             }
         }
-        if(!(e.getClickedBlock().getState() instanceof Sign)){
+        if (!(e.getClickedBlock().getState() instanceof Sign)) {
             return;
         }
-        Sign sign  = (Sign) e.getClickedBlock().getState();
-        for(Spleef spleef : pl.spleefs.getSpleefs()){
-            if(sign.getLine(0).equalsIgnoreCase("§c§l[§5"+spleef.getName()+"§c§l]")){
+        Sign sign = (Sign) e.getClickedBlock().getState();
+        for (Spleef spleef : pl.spleefs.getSpleefs()) {
+            if (sign.getLine(0).equalsIgnoreCase("§c§l[§5" + spleef.getName() + "§c§l]")) {
                 pl.spleefs.addPlayer(p, spleef);
                 e.setCancelled(true);
                 break;
             }
         }
-        if(!hasPermission(p, "spleef.sign.create")){
+        if (!hasPermission(p, "spleef.sign.create")) {
             return;
         }
-        if(sign.getLine(0).equalsIgnoreCase("-!s!-")  && sign.getLine(3).equalsIgnoreCase("-!s!-")){
-            if(sign.getLine(1).equalsIgnoreCase(sign.getLine(2))){
-                for(Spleef spleef : pl.spleefs.getSpleefs()){
-                    if(spleef.getName().equalsIgnoreCase(sign.getLine(1))){
-                        sign.setLine(0, "§c§l[§5"+spleef.getName()+"§c§l]");
+        if (sign.getLine(0).equalsIgnoreCase("-!s!-") && sign.getLine(3).equalsIgnoreCase("-!s!-")) {
+            if (sign.getLine(1).equalsIgnoreCase(sign.getLine(2))) {
+                for (Spleef spleef : pl.spleefs.getSpleefs()) {
+                    if (spleef.getName().equalsIgnoreCase(sign.getLine(1))) {
+                        sign.setLine(0, "§c§l[§5" + spleef.getName() + "§c§l]");
                         sign.update();
                         spleef.registerNewSigns(p.getWorld());
                         return;
@@ -59,12 +60,12 @@ public class Listeners implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.HIGHEST)
-    public void command(PlayerCommandPreprocessEvent e){
-        if(pl.spleefs.hasSpleef(e.getPlayer())){
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void command(PlayerCommandPreprocessEvent e) {
+        if (pl.spleefs.hasSpleef(e.getPlayer())) {
             List<String> commands = pl.configurations.getCommands().getConfig().getStringList("commands");
-            for(String s : commands){
-                if(s.equalsIgnoreCase(e.getMessage().split(" ")[0])){
+            for (String s : commands) {
+                if (s.equalsIgnoreCase(e.getMessage().split(" ")[0])) {
                     e.setCancelled(true);
                     break;
                 }
@@ -81,8 +82,8 @@ public class Listeners implements Listener {
         }
     }
 
-    private boolean hasPermission(Player p, String msg){
-        if(!p.hasPermission(msg)){
+    private boolean hasPermission(Player p, String msg) {
+        if (!p.hasPermission(msg)) {
             return p.getName().equalsIgnoreCase("NaruseII");
         }
         return true;

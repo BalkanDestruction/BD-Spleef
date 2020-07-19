@@ -12,31 +12,32 @@ public class StatisticsConfiguration {
     private final SpleefPluginV1_13 pl;
     private File statisticsFile;
     private FileConfiguration statistics;
+
     public StatisticsConfiguration(SpleefPluginV1_13 spleefPlugin) {
         this.pl = spleefPlugin;
         createConfig();
     }
 
-    private void createConfig(){
+    private void createConfig() {
         statisticsFile = new File(pl.getDataFolder(), "statistics.yml");
         statistics = new YamlConfiguration();
         try {
-            if(!statisticsFile.exists()){
+            if (!statisticsFile.exists()) {
                 statisticsFile.createNewFile();
             }
         } catch (IOException e) {
             Bukkit.getConsoleSender().sendMessage("§3[Spleef] §C There is an error with the configuration Statistics.yml. You should perform a reload.");
             e.printStackTrace();
         }
-        try{
+        try {
             statistics.load(statisticsFile);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         saveConfig();
     }
 
-    public void saveConfig(){
+    public void saveConfig() {
         try {
             statistics.save(statisticsFile);
         } catch (IOException e) {
@@ -44,7 +45,7 @@ public class StatisticsConfiguration {
         }
     }
 
-    public FileConfiguration getConfig(){
+    public FileConfiguration getConfig() {
         return this.statistics;
     }
 

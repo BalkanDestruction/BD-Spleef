@@ -20,66 +20,12 @@ import java.util.Objects;
 
 public class Holograms extends BukkitRunnable {
     private final SpleefPluginV1_13 pl;
-    private Hologram hologram;
     private final HashMap<OfflinePlayer, Long> playerPoints = new HashMap<>();
-    private boolean isRunning = false;
     private final List<Long> intList = Lists.newArrayList();
-
-    @Override
-    public void run() {
-        addPlayers();
-        HashMap<Long, List<OfflinePlayer>> placeAndPlayer = getLeaderBoard();
-        int count = 1, count2 = 5;
-        for(int o = placeAndPlayer.size()-1; o >= 0; o--){
-            StringBuilder name = new StringBuilder("§d-§6" + count + ":,");
-            long i = intList.get(o);
-            if(placeAndPlayer.containsKey(i)) {
-                for (OfflinePlayer p : placeAndPlayer.get(i)) {
-                    if (p != null) {
-                        name.append(", §a").append(p.getName()).append(" §e(§6Wins: ").append(getSpleefPlayer(p).getWins()).append("§e, §6Loses: ").append(getSpleefPlayer(p).getLoses()).append("§e)");
-                    }
-                }
-                name = new StringBuilder(name.toString().replace(",,", ""));
-                SpleefHologramsUpdateEvent shue = new SpleefHologramsUpdateEvent(pl, name.toString(), this);
-                if (!new SpleefAPIEventInvoker(shue).isCancelled()) {
-                    name = new StringBuilder(shue.getLine());
-                    hologram.removeLine(count);
-                    hologram.insertTextLine(count, name.toString());
-                }
-                if (count == 5 || count2 == 1) {
-                    break;
-                }
-                count++;
-                count2--;
-            }
-        }
-        intList.clear();
-    }
-
     private final List<String> nameUsed = Lists.newArrayList();
     private final HashMap<OfflinePlayer, SpleefPlayerStatistics> spleefPlayerHashMap = new HashMap<>();
-
-    private HashMap<Long, List<OfflinePlayer>> getLeaderBoard() {
-        HashMap<Long, List<OfflinePlayer>> pAndP = new HashMap<>();
-        for (OfflinePlayer p : playerPoints.keySet()) {
-            if (!nameUsed.contains(p.getName())) {
-                long lives = playerPoints.get(p);
-                intList.add(lives);
-                if (!pAndP.containsKey(lives)) {
-                    pAndP.put(lives, Lists.newArrayList());
-                }
-                pAndP.get(lives).add(p);
-                nameUsed.add(p.getName());
-            }
-        }
-        Collections.sort(intList);
-        nameUsed.clear();
-        HashMap<Long, List<OfflinePlayer>> placeAndPlayer = new HashMap<>();
-        for (long i : intList) {
-            placeAndPlayer.put(i, pAndP.get(i));
-        }
-        return placeAndPlayer;
-    }
+    private Hologram hologram;
+    private boolean isRunning = false;
 
     public Holograms(SpleefPluginV1_13 spleefPlugin) {
         this.pl = spleefPlugin;
@@ -114,11 +60,64 @@ public class Holograms extends BukkitRunnable {
         this.isRunning = true;
     }
 
-    public void removeLeaderBoard(){
-        if(isRunning){
+    @Override
+    public void run() {
+        addPlayers();
+        HashMap<Long, List<OfflinePlayer>> placeAndPlayer = getLeaderBoard();
+        int count = 1, count2 = 5;
+        for (int o = placeAndPlayer.size() - 1; o >= 0; o--) {
+            StringBuilder name = new StringBuilder("§d-§6" + count + ":,");
+            long i = intList.get(o);
+            if (placeAndPlayer.containsKey(i)) {
+                for (OfflinePlayer p : placeAndPlayer.get(i)) {
+                    if (p != null) {
+                        name.append(", §a").append(p.getName()).append(" §e(§6Wins: ").append(getSpleefPlayer(p).getWins()).append("§e, §6Loses: ").append(getSpleefPlayer(p).getLoses()).append("§e)");
+                    }
+                }
+                name = new StringBuilder(name.toString().replace(",,", ""));
+                SpleefHologramsUpdateEvent shue = new SpleefHologramsUpdateEvent(pl, name.toString(), this);
+                if (!new SpleefAPIEventInvoker(shue).isCancelled()) {
+                    name = new StringBuilder(shue.getLine());
+                    hologram.removeLine(count);
+                    hologram.insertTextLine(count, name.toString());
+                }
+                if (count == 5 || count2 == 1) {
+                    break;
+                }
+                count++;
+                count2--;
+            }
+        }
+        intList.clear();
+    }
+
+    private HashMap<Long, List<OfflinePlayer>> getLeaderBoard() {
+        HashMap<Long, List<OfflinePlayer>> pAndP = new HashMap<>();
+        for (OfflinePlayer p : playerPoints.keySet()) {
+            if (!nameUsed.contains(p.getName())) {
+                long lives = playerPoints.get(p);
+                intList.add(lives);
+                if (!pAndP.containsKey(lives)) {
+                    pAndP.put(lives, Lists.newArrayList());
+                }
+                pAndP.get(lives).add(p);
+                nameUsed.add(p.getName());
+            }
+        }
+        Collections.sort(intList);
+        nameUsed.clear();
+        HashMap<Long, List<OfflinePlayer>> placeAndPlayer = new HashMap<>();
+        for (long i : intList) {
+            placeAndPlayer.put(i, pAndP.get(i));
+        }
+        return placeAndPlayer;
+    }
+
+    public void removeLeaderBoard() {
+        if (isRunning) {
             this.cancel();
         }
-        if(hologram != null){
+        if (hologram != null) {
             hologram.delete();
         }
     }

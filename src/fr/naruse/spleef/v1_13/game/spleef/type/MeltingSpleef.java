@@ -18,15 +18,16 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Random;
 
 public class MeltingSpleef extends Spleef {
+    private final int timeBetweenMelt;
+    private int timeBeforeMelt;
+    private boolean melt = false;
+    private int timeTicks = 0;
+
     public MeltingSpleef(SpleefPluginV1_13 pl, String name, Location spleefLoc, Location spleefSpawn, Location spleefLobby, int min, int max, boolean isOpen) {
         super(pl, SpleefGameMode.MELTING, name, spleefLoc, spleefSpawn, spleefLobby, min, max, isOpen);
         this.timeBeforeMelt = pl.getConfig().getInt("gameMode.decaying.beforeMelt");
         this.timeBetweenMelt = pl.getConfig().getInt("gameMode.decaying.betweenMelt");
     }
-
-    private final int timeBetweenMelt;
-    private int timeBeforeMelt;
-    private boolean melt = false;
 
     @Override
     public void runScheduler() {
@@ -39,26 +40,25 @@ public class MeltingSpleef extends Spleef {
         if (getGame().WAIT) {
             return;
         }
-        if(melt){
+        if (melt) {
             return;
         }
-        if(timeBeforeMelt != 0){
+        if (timeBeforeMelt != 0) {
             timeBeforeMelt--;
-        }else{
+        } else {
             melt = true;
-            sendMessage(getNAME()+" §6"+ Message.THE_MELTING_BEGINS.getMessage());
+            sendMessage(getNAME() + " §6" + Message.THE_MELTING_BEGINS.getMessage());
         }
     }
 
-    private int timeTicks = 0;
     @Override
     public void runTickScheduler() {
-        if(!melt){
+        if (!melt) {
             return;
         }
-        if(getGame().GAME){
+        if (getGame().GAME) {
             timeTicks++;
-            if(timeTicks == timeBetweenMelt){
+            if (timeTicks == timeBetweenMelt) {
                 timeTicks = 0;
                 Block b = getBlocksOfRegionVerif().get(new Random().nextInt(getBlocksOfRegionVerif().size()));
                 getBlocks().add(b);
@@ -70,24 +70,24 @@ public class MeltingSpleef extends Spleef {
 
     @Override
     public void removePlayer(Player p) {
-        if(getPlayerInGame().contains(p)){
+        if (getPlayerInGame().contains(p)) {
             getPlayerInGame().remove(p);
             p.teleport(getSpleefSpawn());
             p.getInventory().clear();
             updateSigns();
             updateScoreboards();
-            if(getMain().getConfig().getBoolean("scoreboard.enable")){
+            if (getMain().getConfig().getBoolean("scoreboard.enable")) {
                 p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
             }
-            if(getGame().GAME){
+            if (getGame().GAME) {
                 getMain().wagers.loseWager(p);
-            }else{
-                if(getMain().wagers.hasWager(p)){
+            } else {
+                if (getMain().wagers.hasWager(p)) {
                     Player player = getMain().wagers.getWagerOfPlayer().get(p).getOtherPlayer(p);
-                    if(!getPlayerInGame().contains(player)){
+                    if (!getPlayerInGame().contains(player)) {
                         return;
                     }
-                    sendMessage(getNAME()+" §6"+player.getName()+"§c "+ Message.LEAVED_THE_GAME.getMessage());
+                    sendMessage(getNAME() + " §6" + player.getName() + "§c " + Message.LEAVED_THE_GAME.getMessage());
                     getMain().spleefs.removePlayer(player);
                 }
             }
@@ -96,14 +96,14 @@ public class MeltingSpleef extends Spleef {
 
     @Override
     public boolean addPlayer(Player p) {
-        if(!getPlayerInGame().contains(p)){
-            if(getGame().GAME){
-                p.sendMessage(getNAME()+"§c "+ Message.IN_GAME.getMessage());
+        if (!getPlayerInGame().contains(p)) {
+            if (getGame().GAME) {
+                p.sendMessage(getNAME() + "§c " + Message.IN_GAME.getMessage());
                 return false;
             }
-            if(!p.isOp()){
-                if(getPlayerInGame().size() >= getMax()){
-                    p.sendMessage(getNAME()+"§c "+ Message.FULL_GAME.getMessage());
+            if (!p.isOp()) {
+                if (getPlayerInGame().size() >= getMax()) {
+                    p.sendMessage(getNAME() + "§c " + Message.FULL_GAME.getMessage());
                     return false;
                 }
             }
@@ -113,24 +113,24 @@ public class MeltingSpleef extends Spleef {
             p.getInventory().clear();
             ItemStack item = new ItemStack(Material.MAGMA_CREAM);
             ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName("§c"+ Message.LEAVE_THIS_GAME.getMessage());
+            meta.setDisplayName("§c" + Message.LEAVE_THIS_GAME.getMessage());
             item.setItemMeta(meta);
-            if(allowMagmaCream()){
+            if (allowMagmaCream()) {
                 p.getInventory().setItem(8, item);
             }
-            sendMessage(getNAME()+" §6"+p.getName()+"§a "+ Message.JOINED_THE_GAME.getMessage());
+            sendMessage(getNAME() + " §6" + p.getName() + "§a " + Message.JOINED_THE_GAME.getMessage());
             updateSigns();
             updateScoreboards();
-            if(getMain().getConfig().getBoolean("scoreboard.enable")){
+            if (getMain().getConfig().getBoolean("scoreboard.enable")) {
                 p.setScoreboard(getScoreboardSign().getScoreboard());
             }
             p.getInventory().setHeldItemSlot(1);
-            if(getMain().wagers.getWagerOfPlayer().containsKey(p)){
-                Wager wager =  getMain().wagers.getWagerOfPlayer().get(p);
-                if(!getPlayerInGame().contains(wager.getPlayer1())){
+            if (getMain().wagers.getWagerOfPlayer().containsKey(p)) {
+                Wager wager = getMain().wagers.getWagerOfPlayer().get(p);
+                if (!getPlayerInGame().contains(wager.getPlayer1())) {
                     getMain().spleefs.addPlayer(wager.getPlayer1(), this);
                 }
-                if(!getPlayerInGame().contains(wager.getPlayer2())){
+                if (!getPlayerInGame().contains(wager.getPlayer2())) {
                     getMain().spleefs.addPlayer(wager.getPlayer2(), this);
                 }
             }
@@ -152,17 +152,17 @@ public class MeltingSpleef extends Spleef {
                 sign.setLine(0, "§c§l[§5" + getName() + "§c§l]");
                 sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_2.getColorTag() + getPlayerInGame().size() + "/" + getMax());
                 if (getPlayerInGame().size() >= getMin()) {
-                    sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_0.getColorTag()+ Message.READY.getMessage());
-                }else{
-                    sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_1.getColorTag()+(getMin()-getPlayerInGame().size())+" "+ Message.MISSING.getMessage());
+                    sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_0.getColorTag() + Message.READY.getMessage());
+                } else {
+                    sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_1.getColorTag() + (getMin() - getPlayerInGame().size()) + " " + Message.MISSING.getMessage());
                 }
-                sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_OTHER.getColorTag()+" "+getGameMode().getName()+" Mode");
+                sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_OTHER.getColorTag() + " " + getGameMode().getName() + " Mode");
                 sign.update();
-            }else if(getGame().GAME){
-                sign.setLine(0, "§c§l[§5"+getName()+"§c§l]");
-                sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_2.getColorTag()+getPlayerInGame().size()+"/"+getMax());
-                sign.setLine(2, Message.SignColorTag.OPEN_GAME_LINE4_NORMAL.getColorTag()+ Message.IN_GAME.getMessage());
-                sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_OTHER.getColorTag()+" "+getGameMode().getName()+" Mode");
+            } else if (getGame().GAME) {
+                sign.setLine(0, "§c§l[§5" + getName() + "§c§l]");
+                sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_2.getColorTag() + getPlayerInGame().size() + "/" + getMax());
+                sign.setLine(2, Message.SignColorTag.OPEN_GAME_LINE4_NORMAL.getColorTag() + Message.IN_GAME.getMessage());
+                sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_OTHER.getColorTag() + " " + getGameMode().getName() + " Mode");
                 sign.update();
             }
         }
@@ -187,10 +187,10 @@ public class MeltingSpleef extends Spleef {
 
     @Override
     public boolean postShowTime(int timeInSecond) {
-        String name = getNAME()+"§6-"+getScoreboardSign().getTimer(timeInSecond)+"§a-"+timeBeforeMelt;
-        if(name.toCharArray().length >= 32){
-            name = getNAME()+"§6 - "+getScoreboardSign().getTimer(timeInSecond);
-            if(name.toCharArray().length >= 32){
+        String name = getNAME() + "§6-" + getScoreboardSign().getTimer(timeInSecond) + "§a-" + timeBeforeMelt;
+        if (name.toCharArray().length >= 32) {
+            name = getNAME() + "§6 - " + getScoreboardSign().getTimer(timeInSecond);
+            if (name.toCharArray().length >= 32) {
                 name = getNAME();
             }
         }

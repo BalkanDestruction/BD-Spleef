@@ -66,13 +66,13 @@ public class Wagers {
         new SpleefAPIEventInvoker(new SpleefWagerLoseEvent.Pre(pl, p, wager));
     }
 
-    public void disable(){
+    public void disable() {
         for (Wager wager : wagers) {
             wager.decline();
         }
     }
 
-    public boolean hasWager(Player p){
+    public boolean hasWager(Player p) {
         return wagerOfPlayer.containsKey(p);
     }
 

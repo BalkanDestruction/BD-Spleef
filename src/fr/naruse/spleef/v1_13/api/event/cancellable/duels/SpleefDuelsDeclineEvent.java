@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 @SpleefCancellable
 public class SpleefDuelsDeclineEvent extends SpleefCancellableWithReasonEvent {
     private final Player player;
+
     public SpleefDuelsDeclineEvent(SpleefPluginV1_13 pl, Player player) {
         super(pl, "SpleefDuelsDeclineEvent");
         this.player = player;

@@ -48,28 +48,28 @@ public class TwoTeamSpleef extends Spleef implements TeamModeSpleef {
             }
         } else if (getGame().GAME) {
             if (redTeam.size() == 0) {
-                Bukkit.broadcastMessage(getNAME() +" §7"+ Message.BLUE_TEAM.getMessage()+" §7" + Message.WINS_THE_GAME.getMessage());
+                Bukkit.broadcastMessage(getNAME() + " §7" + Message.BLUE_TEAM.getMessage() + " §7" + Message.WINS_THE_GAME.getMessage());
                 if (getMain().otherPluginSupport.getVaultPlugin().getEconomy() != null) {
                     if (getMain().getConfig().getInt("rewards.win") != 0) {
-                        for(Player p : blueTeam){
+                        for (Player p : blueTeam) {
                             getMain().otherPluginSupport.getVaultPlugin().getEconomy().depositPlayer(p, getMain().getConfig().getDouble("rewards.win"));
                         }
                     }
                 }
-                for(Player p : redTeam){
+                for (Player p : redTeam) {
                     getMain().wagers.loseWager(p);
                 }
                 restart(false);
-            }else if (blueTeam.size() == 0) {
-                Bukkit.broadcastMessage(getNAME() +" §7"+ Message.RED_TEAM.getMessage()+" §7" + Message.WINS_THE_GAME.getMessage());
+            } else if (blueTeam.size() == 0) {
+                Bukkit.broadcastMessage(getNAME() + " §7" + Message.RED_TEAM.getMessage() + " §7" + Message.WINS_THE_GAME.getMessage());
                 if (getMain().otherPluginSupport.getVaultPlugin().getEconomy() != null) {
                     if (getMain().getConfig().getInt("rewards.win") != 0) {
-                        for(Player p : redTeam){
+                        for (Player p : redTeam) {
                             getMain().otherPluginSupport.getVaultPlugin().getEconomy().depositPlayer(p, getMain().getConfig().getDouble("rewards.win"));
                         }
                     }
                 }
-                for(Player p : blueTeam){
+                for (Player p : blueTeam) {
                     getMain().wagers.loseWager(p);
                 }
                 restart(false);
@@ -111,7 +111,7 @@ public class TwoTeamSpleef extends Spleef implements TeamModeSpleef {
 
     @Override
     public void removePlayer(Player p) {
-        if(getPlayerInGame().contains(p)){
+        if (getPlayerInGame().contains(p)) {
             getPlayerInGame().remove(p);
             p.teleport(getSpleefSpawn());
             p.getInventory().clear();
@@ -119,21 +119,21 @@ public class TwoTeamSpleef extends Spleef implements TeamModeSpleef {
             updateScoreboards();
             getScoreboardSign().getBlueTeam().removePlayer(p);
             getScoreboardSign().getRedTeam().removePlayer(p);
-            if(getMain().getConfig().getBoolean("scoreboard.enable")){
+            if (getMain().getConfig().getBoolean("scoreboard.enable")) {
                 p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
             }
             redTeam.remove(p);
             blueTeam.remove(p);
             p.setGlowing(false);
-            if(getGame().GAME){
+            if (getGame().GAME) {
                 getMain().wagers.loseWager(p);
-            }else{
-                if(getMain().wagers.hasWager(p)){
+            } else {
+                if (getMain().wagers.hasWager(p)) {
                     Player player = getMain().wagers.getWagerOfPlayer().get(p).getOtherPlayer(p);
-                    if(!getPlayerInGame().contains(player)){
+                    if (!getPlayerInGame().contains(player)) {
                         return;
                     }
-                    sendMessage(getNAME()+" §6"+player.getName()+"§c "+ Message.LEAVED_THE_GAME.getMessage());
+                    sendMessage(getNAME() + " §6" + player.getName() + "§c " + Message.LEAVED_THE_GAME.getMessage());
                     getMain().spleefs.removePlayer(player);
                 }
             }
@@ -142,14 +142,14 @@ public class TwoTeamSpleef extends Spleef implements TeamModeSpleef {
 
     @Override
     public boolean addPlayer(Player p) {
-        if(!getPlayerInGame().contains(p)){
-            if(getGame().GAME){
-                p.sendMessage(getNAME()+"§c "+ Message.IN_GAME.getMessage());
+        if (!getPlayerInGame().contains(p)) {
+            if (getGame().GAME) {
+                p.sendMessage(getNAME() + "§c " + Message.IN_GAME.getMessage());
                 return false;
             }
-            if(!p.isOp()){
-                if(getPlayerInGame().size() >= getMax()){
-                    p.sendMessage(getNAME()+"§c "+ Message.FULL_GAME.getMessage());
+            if (!p.isOp()) {
+                if (getPlayerInGame().size() >= getMax()) {
+                    p.sendMessage(getNAME() + "§c " + Message.FULL_GAME.getMessage());
                     return false;
                 }
             }
@@ -159,24 +159,24 @@ public class TwoTeamSpleef extends Spleef implements TeamModeSpleef {
             p.getInventory().clear();
             ItemStack item = new ItemStack(Material.MAGMA_CREAM);
             ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName("§c"+ Message.LEAVE_THIS_GAME.getMessage());
+            meta.setDisplayName("§c" + Message.LEAVE_THIS_GAME.getMessage());
             item.setItemMeta(meta);
-            if(allowMagmaCream()){
+            if (allowMagmaCream()) {
                 p.getInventory().setItem(8, item);
             }
-            sendMessage(getNAME()+" §6"+p.getName()+"§a "+ Message.JOINED_THE_GAME.getMessage());
+            sendMessage(getNAME() + " §6" + p.getName() + "§a " + Message.JOINED_THE_GAME.getMessage());
             updateSigns();
             updateScoreboards();
-            if(getMain().getConfig().getBoolean("scoreboard.enable")){
+            if (getMain().getConfig().getBoolean("scoreboard.enable")) {
                 p.setScoreboard(getScoreboardSign().getScoreboard());
             }
             p.getInventory().setHeldItemSlot(1);
-            if(getMain().wagers.getWagerOfPlayer().containsKey(p)){
-                Wager wager =  getMain().wagers.getWagerOfPlayer().get(p);
-                if(!getPlayerInGame().contains(wager.getPlayer1())){
+            if (getMain().wagers.getWagerOfPlayer().containsKey(p)) {
+                Wager wager = getMain().wagers.getWagerOfPlayer().get(p);
+                if (!getPlayerInGame().contains(wager.getPlayer1())) {
                     getMain().spleefs.addPlayer(wager.getPlayer1(), this);
                 }
-                if(!getPlayerInGame().contains(wager.getPlayer2())){
+                if (!getPlayerInGame().contains(wager.getPlayer2())) {
                     getMain().spleefs.addPlayer(wager.getPlayer2(), this);
                 }
             }
@@ -198,17 +198,17 @@ public class TwoTeamSpleef extends Spleef implements TeamModeSpleef {
                 sign.setLine(0, "§c§l[§5" + getName() + "§c§l]");
                 sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_2.getColorTag() + getPlayerInGame().size() + "/" + getMax());
                 if (getPlayerInGame().size() >= getMin()) {
-                    sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_0.getColorTag()+ Message.READY.getMessage());
-                }else{
-                    sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_1.getColorTag()+(getMin()-getPlayerInGame().size())+" "+ Message.MISSING.getMessage());
+                    sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_0.getColorTag() + Message.READY.getMessage());
+                } else {
+                    sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_1.getColorTag() + (getMin() - getPlayerInGame().size()) + " " + Message.MISSING.getMessage());
                 }
-                sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_OTHER.getColorTag()+" "+getGameMode().getName()+" Mode");
+                sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_OTHER.getColorTag() + " " + getGameMode().getName() + " Mode");
                 sign.update();
-            }else if(getGame().GAME){
-                sign.setLine(0, "§c§l[§5"+getName()+"§c§l]");
-                sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_2.getColorTag()+getPlayerInGame().size()+"/"+getMax());
-                sign.setLine(2, Message.SignColorTag.OPEN_GAME_LINE4_NORMAL.getColorTag()+ Message.IN_GAME.getMessage());
-                sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_OTHER.getColorTag()+" "+getGameMode().getName()+" Mode");
+            } else if (getGame().GAME) {
+                sign.setLine(0, "§c§l[§5" + getName() + "§c§l]");
+                sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_2.getColorTag() + getPlayerInGame().size() + "/" + getMax());
+                sign.setLine(2, Message.SignColorTag.OPEN_GAME_LINE4_NORMAL.getColorTag() + Message.IN_GAME.getMessage());
+                sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_OTHER.getColorTag() + " " + getGameMode().getName() + " Mode");
                 sign.update();
             }
         }
@@ -218,7 +218,7 @@ public class TwoTeamSpleef extends Spleef implements TeamModeSpleef {
     public void start() {
         this.runNormalStart();
         boolean reverse = false;
-        for(Player p : getPlayerInGame()){
+        for (Player p : getPlayerInGame()) {
             if (reverse) {
                 getScoreboardSign().getBlueTeam().addPlayer(p);
                 p.setVelocity(new Vector(1.5F, 0.5F, 1.5F));
@@ -238,7 +238,7 @@ public class TwoTeamSpleef extends Spleef implements TeamModeSpleef {
     @Override
     public void restart(boolean notOnDisable) {
         this.runNormalRestart(notOnDisable);
-        for(List<Player> list : teams){
+        for (List<Player> list : teams) {
             list.clear();
         }
     }
@@ -247,11 +247,11 @@ public class TwoTeamSpleef extends Spleef implements TeamModeSpleef {
     public void updateScoreboards() {
         getScoreboardSign().clearLines();
         int count = 0;
-        for(Player p : getPlayerInGame()){
-            if(redTeam.contains(p)){
-                getScoreboardSign().setLine(count, "§c"+p.getName());
-            }else{
-                getScoreboardSign().setLine(count, "§3"+p.getName());
+        for (Player p : getPlayerInGame()) {
+            if (redTeam.contains(p)) {
+                getScoreboardSign().setLine(count, "§c" + p.getName());
+            } else {
+                getScoreboardSign().setLine(count, "§3" + p.getName());
             }
             count++;
         }

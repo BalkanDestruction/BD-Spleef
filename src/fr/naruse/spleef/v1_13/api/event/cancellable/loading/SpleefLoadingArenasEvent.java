@@ -16,6 +16,7 @@ public class SpleefLoadingArenasEvent extends SpleefCancellableEvent {
     @SpleefCancellable
     public static class Pre extends SpleefLoadingArenasEvent {
         private final String name;
+
         public Pre(SpleefPluginV1_13 pl, String name) {
             super(pl, "SpleefLoadingArenasEvent.Pre");
             this.name = name;

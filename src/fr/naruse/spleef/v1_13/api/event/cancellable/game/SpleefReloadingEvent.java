@@ -16,6 +16,7 @@ public class SpleefReloadingEvent extends SpleefCancellableEvent {
     @SpleefCancellable
     public static class Pre extends SpleefReloadingEvent {
         private final Spleef spleef;
+
         public Pre(SpleefPluginV1_13 pl, Spleef spleef) {
             super(pl, "SpleefReloadingEvent.Pre");
             this.spleef = spleef;
@@ -28,6 +29,7 @@ public class SpleefReloadingEvent extends SpleefCancellableEvent {
 
     public static class Post extends SpleefReloadingEvent {
         private final List<Spleef> spleefs;
+
         public Post(SpleefPluginV1_13 pl, List<Spleef> spleefs) {
             super(pl, "SpleefReloadingEvent.Post");
             this.spleefs = spleefs;

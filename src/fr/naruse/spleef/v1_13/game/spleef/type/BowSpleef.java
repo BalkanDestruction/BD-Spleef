@@ -31,6 +31,9 @@ import java.util.Objects;
 import java.util.Random;
 
 public class BowSpleef extends Spleef implements Listener {
+    private final HashMap<Block, Material> materialHashMap = new HashMap<>();
+    private final HashMap<Block, Byte> dataHashMap = new HashMap<>();
+
     public BowSpleef(SpleefPluginV1_13 pl, String name, Location spleefLoc, Location spleefSpawn, Location spleefLobby, int min, int max, boolean isOpen) {
         super(pl, SpleefGameMode.BOW, name, spleefLoc, spleefSpawn, spleefLobby, min, max, isOpen);
         Bukkit.getPluginManager().registerEvents(this, getMain().getSpleefPlugin());
@@ -48,13 +51,13 @@ public class BowSpleef extends Spleef implements Listener {
 
     @Override
     public void removePlayer(Player p) {
-        if(getPlayerInGame().contains(p)){
+        if (getPlayerInGame().contains(p)) {
             getPlayerInGame().remove(p);
             p.teleport(getSpleefSpawn());
             p.getInventory().clear();
             updateSigns();
             updateScoreboards();
-            if(getMain().getConfig().getBoolean("scoreboard.enable")){
+            if (getMain().getConfig().getBoolean("scoreboard.enable")) {
                 p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
             }
         }
@@ -62,14 +65,14 @@ public class BowSpleef extends Spleef implements Listener {
 
     @Override
     public boolean addPlayer(Player p) {
-        if(!getPlayerInGame().contains(p)){
-            if(getGame().GAME){
-                p.sendMessage(getNAME()+"§c "+ Message.IN_GAME.getMessage());
+        if (!getPlayerInGame().contains(p)) {
+            if (getGame().GAME) {
+                p.sendMessage(getNAME() + "§c " + Message.IN_GAME.getMessage());
                 return false;
             }
-            if(!p.isOp()){
-                if(getPlayerInGame().size() >= getMax()){
-                    p.sendMessage(getNAME()+"§c "+ Message.FULL_GAME.getMessage());
+            if (!p.isOp()) {
+                if (getPlayerInGame().size() >= getMax()) {
+                    p.sendMessage(getNAME() + "§c " + Message.FULL_GAME.getMessage());
                     return false;
                 }
             }
@@ -79,24 +82,24 @@ public class BowSpleef extends Spleef implements Listener {
             p.getInventory().clear();
             ItemStack item = new ItemStack(Material.MAGMA_CREAM);
             ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName("§c"+ Message.LEAVE_THIS_GAME.getMessage());
+            meta.setDisplayName("§c" + Message.LEAVE_THIS_GAME.getMessage());
             item.setItemMeta(meta);
-            if(allowMagmaCream()){
+            if (allowMagmaCream()) {
                 p.getInventory().setItem(8, item);
             }
-            sendMessage(getNAME()+" §6"+p.getName()+"§a "+ Message.JOINED_THE_GAME.getMessage());
+            sendMessage(getNAME() + " §6" + p.getName() + "§a " + Message.JOINED_THE_GAME.getMessage());
             updateSigns();
             updateScoreboards();
-            if(getMain().getConfig().getBoolean("scoreboard.enable")){
+            if (getMain().getConfig().getBoolean("scoreboard.enable")) {
                 p.setScoreboard(getScoreboardSign().getScoreboard());
             }
             p.getInventory().setHeldItemSlot(1);
-            if(getMain().wagers.getWagerOfPlayer().containsKey(p)){
-                Wager wager =  getMain().wagers.getWagerOfPlayer().get(p);
-                if(!getPlayerInGame().contains(wager.getPlayer1())){
+            if (getMain().wagers.getWagerOfPlayer().containsKey(p)) {
+                Wager wager = getMain().wagers.getWagerOfPlayer().get(p);
+                if (!getPlayerInGame().contains(wager.getPlayer1())) {
                     getMain().spleefs.addPlayer(wager.getPlayer1(), this);
                 }
-                if(!getPlayerInGame().contains(wager.getPlayer2())){
+                if (!getPlayerInGame().contains(wager.getPlayer2())) {
                     getMain().spleefs.addPlayer(wager.getPlayer2(), this);
                 }
             }
@@ -118,11 +121,11 @@ public class BowSpleef extends Spleef implements Listener {
                 sign.setLine(0, "§c§l[§5" + getName() + "§c§l]");
                 sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_2.getColorTag() + getPlayerInGame().size() + "/" + getMax());
                 if (getPlayerInGame().size() >= getMin()) {
-                    sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_0.getColorTag()+ Message.READY.getMessage());
-                }else{
-                    sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_1.getColorTag()+(getMin()-getPlayerInGame().size())+" "+ Message.MISSING.getMessage());
+                    sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_0.getColorTag() + Message.READY.getMessage());
+                } else {
+                    sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_1.getColorTag() + (getMin() - getPlayerInGame().size()) + " " + Message.MISSING.getMessage());
                 }
-                sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_OTHER.getColorTag()+" "+getGameMode().getName()+" Mode");
+                sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_OTHER.getColorTag() + " " + getGameMode().getName() + " Mode");
                 sign.update();
             } else if (getGame().GAME) {
                 sign.setLine(0, "§c§l[§5" + getName() + "§c§l]");
@@ -133,8 +136,6 @@ public class BowSpleef extends Spleef implements Listener {
             }
         }
     }
-
-    private final HashMap<Block, Material> materialHashMap = new HashMap<>();
 
     @Override
     public void restart(boolean notOnDisable) {
@@ -186,8 +187,6 @@ public class BowSpleef extends Spleef implements Listener {
         }
     }
 
-    private final HashMap<Block, Byte> dataHashMap = new HashMap<>();
-
     @Override
     public void start() {
         sendMessage(getNAME() + " §a" + Message.GAME_START.getMessage());
@@ -197,9 +196,9 @@ public class BowSpleef extends Spleef implements Listener {
             p.teleport(getSpleefLoc());
             p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 20 * 5, 1, false, false));
             if (new Random().nextBoolean()) {
-                if(new Random().nextBoolean()){
+                if (new Random().nextBoolean()) {
                     p.setVelocity(new Vector(-0.5F, 0.5F, 0.5F));
-                }else{
+                } else {
                     p.setVelocity(new Vector(-0.5F, 0.5F, -0.5F));
                 }
             } else {
@@ -237,15 +236,15 @@ public class BowSpleef extends Spleef implements Listener {
     }
 
     @EventHandler
-    public void blockChange(ProjectileLaunchEvent e){
-        if(!(e.getEntity().getShooter() instanceof Player)){
+    public void blockChange(ProjectileLaunchEvent e) {
+        if (!(e.getEntity().getShooter() instanceof Player)) {
             return;
         }
-        if(!getPlayerInGame().contains(e.getEntity().getShooter())){
+        if (!getPlayerInGame().contains(e.getEntity().getShooter())) {
             return;
         }
         Projectile projectile = e.getEntity();
-        if(!(projectile instanceof Arrow)){
+        if (!(projectile instanceof Arrow)) {
             return;
         }
         BlockIterator iterator = new BlockIterator(e.getEntity().getWorld(), e.getEntity().getLocation().toVector(), e.getEntity().getVelocity().normalize(), 0.0D, 100);

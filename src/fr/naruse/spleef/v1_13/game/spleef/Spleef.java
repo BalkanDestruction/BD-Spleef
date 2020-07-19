@@ -40,14 +40,11 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
     private final SpleefPluginV1_13 pl;
     private final String NAME;
     private final String name;
-    private boolean isOpen;
     private final Location spleefLoc;
     private final Location spleefSpawn;
     private final Location spleefLobby;
     private final List<Sign> signs = Lists.newArrayList();
     private final List<Player> playerInGame = Lists.newArrayList();
-    private int min, max;
-    private int startTimer = 0;
     private final List<Block> blocks = Lists.newArrayList();
     private final List<Block> blocksOfRegionVerif = Lists.newArrayList();
     private final List<Block> blocksOfRegion = Lists.newArrayList();
@@ -60,6 +57,15 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
     private final List<Material> authorizedMaterial = Lists.newArrayList();
     private final HashMap<Player, Integer> restingTime = new HashMap<>();
     private final HashMap<Player, Block> lastBlock = new HashMap<>();
+    private boolean isOpen;
+    private int min, max;
+    private int startTimer = 0;
+    private int time = 0;
+    private int timePerMinute = 0;
+    private int timeInSecond = 0;
+    private Location a;
+    private Location b;
+    private boolean sentFirstCommand = false;
 
     public Spleef(SpleefPluginV1_13 pl, SpleefGameMode gameMode, String name, Location spleefLoc, Location spleefSpawn, Location spleefLobby, int min, int max, boolean isOpen) {
         this.pl = pl;
@@ -74,9 +80,9 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         this.isOpen = isOpen;
         this.scoreboardSign = new ScoreboardSign();
         this.game = new Game();
-        this.NAME = "§c§l[§5"+name+"§c§l]";
+        this.NAME = "§c§l[§5" + name + "§c§l]";
         this.runTaskTimer(pl.getSpleefPlugin(), 1, 1);
-        for(String s : pl.getConfig().getStringList("v1_13.blocks")){
+        for (String s : pl.getConfig().getStringList("v1_13.blocks")) {
             this.authorizedMaterial.add(Material.valueOf(s));
         }
     }
@@ -99,12 +105,6 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
 
     public abstract boolean postShowTime(int timeInSecond);
 
-    private int time = 0;
-    private int timePerMinute = 0;
-    private int timeInSecond = 0;
-    private Location a;
-    private Location b;
-
     @Override
     public void run() {
         for (Player p : playerInGame) {
@@ -117,19 +117,19 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
                     restingTime.put(p, 0);
                     lastBlock.put(p, p.getLocation().getBlock());
                 }
-                if(restingTime.get(p) == 20*getRestingTime()){
-                    p.sendMessage(NAME+" §cHey! §a"+ Message.DONT_STAY_ON_A_BLOCK.getMessage());
+                if (restingTime.get(p) == 20 * getRestingTime()) {
+                    p.sendMessage(NAME + " §cHey! §a" + Message.DONT_STAY_ON_A_BLOCK.getMessage());
                 }
-                if(restingTime.get(p) >= 20*7){
+                if (restingTime.get(p) >= 20 * 7) {
                     restingTime.put(p, 0);
-                    for(int i = 0; i != 3; i++){
-                        for(Block b : Utils.getCircle(p.getLocation().add(0, -1, 0), i)){
-                            if(authorizedMaterial.contains(b.getType())){
+                    for (int i = 0; i != 3; i++) {
+                        for (Block b : Utils.getCircle(p.getLocation().add(0, -1, 0), i)) {
+                            if (authorizedMaterial.contains(b.getType())) {
                                 blocksOfRegionVerif.remove(b);
                                 blocks.add(b);
                                 typeOfLocationHashMap.put(b.getLocation(), b.getType());
                                 b.setType(Material.AIR);
-                                if(pl.getConfig().getBoolean("allow.lightning")){
+                                if (pl.getConfig().getBoolean("allow.lightning")) {
                                     b.getWorld().strikeLightningEffect(b.getLocation());
                                 }
                             }
@@ -138,31 +138,31 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
                 }
             }
         }
-        if(time >= 20){
+        if (time >= 20) {
             time = 0;
 
-            if(!new SpleefAPIEventInvoker(new SpleefArenaSchedulerEvent.Pre(pl, this)).isCancelled()){
+            if (!new SpleefAPIEventInvoker(new SpleefArenaSchedulerEvent.Pre(pl, this)).isCancelled()) {
                 runScheduler();
                 new SpleefAPIEventInvoker(new SpleefArenaSchedulerEvent.Post(pl, this));
             }
 
-            if(game.GAME){
+            if (game.GAME) {
                 timeInSecond++;
-                if(allowShowTime()){
-                    if(postShowTime(timeInSecond)){
-                        scoreboardSign.getObjective().setDisplayName(NAME+" §6- "+scoreboardSign.getTimer(timeInSecond));
+                if (allowShowTime()) {
+                    if (postShowTime(timeInSecond)) {
+                        scoreboardSign.getObjective().setDisplayName(NAME + " §6- " + scoreboardSign.getTimer(timeInSecond));
                     }
                 }
             }
         }
-        if(timePerMinute >= 20*60){
+        if (timePerMinute >= 20 * 60) {
             timePerMinute = 0;
             updateSigns();
         }
         time++;
         timePerMinute++;
         if (getGame().GAME) {
-            if(playerInGame.size() == 0){
+            if (playerInGame.size() == 0) {
                 return;
             }
             for (int i = 0; i < getPlayerInGame().size(); i++) {
@@ -190,7 +190,7 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         runTickScheduler();
     }
 
-    public void runNormalScheduler(){
+    public void runNormalScheduler() {
         if (getGame().WAIT) {
             getScoreboardSign().getObjective().setDisplayName(getNAME() + " §6" + getStartTimer());
             if (getStartTimer() != 0) {
@@ -237,14 +237,14 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         }
     }
 
-    public void sendMessage(String msg){
-        for(Player p : playerInGame){
+    public void sendMessage(String msg) {
+        for (Player p : playerInGame) {
             p.sendMessage(msg);
         }
     }
 
-    public void runNormalJoin(Player p){
-        if(spleefLobby != null){
+    public void runNormalJoin(Player p) {
+        if (spleefLobby != null) {
             p.teleport(spleefLobby);
         }
         lastBlock.put(p, p.getLocation().getBlock());
@@ -268,13 +268,13 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
             if (new Random().nextBoolean()) {
                 if (new Random().nextBoolean()) {
                     p.setVelocity(new Vector(-0.5F, 0.5F, 0.5F));
-                }else{
+                } else {
                     p.setVelocity(new Vector(-0.5F, 0.5F, -0.5F));
                 }
-            }else{
-                if(new Random().nextBoolean()){
+            } else {
+                if (new Random().nextBoolean()) {
                     p.setVelocity(new Vector(-0.5F, 0.5F, -0.5F));
-                }else{
+                } else {
                     p.setVelocity(new Vector(0.5F, 0.5F, -0.5F));
                 }
             }
@@ -309,8 +309,7 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         }, 20 * 5);
     }
 
-    private boolean sentFirstCommand = false;
-    public void runNormalRestart(boolean notOnDisable){
+    public void runNormalRestart(boolean notOnDisable) {
         if (new SpleefAPIEventInvoker(new SpleefRestartsEvent.Pre(pl, this)).isCancelled()) {
             return;
         }
@@ -325,9 +324,9 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         timeInSecond = 0;
         List<Player> list = Lists.newArrayList();
         list.addAll(playerInGame);
-        for(Player p : list){
+        for (Player p : list) {
             pl.spleefs.removePlayer(p);
-            if(!notOnDisable) {
+            if (!notOnDisable) {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(pl.getSpleefPlugin(), () -> {
                     p.setHealth(20);
                     p.setFoodLevel(20);
@@ -350,7 +349,7 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         }
         blocksOfRegionVerif.clear();
         blocksOfRegionVerif.addAll(blocksOfRegion);
-        for(Block b : blocks){
+        for (Block b : blocks) {
             b.setType(typeOfLocationHashMap.getOrDefault(b.getLocation(), Material.SNOW_BLOCK));
         }
         game.WAIT = true;
@@ -359,43 +358,43 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         new SpleefAPIEventInvoker(new SpleefRestartsEvent.Post(pl, this));
     }
 
-    public void updateSigns(){
-        for(Sign sign : signs){
-            if(!new SpleefAPIEventInvoker(new SpleefSignUpdateEvent(pl, this, sign, signs)).isCancelled()){
-                if(!isOpen){
-                    sign.setLine(0, "§c§l[§5"+name+"§c§l]");
+    public void updateSigns() {
+        for (Sign sign : signs) {
+            if (!new SpleefAPIEventInvoker(new SpleefSignUpdateEvent(pl, this, sign, signs)).isCancelled()) {
+                if (!isOpen) {
+                    sign.setLine(0, "§c§l[§5" + name + "§c§l]");
                     sign.setLine(1, "");
-                    sign.setLine(2, Message.SignColorTag.CLOSE_LINE2.getColorTag()+ Message.SPLEEF_CLOSED.getMessage());
+                    sign.setLine(2, Message.SignColorTag.CLOSE_LINE2.getColorTag() + Message.SPLEEF_CLOSED.getMessage());
                     sign.setLine(3, "");
                     sign.update();
-                }else{
-                    if(game.WAIT){
-                        sign.setLine(0, "§c§l[§5"+name+"§c§l]");
-                        if(playerInGame.size() >= (max/4)*3){
-                            sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_0.getColorTag()+playerInGame.size()+"/"+max);
-                        }else if(playerInGame.size() >= max/2){
-                            sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_1.getColorTag()+playerInGame.size()+"/"+max);
-                        }else {
-                            sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_2.getColorTag()+playerInGame.size()+"/"+max);
+                } else {
+                    if (game.WAIT) {
+                        sign.setLine(0, "§c§l[§5" + name + "§c§l]");
+                        if (playerInGame.size() >= (max / 4) * 3) {
+                            sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_0.getColorTag() + playerInGame.size() + "/" + max);
+                        } else if (playerInGame.size() >= max / 2) {
+                            sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_1.getColorTag() + playerInGame.size() + "/" + max);
+                        } else {
+                            sign.setLine(1, Message.SignColorTag.OPEN_WAIT_LINE2_2.getColorTag() + playerInGame.size() + "/" + max);
                         }
-                        if(playerInGame.size() >= min){
-                            sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_0.getColorTag()+ Message.READY.getMessage());
-                        }else{
-                            sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_1.getColorTag()+(min-playerInGame.size())+" "+ Message.MISSING.getMessage());
+                        if (playerInGame.size() >= min) {
+                            sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_0.getColorTag() + Message.READY.getMessage());
+                        } else {
+                            sign.setLine(2, Message.SignColorTag.OPEN_WAIT_LINE3_1.getColorTag() + (min - playerInGame.size()) + " " + Message.MISSING.getMessage());
                         }
-                        sign.setLine(3, Message.SignColorTag.OPEN_WAIT_LINE4.getColorTag()+ Message.JOIN.getMessage());
+                        sign.setLine(3, Message.SignColorTag.OPEN_WAIT_LINE4.getColorTag() + Message.JOIN.getMessage());
                         sign.update();
-                    }else if(game.GAME){
-                        sign.setLine(0, "§c§l[§5"+name+"§c§l]");
-                        if(playerInGame.size() >= (max/4)*3){
-                            sign.setLine(1, Message.SignColorTag.OPEN_GAME_LINE2_0.getColorTag()+playerInGame.size()+"/"+max);
-                        }else if(playerInGame.size() >= max/2){
-                            sign.setLine(1, Message.SignColorTag.OPEN_GAME_LINE2_1.getColorTag()+playerInGame.size()+"/"+max);
-                        }else {
-                            sign.setLine(1, Message.SignColorTag.OPEN_GAME_LINE2_2.getColorTag()+playerInGame.size()+"/"+max);
+                    } else if (game.GAME) {
+                        sign.setLine(0, "§c§l[§5" + name + "§c§l]");
+                        if (playerInGame.size() >= (max / 4) * 3) {
+                            sign.setLine(1, Message.SignColorTag.OPEN_GAME_LINE2_0.getColorTag() + playerInGame.size() + "/" + max);
+                        } else if (playerInGame.size() >= max / 2) {
+                            sign.setLine(1, Message.SignColorTag.OPEN_GAME_LINE2_1.getColorTag() + playerInGame.size() + "/" + max);
+                        } else {
+                            sign.setLine(1, Message.SignColorTag.OPEN_GAME_LINE2_2.getColorTag() + playerInGame.size() + "/" + max);
                         }
                         sign.setLine(2, "");
-                        sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_NORMAL.getColorTag()+ Message.IN_GAME.getMessage());
+                        sign.setLine(3, Message.SignColorTag.OPEN_GAME_LINE4_NORMAL.getColorTag() + Message.IN_GAME.getMessage());
                         sign.update();
                     }
                 }
@@ -404,15 +403,15 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         }
     }
 
-    public void stop(){
-        if(!new SpleefAPIEventInvoker(new SpleefMovementEvent.Pre(pl, this, SpleefMovementType.STOPPING)).isCancelled()){
+    public void stop() {
+        if (!new SpleefAPIEventInvoker(new SpleefMovementEvent.Pre(pl, this, SpleefMovementType.STOPPING)).isCancelled()) {
             this.cancel();
             new SpleefAPIEventInvoker(new SpleefMovementEvent.Post(pl, this, SpleefMovementType.STOPPING));
         }
     }
 
-    public void open(){
-        if(!new SpleefAPIEventInvoker(new SpleefMovementEvent.Pre(pl, this, SpleefMovementType.OPENING)).isCancelled()){
+    public void open() {
+        if (!new SpleefAPIEventInvoker(new SpleefMovementEvent.Pre(pl, this, SpleefMovementType.OPENING)).isCancelled()) {
             isOpen = true;
             updateSigns();
             new SpleefAPIEventInvoker(new SpleefMovementEvent.Post(pl, this, SpleefMovementType.OPENING));
@@ -420,22 +419,24 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
     }
 
     public void onDisable(boolean notOnDisable) {
-        if(!notOnDisable) if(new SpleefAPIEventInvoker(new SpleefMovementEvent.Pre(pl, this, SpleefMovementType.DISABLING)).isCancelled()){
-            return;
-        }
+        if (!notOnDisable)
+            if (new SpleefAPIEventInvoker(new SpleefMovementEvent.Pre(pl, this, SpleefMovementType.DISABLING)).isCancelled()) {
+                return;
+            }
         restart(notOnDisable);
-        for(Sign sign : signs){
+        for (Sign sign : signs) {
             sign.setLine(0, NAME);
             sign.setLine(1, "");
             sign.setLine(2, "");
             sign.setLine(3, "");
             sign.update();
         }
-        if(!notOnDisable) new SpleefAPIEventInvoker(new SpleefMovementEvent.Post(pl, this, SpleefMovementType.CLOSING));
+        if (!notOnDisable)
+            new SpleefAPIEventInvoker(new SpleefMovementEvent.Post(pl, this, SpleefMovementType.CLOSING));
     }
 
-    public void close(){
-        if(new SpleefAPIEventInvoker(new SpleefMovementEvent.Pre(pl, this, SpleefMovementType.CLOSING)).isCancelled()){
+    public void close() {
+        if (new SpleefAPIEventInvoker(new SpleefMovementEvent.Pre(pl, this, SpleefMovementType.CLOSING)).isCancelled()) {
             return;
         }
         isOpen = false;
@@ -448,13 +449,13 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
     }
 
     public void registerNewSigns(World world) {
-        for(Chunk c : world.getLoadedChunks()){
-            for(BlockState state : c.getTileEntities()){
-                if(state instanceof Sign){
+        for (Chunk c : world.getLoadedChunks()) {
+            for (BlockState state : c.getTileEntities()) {
+                if (state instanceof Sign) {
                     Sign sign = (Sign) state;
-                    if(sign.getLine(0).equalsIgnoreCase(NAME)){
-                        if(!signs.contains(sign)){
-                            if(!new SpleefAPIEventInvoker(new SpleefRegisteringSignEvent(pl, this, sign)).isCancelled()){
+                    if (sign.getLine(0).equalsIgnoreCase(NAME)) {
+                        if (!signs.contains(sign)) {
+                            if (!new SpleefAPIEventInvoker(new SpleefRegisteringSignEvent(pl, this, sign)).isCancelled()) {
                                 signs.add(sign);
                             }
                         }
@@ -472,28 +473,28 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
     public void runNormalUpdateScoreboards() {
         scoreboardSign.clearLines();
         int count = 0;
-        for(Player p : playerInGame){
-            scoreboardSign.setLine(count, "§3"+p.getName());
+        for (Player p : playerInGame) {
+            scoreboardSign.setLine(count, "§3" + p.getName());
             count++;
         }
     }
 
-    public Spleef buildRegion(Location a, Location b){
-        if(a == null || b == null){
+    public Spleef buildRegion(Location a, Location b) {
+        if (a == null || b == null) {
             return this;
         }
         this.a = a;
         this.b = b;
         int size = 0;
-        for(Block block : blocksFromTwoPoints(a, b)){
-            if(authorizedMaterial.contains(block.getType())){
+        for (Block block : blocksFromTwoPoints(a, b)) {
+            if (authorizedMaterial.contains(block.getType())) {
                 blocksOfRegionVerif.add(block);
                 blocksOfRegion.add(block);
                 typeOfLocationHashMap.put(block.getLocation(), block.getType());
                 size++;
             }
         }
-        Bukkit.getConsoleSender().sendMessage(Message.SPLEEF.getMessage()+" §aRegion built for "+name+". §7("+size+" blocks found)");
+        Bukkit.getConsoleSender().sendMessage(Message.SPLEEF.getMessage() + " §aRegion built for " + name + ". §7(" + size + " blocks found)");
         return this;
     }
 
@@ -517,10 +518,10 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
     }
 
     @EventHandler
-    public void damage(EntityDamageEvent e){
-        if(e.getEntity() instanceof Player){
+    public void damage(EntityDamageEvent e) {
+        if (e.getEntity() instanceof Player) {
             Player p = (Player) e.getEntity();
-            if(playerInGame.contains(p)){
+            if (playerInGame.contains(p)) {
                 e.setCancelled(true);
                 if (game.WAIT) {
                     e.setCancelled(true);
@@ -534,48 +535,48 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
     }
 
     @EventHandler
-    public void damager(EntityDamageByEntityEvent e){
-        if(e.getEntity() instanceof Player){
+    public void damager(EntityDamageByEntityEvent e) {
+        if (e.getEntity() instanceof Player) {
             Player p = (Player) e.getEntity();
-            if(playerInGame.contains(p)){
+            if (playerInGame.contains(p)) {
                 e.setCancelled(true);
             }
         }
     }
 
     @EventHandler
-    public void breakBlock(BlockBreakEvent e){
+    public void breakBlock(BlockBreakEvent e) {
         Player p = e.getPlayer();
-        if(getPlayerInGame().contains(p) && gameMode == SpleefGameMode.SPLEGG){
+        if (getPlayerInGame().contains(p) && gameMode == SpleefGameMode.SPLEGG) {
             e.setCancelled(true);
             return;
         }
-        if(blocksOfRegionVerif.contains(e.getBlock())){
-            if(!playerInGame.contains(p)){
+        if (blocksOfRegionVerif.contains(e.getBlock())) {
+            if (!playerInGame.contains(p)) {
                 e.setCancelled(true);
             }
         }
-        if(!playerInGame.contains(p)){
+        if (!playerInGame.contains(p)) {
             return;
         }
-        if(authorizedMaterial.contains(e.getBlock().getType()) && game.GAME){
-            if(new SpleefAPIEventInvoker(new SpleefBreakSnowEvent(pl, this, p, e.getBlock())).isCancelled()){
+        if (authorizedMaterial.contains(e.getBlock().getType()) && game.GAME) {
+            if (new SpleefAPIEventInvoker(new SpleefBreakSnowEvent(pl, this, p, e.getBlock())).isCancelled()) {
                 e.setCancelled(true);
-            }else{
+            } else {
                 blocks.add(e.getBlock());
                 blocksOfRegionVerif.remove(e.getBlock());
                 e.setCancelled(false);
-                if(allowSnowballs()){
+                if (allowSnowballs()) {
                     p.getInventory().addItem(new ItemStack(Material.SNOWBALL, 4));
                 }
             }
-        }else{
+        } else {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void item(ItemSpawnEvent e){
+    public void item(ItemSpawnEvent e) {
         if (e.getEntity().getItemStack().getType() == Material.SNOWBALL) {
             if (game.GAME) {
                 if (blocks.contains(e.getEntity().getLocation().getBlock())) {
@@ -586,12 +587,12 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
     }
 
     @EventHandler
-    public void interact(PlayerInteractEvent e){
+    public void interact(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        if(!playerInGame.contains(p)){
+        if (!playerInGame.contains(p)) {
             return;
         }
-        if(e.getClickedBlock() != null && e.getItem() != null){
+        if (e.getClickedBlock() != null && e.getItem() != null) {
             if (e.getItem().getType() == Material.DIAMOND_SHOVEL || e.getItem().getType() == Material.GOLDEN_SHOVEL)
                 if (e.getClickedBlock().getType() != Material.SNOW_BLOCK) {
                     if (authorizedMaterial.contains(e.getClickedBlock().getType()) && game.GAME) {
@@ -603,13 +604,13 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
                             if (allowSnowballs()) {
                                 p.getInventory().addItem(new ItemStack(Material.SNOWBALL));
                             }
+                        }
+                    } else {
+                        e.setCancelled(true);
                     }
-                }else{
-                    e.setCancelled(true);
                 }
-            }
         }
-        if(e.getItem() == null){
+        if (e.getItem() == null) {
             return;
         }
         if (e.getItem().getType() == Material.MAGMA_CREAM) {
@@ -635,17 +636,17 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
     }
 
     @EventHandler
-    public void drop(PlayerDropItemEvent e){
-        if(playerInGame.contains(e.getPlayer())){
+    public void drop(PlayerDropItemEvent e) {
+        if (playerInGame.contains(e.getPlayer())) {
             e.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void quit(PlayerQuitEvent e){
+    public void quit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        if(playerInGame.contains(p)){
-            if(pl.spleefs.hasSpleefPlayer(p)) {
+        if (playerInGame.contains(p)) {
+            if (pl.spleefs.hasSpleefPlayer(p)) {
                 SpleefPlayer spleefPlayer = pl.spleefs.getSpleefPlayer(p);
                 spleefPlayer.setPlayerInventory();
             }
@@ -654,20 +655,20 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
     }
 
     @EventHandler
-    public void hitEvent(ProjectileHitEvent e){
-        if(!pl.getConfig().getBoolean("allow.snowBalls")){
+    public void hitEvent(ProjectileHitEvent e) {
+        if (!pl.getConfig().getBoolean("allow.snowBalls")) {
             return;
         }
-        if(e.getHitEntity() != null){
-            if(e.getHitEntity() instanceof Player && e.getEntity().getShooter() instanceof Player){
-                if(playerInGame.contains(e.getHitEntity())){
+        if (e.getHitEntity() != null) {
+            if (e.getHitEntity() instanceof Player && e.getEntity().getShooter() instanceof Player) {
+                if (playerInGame.contains(e.getHitEntity())) {
                     e.getHitEntity().setVelocity(genVector(((Player) e.getEntity().getShooter()).getLocation(), e.getHitEntity().getLocation()).multiply(0.5));
                 }
             }
         }
-        if(e.getHitBlock() != null && e.getEntity().getShooter() instanceof Player){
-            if(authorizedMaterial.contains(e.getHitBlock().getType()) && game.GAME){
-                if(!new SpleefAPIEventInvoker(new SpleefBreakSnowEvent(pl, this, (Player) e.getEntity().getShooter(), e.getHitBlock())).isCancelled()){
+        if (e.getHitBlock() != null && e.getEntity().getShooter() instanceof Player) {
+            if (authorizedMaterial.contains(e.getHitBlock().getType()) && game.GAME) {
+                if (!new SpleefAPIEventInvoker(new SpleefBreakSnowEvent(pl, this, (Player) e.getEntity().getShooter(), e.getHitBlock())).isCancelled()) {
                     blocks.add(e.getHitBlock());
                     blocksOfRegionVerif.remove(e.getHitBlock());
                     typeOfLocationHashMap.put(e.getHitBlock().getLocation(), e.getHitBlock().getType());
@@ -689,9 +690,9 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         return new Vector(x, z, y);
     }
 
-    public void setSpectator(Player p){
-        if(allowSpectator()){
-            if(playerInGame.size() == 0){
+    public void setSpectator(Player p) {
+        if (allowSpectator()) {
+            if (playerInGame.size() == 0) {
                 return;
             }
             spectators.add(p);
@@ -700,7 +701,7 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         }
     }
 
-    public void setTimeInSecond(int time){
+    public void setTimeInSecond(int time) {
         timeInSecond = time;
     }
 
@@ -724,11 +725,11 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         return pl.getConfig().getBoolean("allow.spectator");
     }
 
-    public int getOriginalStartTimer(){
+    public int getOriginalStartTimer() {
         return pl.getConfig().getInt("times.wait");
     }
 
-    public int getRestingTime(){
+    public int getRestingTime() {
         return pl.getConfig().getInt("times.resting");
     }
 
@@ -740,7 +741,7 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         return NAME;
     }
 
-    public ScoreboardSign getScoreboardSign(){
+    public ScoreboardSign getScoreboardSign() {
         return this.scoreboardSign;
     }
 
@@ -748,8 +749,16 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
         return startTimer;
     }
 
+    public void setStartTimer(int startTimer) {
+        this.startTimer = startTimer;
+    }
+
     public int getMin() {
         return min;
+    }
+
+    public void setMin(int min) {
+        this.min = min;
     }
 
     public int getMax() {
@@ -758,10 +767,6 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
 
     public void setMax(int max) {
         this.max = max;
-    }
-
-    public void setMin(int min) {
-        this.min = min;
     }
 
     public List<Block> getBlocks() {
@@ -794,10 +799,6 @@ public abstract class Spleef extends BukkitRunnable implements Listener {
 
     public Location getSpleefSpawn() {
         return spleefSpawn;
-    }
-
-    public void setStartTimer(int startTimer){
-       this.startTimer = startTimer;
     }
 
     public List<Player> getPlayerInGame() {

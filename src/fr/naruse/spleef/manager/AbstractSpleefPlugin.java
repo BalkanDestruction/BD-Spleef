@@ -10,9 +10,10 @@ import java.io.InputStream;
 
 public abstract class AbstractSpleefPlugin {
     private final SpleefPlugin spleefPlugin;
-    public AbstractSpleefPlugin(SpleefPlugin spleefPlugin){
+
+    public AbstractSpleefPlugin(SpleefPlugin spleefPlugin) {
         this.spleefPlugin = spleefPlugin;
-        Bukkit.getConsoleSender().sendMessage("§c§l[§3Spleef§c§l] §6AbstractVersion : Using Spigot "+Bukkit.getBukkitVersion()+".");
+        Bukkit.getConsoleSender().sendMessage("§c§l[§3Spleef§c§l] §6AbstractVersion : Using Spigot " + Bukkit.getBukkitVersion() + ".");
     }
 
     public abstract void onEnable();
@@ -21,23 +22,23 @@ public abstract class AbstractSpleefPlugin {
 
     public abstract void onLoad();
 
-    public FileConfiguration getConfig(){
+    public FileConfiguration getConfig() {
         return this.spleefPlugin.getConfig();
     }
 
-    public void saveConfig(){
+    public void saveConfig() {
         this.spleefPlugin.saveConfig();
     }
 
-    public PluginCommand getCommand(String name){
+    public PluginCommand getCommand(String name) {
         return this.spleefPlugin.getCommand(name);
     }
 
-    public File getDataFolder(){
+    public File getDataFolder() {
         return this.spleefPlugin.getDataFolder();
     }
 
-    public InputStream getResource(String name){
+    public InputStream getResource(String name) {
         return this.spleefPlugin.getResource(name);
     }
 

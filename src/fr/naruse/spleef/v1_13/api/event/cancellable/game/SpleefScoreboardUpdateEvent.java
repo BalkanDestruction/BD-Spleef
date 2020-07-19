@@ -7,9 +7,10 @@ import fr.naruse.spleef.v1_13.util.board.ScoreboardSign;
 
 @SpleefCancellable
 public class SpleefScoreboardUpdateEvent extends SpleefCancellableEvent {
+    private final ScoreboardSign scoreboardSign;
     private String line;
     private int score;
-    private final ScoreboardSign scoreboardSign;
+
     public SpleefScoreboardUpdateEvent(SpleefPluginV1_13 pl, String line, int score, ScoreboardSign scoreboardSign) {
         super(pl, "SpleefScoreboardUpdateEvent");
         this.line = line;
@@ -21,19 +22,19 @@ public class SpleefScoreboardUpdateEvent extends SpleefCancellableEvent {
         return line;
     }
 
-    public int getScore() {
-        return score;
-    }
-
-    public ScoreboardSign getScoreboardSign() {
-        return scoreboardSign;
-    }
-
     public void setLine(String line) {
         this.line = line;
     }
 
+    public int getScore() {
+        return score;
+    }
+
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public ScoreboardSign getScoreboardSign() {
+        return scoreboardSign;
     }
 }

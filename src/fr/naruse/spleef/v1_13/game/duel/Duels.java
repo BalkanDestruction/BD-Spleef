@@ -33,67 +33,67 @@ public class Duels implements Listener {
         }
 
         SpleefCancellableWithReasonEvent scwre;
-        if(new SpleefAPIEventInvoker(scwre = new SpleefDuelsInviteEvent(pl, p, target)).isCancelled()){
-            if(scwre.getReason() != null){
-                p.sendMessage("§c"+scwre.getReason());
-                target.sendMessage("§c"+scwre.getReason());
+        if (new SpleefAPIEventInvoker(scwre = new SpleefDuelsInviteEvent(pl, p, target)).isCancelled()) {
+            if (scwre.getReason() != null) {
+                p.sendMessage("§c" + scwre.getReason());
+                target.sendMessage("§c" + scwre.getReason());
             }
             return false;
         }
 
         inviteOfPlayer.put(p, target);
         receiveOfPlayer.put(target, p);
-        p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.DUEL_SENT.getMessage());
-        target.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.DUEL_RECEIVED_BY.getMessage()+" §6"+p.getName()+"§a.");
+        p.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.DUEL_SENT.getMessage());
+        target.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.DUEL_RECEIVED_BY.getMessage() + " §6" + p.getName() + "§a.");
         return true;
     }
 
-    public void decline(Player p, boolean sendMessage){
+    public void decline(Player p, boolean sendMessage) {
         SpleefCancellableWithReasonEvent scwre;
-        if(new SpleefAPIEventInvoker(scwre = new SpleefDuelsDeclineEvent(pl, p)).isCancelled()){
-            if(scwre.getReason() != null){
-                p.sendMessage("§c"+scwre.getReason());
+        if (new SpleefAPIEventInvoker(scwre = new SpleefDuelsDeclineEvent(pl, p)).isCancelled()) {
+            if (scwre.getReason() != null) {
+                p.sendMessage("§c" + scwre.getReason());
             }
             return;
         }
 
-        if(inviteOfPlayer.containsKey(p)){
-            if(sendMessage){
-                inviteOfPlayer.get(p).sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.DUEL_DECLINED.getMessage());
-                p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.DUEL_DECLINED.getMessage());
+        if (inviteOfPlayer.containsKey(p)) {
+            if (sendMessage) {
+                inviteOfPlayer.get(p).sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.DUEL_DECLINED.getMessage());
+                p.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.DUEL_DECLINED.getMessage());
             }
             receiveOfPlayer.remove(inviteOfPlayer.get(p));
             inviteOfPlayer.remove(p);
             return;
         }
-        if(receiveOfPlayer.containsKey(p)){
-            if(sendMessage){
-                receiveOfPlayer.get(p).sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.DUEL_DECLINED.getMessage());
-                p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.DUEL_DECLINED.getMessage());
+        if (receiveOfPlayer.containsKey(p)) {
+            if (sendMessage) {
+                receiveOfPlayer.get(p).sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.DUEL_DECLINED.getMessage());
+                p.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.DUEL_DECLINED.getMessage());
             }
             inviteOfPlayer.remove(receiveOfPlayer.get(p));
             receiveOfPlayer.remove(p);
             return;
         }
-        if(sendMessage){
-            p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.YOU_DO_NOT_HAVE_A_DUEL.getMessage());
+        if (sendMessage) {
+            p.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.YOU_DO_NOT_HAVE_A_DUEL.getMessage());
         }
     }
 
-    public boolean acceptDuel(Player p){
-        if(!playerHasDuel(p)){
-            p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.YOU_DO_NOT_HAVE_A_DUEL.getMessage());
+    public boolean acceptDuel(Player p) {
+        if (!playerHasDuel(p)) {
+            p.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.YOU_DO_NOT_HAVE_A_DUEL.getMessage());
             return false;
         }
-        if(!receiveOfPlayer.containsKey(p)){
-            p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.YOU_DO_NOT_HAVE_A_DUEL.getMessage());
+        if (!receiveOfPlayer.containsKey(p)) {
+            p.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.YOU_DO_NOT_HAVE_A_DUEL.getMessage());
             return false;
         }
 
         SpleefCancellableWithReasonEvent scwre;
-        if(new SpleefAPIEventInvoker(scwre = new SpleefDuelsAcceptDuelEvent(pl, p)).isCancelled()){
-            if(scwre.getReason() != null){
-                p.sendMessage("§c"+scwre.getReason());
+        if (new SpleefAPIEventInvoker(scwre = new SpleefDuelsAcceptDuelEvent(pl, p)).isCancelled()) {
+            if (scwre.getReason() != null) {
+                p.sendMessage("§c" + scwre.getReason());
             }
             return false;
         }
@@ -101,34 +101,34 @@ public class Duels implements Listener {
         Player target = receiveOfPlayer.get(p);
         playerInDuel.add(p);
         playerInDuel.add(target);
-        p.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.DUEL_ACCEPTED.getMessage());
-        target.sendMessage(Message.SPLEEF.getMessage()+" §a"+ Message.DUEL_ACCEPTED.getMessage());
+        p.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.DUEL_ACCEPTED.getMessage());
+        target.sendMessage(Message.SPLEEF.getMessage() + " §a" + Message.DUEL_ACCEPTED.getMessage());
         return true;
     }
 
-    public boolean duelActive(Player p){
-        if(playerHasDuel(p)){
+    public boolean duelActive(Player p) {
+        if (playerHasDuel(p)) {
             return playerInDuel.contains(p);
         }
         return false;
     }
 
-    public boolean playerHasDuel(Player p){
+    public boolean playerHasDuel(Player p) {
         return inviteOfPlayer.containsKey(p) || receiveOfPlayer.containsKey(p);
     }
 
-    public Player getOtherPlayer(Player p){
-        if(!playerHasDuel(p)){
+    public Player getOtherPlayer(Player p) {
+        if (!playerHasDuel(p)) {
             return null;
         }
-        if(inviteOfPlayer.containsKey(p)){
+        if (inviteOfPlayer.containsKey(p)) {
             return inviteOfPlayer.get(p);
         }
         return receiveOfPlayer.get(p);
     }
 
     @EventHandler
-    public void quit(PlayerQuitEvent e){
+    public void quit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
         decline(p, false);
     }

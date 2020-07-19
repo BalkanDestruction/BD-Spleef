@@ -28,7 +28,7 @@ public class RankingExpansion extends PlaceholderExpansion {
     }
 
     @Override
-    public boolean persist(){
+    public boolean persist() {
         return true;
     }
 
@@ -45,72 +45,72 @@ public class RankingExpansion extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer p, String identifier) {
         //RANK
-        if(identifier.equals("first")){
+        if (identifier.equals("first")) {
             List<OfflinePlayer> players = SpleefHelper.getPlayerRank(1);
-            if(players == null){
+            if (players == null) {
                 return super.onRequest(p, identifier);
             }
             StringBuilder name = new StringBuilder(",");
-            for(OfflinePlayer player : players){
+            for (OfflinePlayer player : players) {
                 name.append(", ").append(player.getName());
             }
             return name.toString().replace(",, ", "");
         }
-        if(identifier.equals("second")){
+        if (identifier.equals("second")) {
             List<OfflinePlayer> players = SpleefHelper.getPlayerRank(2);
-            if(players == null){
+            if (players == null) {
                 return super.onRequest(p, identifier);
             }
             StringBuilder name = new StringBuilder(",");
-            for(OfflinePlayer player : players){
+            for (OfflinePlayer player : players) {
                 name.append(", ").append(player.getName());
             }
             return name.toString().replace(",, ", "");
         }
-        if(identifier.equals("third")){
+        if (identifier.equals("third")) {
             List<OfflinePlayer> players = SpleefHelper.getPlayerRank(3);
-            if(players == null){
+            if (players == null) {
                 return super.onRequest(p, identifier);
             }
             StringBuilder name = new StringBuilder(",");
-            for(OfflinePlayer player : players){
+            for (OfflinePlayer player : players) {
                 name.append(", ").append(player.getName());
             }
             return name.toString().replace(",, ", "");
         }
-        if(identifier.equals("fourth")){
+        if (identifier.equals("fourth")) {
             List<OfflinePlayer> players = SpleefHelper.getPlayerRank(4);
-            if(players == null){
+            if (players == null) {
                 return super.onRequest(p, identifier);
             }
             StringBuilder name = new StringBuilder(",");
-            for(OfflinePlayer player : players){
+            for (OfflinePlayer player : players) {
                 name.append(", ").append(player.getName());
             }
             return name.toString().replace(",, ", "");
         }
-        if(identifier.equals("fifth")){
+        if (identifier.equals("fifth")) {
             List<OfflinePlayer> players = SpleefHelper.getPlayerRank(5);
-            if(players == null){
+            if (players == null) {
                 return super.onRequest(p, identifier);
             }
             StringBuilder name = new StringBuilder(",");
-            for(OfflinePlayer player : players){
+            for (OfflinePlayer player : players) {
                 name.append(", ").append(player.getName());
             }
             return name.toString().replace(",, ", "");
         }
         //WINS
-        if(identifier.equals("wins")){
+        if (identifier.equals("wins")) {
             SpleefPlayerStatistics spleefPlayerStatistics = new SpleefPlayerStatistics((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin(), p.getName());
             spleefPlayerStatistics.refreshStatisticFromConfig();
-            return spleefPlayerStatistics.getWins()+"";
+            return spleefPlayerStatistics.getWins() + "";
         }
         //LOSES
-        if(identifier.equals("loses")){
+        if (identifier.equals("loses")) {
             SpleefPlayerStatistics spleefPlayerStatistics = new SpleefPlayerStatistics((SpleefPluginV1_13) SpleefPlugin.INSTANCE.getSpleefPlugin(), p.getName());
             spleefPlayerStatistics.refreshStatisticFromConfig();
-            return spleefPlayerStatistics.getLoses()+"";
+            return spleefPlayerStatistics.getLoses() + "";
         }
         return null;
     }

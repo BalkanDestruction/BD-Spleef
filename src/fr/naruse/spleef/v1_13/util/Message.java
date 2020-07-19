@@ -95,7 +95,7 @@ public enum Message {
         return msg2;
     }
 
-    public String getEnglishMessage(){
+    public String getEnglishMessage() {
         return msg1;
     }
 

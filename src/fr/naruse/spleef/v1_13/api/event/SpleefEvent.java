@@ -1,4 +1,5 @@
 package fr.naruse.spleef.v1_13.api.event;
+
 import fr.naruse.spleef.manager.SpleefPluginV1_13;
 
 public class SpleefEvent {

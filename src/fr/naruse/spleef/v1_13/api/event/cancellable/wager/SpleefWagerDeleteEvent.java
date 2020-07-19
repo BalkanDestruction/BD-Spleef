@@ -13,6 +13,7 @@ public class SpleefWagerDeleteEvent extends SpleefCancellableEvent {
     @SpleefCancellable
     public static class Pre extends SpleefWagerDeleteEvent {
         private final Wager wager;
+
         public Pre(SpleefPluginV1_13 pl, Wager wager) {
             super(pl, "SpleefWagerDeleteEvent.Pre");
             this.wager = wager;
@@ -25,6 +26,7 @@ public class SpleefWagerDeleteEvent extends SpleefCancellableEvent {
 
     public static class Post extends SpleefWagerDeleteEvent {
         private final Wager wager;
+
         public Post(SpleefPluginV1_13 pl, Wager wager) {
             super(pl, "SpleefWagerDeleteEvent.Post");
             this.wager = wager;

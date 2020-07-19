@@ -17,19 +17,20 @@ public class MessagesConfiguration {
     private final SpleefPluginV1_13 pl;
     private File messagesFile;
     private FileConfiguration messages;
+
     public MessagesConfiguration(SpleefPluginV1_13 spleefPlugin) {
         this.pl = spleefPlugin;
         createConfig(false);
     }
 
-    private void createConfig(boolean empty){
+    private void createConfig(boolean empty) {
         messagesFile = new File(pl.getDataFolder(), "messages.yml");
         messages = new YamlConfiguration();
-        try{
-            if(!messagesFile.exists()){
+        try {
+            if (!messagesFile.exists()) {
                 messagesFile.createNewFile();
             }
-            if(!empty){
+            if (!empty) {
                 Reader defConfigStream;
                 defConfigStream = new InputStreamReader(pl.getResource(langFileName()), StandardCharsets.UTF_8);
                 YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
@@ -39,16 +40,16 @@ public class MessagesConfiguration {
             Bukkit.getConsoleSender().sendMessage("§3[Spleef] §cThere is an error with the configuration Messages.yml. You should perform a reload.");
             e.printStackTrace();
         }
-        try{
+        try {
             messages.load(messagesFile);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         saveConfig();
         Bukkit.getScheduler().scheduleSyncDelayedTask(pl.getSpleefPlugin(), this::setDefault, 20);
     }
 
-    public void saveConfig(){
+    public void saveConfig() {
         try {
             messages.save(messagesFile);
         } catch (IOException e) {
@@ -56,7 +57,7 @@ public class MessagesConfiguration {
         }
     }
 
-    private String langFileName(){
+    private String langFileName() {
         if (Objects.requireNonNull(pl.getConfig().getString("lang")).equalsIgnoreCase("spanish")) {
             return "languages/spanish.yml";
         }
@@ -72,33 +73,33 @@ public class MessagesConfiguration {
         return "languages/english.yml";
     }
 
-    public FileConfiguration getConfig(){
+    public FileConfiguration getConfig() {
         return this.messages;
     }
 
     private void setDefault() {
-        for(Message msg : Message.values()){
-            if(messages.getString(msg.getPath()) == null){
+        for (Message msg : Message.values()) {
+            if (messages.getString(msg.getPath()) == null) {
                 messages.set(msg.getPath(), msg.getEnglishMessage());
-            }else{
+            } else {
                 messages.set(msg.getPath(), messages.getString(msg.getPath()));
             }
         }
-        for(Message.SignColorTag sct : Message.SignColorTag.values()){
-            if(messages.getString(sct.getPath()) == null){
+        for (Message.SignColorTag sct : Message.SignColorTag.values()) {
+            if (messages.getString(sct.getPath()) == null) {
                 messages.set(sct.getPath(), sct.getColorTag());
-            }else{
+            } else {
                 messages.set(sct.getPath(), messages.getString(sct.getPath()));
             }
         }
         saveConfig();
     }
 
-    public void clearConfiguration(){
+    public void clearConfiguration() {
         messagesFile.delete();
     }
 
-    public void generateConfig(boolean empty){
+    public void generateConfig(boolean empty) {
         createConfig(empty);
     }
 }

@@ -8,7 +8,8 @@ import static org.bukkit.Bukkit.getServer;
 
 public class VaultPlugin {
     public static Economy economy = null;
-    public VaultPlugin(){
+
+    public VaultPlugin() {
         this.setupEconomy();
     }
 

@@ -10,6 +10,7 @@ public enum SpleefGameMode {
     MELTING("Melting"),
     ;
     private final String name;
+
     SpleefGameMode(String team) {
         this.name = team;
     }

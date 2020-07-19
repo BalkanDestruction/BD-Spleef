@@ -7,8 +7,9 @@ import fr.naruse.spleef.v1_13.util.board.Holograms;
 
 @SpleefCancellable
 public class SpleefHologramsUpdateEvent extends SpleefCancellableEvent {
-    private String line;
     private final Holograms holograms;
+    private String line;
+
     public SpleefHologramsUpdateEvent(SpleefPluginV1_13 pl, String line, Holograms holograms) {
         super(pl, "SpleefHologramsUpdateEvent");
         this.line = line;

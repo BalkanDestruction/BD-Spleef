@@ -15,6 +15,9 @@ public class SpleefHelper {
 
 
     private static final HashMap<OfflinePlayer, SpleefPlayerStatistics> spleefPlayerHashMap = new HashMap<>();
+    private static final List<Long> intList = Lists.newArrayList();
+    private static final List<String> nameUsed = Lists.newArrayList();
+    private static final HashMap<OfflinePlayer, Long> playerPoints = new HashMap<>();
 
     private static void addPlayers() {
         for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
@@ -23,10 +26,6 @@ public class SpleefHelper {
             }
         }
     }
-
-    private static final List<Long> intList = Lists.newArrayList();
-    private static final List<String> nameUsed = Lists.newArrayList();
-    private static final HashMap<OfflinePlayer, Long> playerPoints = new HashMap<>();
 
     private static void addPlayerPoints(OfflinePlayer p, long points) {
         playerPoints.remove(p);
@@ -42,14 +41,15 @@ public class SpleefHelper {
         spleefPlayerHashMap.put(p, spleefPlayerStatistics);
         return spleefPlayerStatistics;
     }
-    public static List<OfflinePlayer> getPlayerRank(int place){
+
+    public static List<OfflinePlayer> getPlayerRank(int place) {
         addPlayers();
         HashMap<Long, List<OfflinePlayer>> pAndP = new HashMap<>();
-        for(OfflinePlayer p : playerPoints.keySet()){
-            if(!nameUsed.contains(p.getName())){
+        for (OfflinePlayer p : playerPoints.keySet()) {
+            if (!nameUsed.contains(p.getName())) {
                 long lives = playerPoints.get(p);
                 intList.add(lives);
-                if(!pAndP.containsKey(lives)){
+                if (!pAndP.containsKey(lives)) {
                     pAndP.put(lives, Lists.newArrayList());
                 }
                 pAndP.get(lives).add(p);
@@ -59,13 +59,13 @@ public class SpleefHelper {
         Collections.sort(intList);
         nameUsed.clear();
         HashMap<Long, List<OfflinePlayer>> placeAndPlayer = new HashMap<>();
-        for(long i : intList){
+        for (long i : intList) {
             placeAndPlayer.put(i, pAndP.get(i));
         }
         int count = 0;
-        for(long i : placeAndPlayer.keySet()){
-            if((count+1) == place){
-                if(placeAndPlayer.containsKey(i)){
+        for (long i : placeAndPlayer.keySet()) {
+            if ((count + 1) == place) {
+                if (placeAndPlayer.containsKey(i)) {
                     return placeAndPlayer.get(i);
                 }
                 break;
@@ -76,7 +76,7 @@ public class SpleefHelper {
     }
 
     public static String listToString(List<OfflinePlayer> list) {
-        if(list == null){
+        if (list == null) {
             return "";
         }
         if (list.size() == 0) {

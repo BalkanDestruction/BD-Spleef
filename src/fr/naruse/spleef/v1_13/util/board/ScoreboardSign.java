@@ -25,15 +25,15 @@ public class ScoreboardSign {
         }
         redTeam.setPrefix("§c");
         blueTeam = sb.registerNewTeam("blue");
-        if(!Bukkit.getVersion().contains("1.8")) {
+        if (!Bukkit.getVersion().contains("1.8")) {
             blueTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
         }
         blueTeam.setPrefix("§3");
     }
 
-    public void setLine(int line, String msg){
+    public void setLine(int line, String msg) {
         SpleefScoreboardUpdateEvent ssue = new SpleefScoreboardUpdateEvent(SpleefPluginV1_13.INSTANCE, msg, line, this);
-        if(new SpleefAPIEventInvoker(ssue).isCancelled()){
+        if (new SpleefAPIEventInvoker(ssue).isCancelled()) {
             return;
         }
         line = ssue.getScore();
@@ -41,19 +41,19 @@ public class ScoreboardSign {
         obj.getScore(msg).setScore(line);
     }
 
-    public void clearLines(){
-        for(String line : sb.getEntries()){
+    public void clearLines() {
+        for (String line : sb.getEntries()) {
             sb.resetScores(line);
         }
     }
 
-    public String getTimer(int time){
-        int mins = time/60;
-        int secondes = time-(mins*60);
-        if(secondes < 10){
-            return mins+":0"+secondes;
+    public String getTimer(int time) {
+        int mins = time / 60;
+        int secondes = time - (mins * 60);
+        if (secondes < 10) {
+            return mins + ":0" + secondes;
         }
-        return mins+":"+secondes;
+        return mins + ":" + secondes;
     }
 
     public Objective getObjective() {
