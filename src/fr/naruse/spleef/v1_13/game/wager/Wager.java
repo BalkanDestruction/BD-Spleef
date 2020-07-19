@@ -38,10 +38,6 @@ public class Wager implements Listener {
         this.player2 = p2;
     }
 
-    public void init() {
-
-    }
-
     public void stop() {
         pl.wagers.getWagerOfPlayer().remove(player1);
         pl.wagers.getWagerOfPlayer().remove(player2);
